@@ -124,7 +124,7 @@ jobs:
           $lines | Add-Content -Path $env:GITHUB_STEP_SUMMARY -Encoding UTF8
 
       - name: Upload artefactos de confianca
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: trust-baseline-v0.1
           path: artifacts/trust/
