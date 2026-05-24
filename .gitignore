@@ -1,6 +1,7 @@
-#env
+# Env
 .env
 .env.*
+!.env.example
 
 # Logs
 /logs
@@ -11,10 +12,33 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+.pnpm-store
+
+# Build and generated artifacts
 dist
 dist-ssr
+build
+storybook-static
 artifacts
+coverage
+.nyc_output
+playwright-report
+test-results
+*.tsbuildinfo
+*.tgz
+
+# Tool caches
+.cache
+.turbo
+.vite
+.eslintcache
+.stylelintcache
+
+# Local/temp
+tmp
+temp
 *.local
 
 # Editor directories and files
@@ -27,11 +51,9 @@ artifacts
 *.njsproj
 *.sln
 *.sw?
-
-.env
-.vite
 .logs
-*.tgz
+Thumbs.db
+Desktop.ini
 
 # Local agent/design guidance
 AGENTS.md
