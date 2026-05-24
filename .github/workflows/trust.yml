@@ -1,0 +1,75 @@
+name: Trust
+
+on:
+  pull_request:
+  push:
+    branches: [main, master, devel]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trust-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  trust:
+    name: Evidencia observacional
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    env:
+      TRUST_OUT_DIR: artifacts/trust
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Gerar manifest
+        id: manifest
+        continue-on-error: true
+        run: bash ./scripts/security/generate-manifest.sh "$TRUST_OUT_DIR"
+
+      - name: Verificar manifest
+        id: verify
+        continue-on-error: true
+        run: bash ./scripts/security/verify-manifest.sh "$TRUST_OUT_DIR/MANIFEST.sha256"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4.1.0
+        with:
+          version: 10.20.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - name: Audit Node
+        id: audit
+        continue-on-error: true
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm audit --audit-level high
+
+      - name: Resumo de confianca
+        if: always()
+        run: |
+          {
+            echo "## Trust - evidencia observacional"
+            echo ""
+            echo "| Passo | Resultado |"
+            echo "| --- | --- |"
+            echo "| Gerar manifest | ${{ steps.manifest.outcome }} |"
+            echo "| Verificar manifest | ${{ steps.verify.outcome }} |"
+            echo "| pnpm audit | ${{ steps.audit.outcome }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload manifest
+        if: always()
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: trust-observational
+          path: ${{ env.TRUST_OUT_DIR }}/
+          if-no-files-found: warn

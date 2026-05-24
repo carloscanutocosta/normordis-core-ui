@@ -1,0 +1,56 @@
+{
+  "name": "AutomationRule",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nome da regra de automa\u00e7\u00e3o"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "record_created",
+        "status_completed"
+      ],
+      "description": "Evento que dispara o envio"
+    },
+    "entity_name": {
+      "type": "string",
+      "description": "Nome da entidade monitorizada"
+    },
+    "recipient_emails": {
+      "type": "string",
+      "description": "Emails separados por v\u00edrgula"
+    },
+    "subject_template": {
+      "type": "string",
+      "description": "Assunto do email (suporta {{campo}} como vari\u00e1vel)"
+    },
+    "body_template": {
+      "type": "string",
+      "description": "Corpo do email (suporta {{campo}} como vari\u00e1vel)"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Se a regra est\u00e1 activa"
+    },
+    "last_triggered_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "\u00daltima vez que foi executada"
+    },
+    "trigger_count": {
+      "type": "number",
+      "default": 0,
+      "description": "N\u00famero total de envios efectuados"
+    }
+  },
+  "required": [
+    "name",
+    "trigger",
+    "recipient_emails",
+    "subject_template",
+    "body_template"
+  ]
+}

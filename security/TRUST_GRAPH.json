@@ -1,0 +1,89 @@
+{
+  "schema_version": "0.1.0",
+  "status": "Draft",
+  "project": "normordis-core-ui",
+  "nodes": [
+    {
+      "id": "source.git",
+      "type": "source",
+      "description": "Fonte Git versionada do repositório normordis-core-ui."
+    },
+    {
+      "id": "github.actions",
+      "type": "ci",
+      "description": "Execução controlada por GitHub Actions."
+    },
+    {
+      "id": "lockfile.pnpm",
+      "type": "dependency-input",
+      "description": "Lockfile pnpm-lock.yaml versionado."
+    },
+    {
+      "id": "sbom",
+      "type": "evidence",
+      "description": "SBOM CycloneDX gerado em CI via Syft."
+    },
+    {
+      "id": "build.dist",
+      "type": "artifact",
+      "description": "Artefactos Vite gerados em dist."
+    },
+    {
+      "id": "package.tgz",
+      "type": "artifact",
+      "description": "Pacote npm local gerado por pnpm pack."
+    },
+    {
+      "id": "manifest.sha256",
+      "type": "evidence",
+      "description": "Manifesto SHA-256 gerado por scripts/security."
+    },
+    {
+      "id": "provenance.attestation",
+      "type": "evidence",
+      "description": "Atestação GitHub quando disponível."
+    },
+    {
+      "id": "release.draft",
+      "type": "release",
+      "description": "GitHub Release draft com pacote e evidência."
+    }
+  ],
+  "edges": [
+    {
+      "from": "source.git",
+      "to": "github.actions",
+      "relation": "triggers"
+    },
+    {
+      "from": "lockfile.pnpm",
+      "to": "sbom",
+      "relation": "constrains"
+    },
+    {
+      "from": "github.actions",
+      "to": "build.dist",
+      "relation": "produces"
+    },
+    {
+      "from": "build.dist",
+      "to": "package.tgz",
+      "relation": "is-packaged-as"
+    },
+    {
+      "from": "package.tgz",
+      "to": "manifest.sha256",
+      "relation": "is-hashed-by"
+    },
+    {
+      "from": "package.tgz",
+      "to": "provenance.attestation",
+      "relation": "is-attested-by"
+    },
+    {
+      "from": "provenance.attestation",
+      "to": "release.draft",
+      "relation": "supports-release"
+    }
+  ]
+}

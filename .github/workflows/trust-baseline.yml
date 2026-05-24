@@ -1,0 +1,131 @@
+name: Trust Baseline
+
+on:
+  pull_request:
+  push:
+    branches: [main, master, devel]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: trust-baseline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  trust-baseline:
+    name: Trust Baseline v0.1
+    runs-on: windows-2022
+    timeout-minutes: 20
+
+    env:
+      NODE_VERSION: "24"
+      PNPM_VERSION: "10.20.0"
+      SYFT_VERSION: "1.20.0"
+      TRUST_OUT_DIR: "artifacts/trust"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Detectar stack
+        id: stack
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $hasNode = Test-Path -LiteralPath "package.json"
+          $hasPnpm = Test-Path -LiteralPath "pnpm-lock.yaml"
+
+          "node=$($hasNode.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
+          "pnpm=$($hasPnpm.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
+
+          New-Item -ItemType Directory -Force -Path $env:TRUST_OUT_DIR | Out-Null
+          @{
+            node = $hasNode
+            pnpm = $hasPnpm
+            rust = $false
+          } | ConvertTo-Json | Set-Content -Path (Join-Path $env:TRUST_OUT_DIR "stack-detection.json") -Encoding UTF8
+
+      - name: Setup Node.js
+        if: steps.stack.outputs.node == 'true'
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup pnpm
+        if: steps.stack.outputs.pnpm == 'true'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          corepack enable
+          corepack prepare "pnpm@$env:PNPM_VERSION" --activate
+          pnpm --version
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Instalar Syft
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $url = "https://github.com/anchore/syft/releases/download/v$env:SYFT_VERSION/syft_$env:SYFT_VERSION`_windows_amd64.zip"
+          New-Item -ItemType Directory -Force -Path "$env:RUNNER_TEMP\syft" | Out-Null
+          Invoke-WebRequest -Uri $url -OutFile "$env:RUNNER_TEMP\syft.zip"
+          Expand-Archive -Path "$env:RUNNER_TEMP\syft.zip" -DestinationPath "$env:RUNNER_TEMP\syft" -Force
+          Add-Content -Path $env:GITHUB_PATH -Value "$env:RUNNER_TEMP\syft"
+          & "$env:RUNNER_TEMP\syft\syft.exe" version
+
+      - name: Gerar SBOM CycloneDX
+        id: sbom
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          New-Item -ItemType Directory -Force -Path $env:TRUST_OUT_DIR | Out-Null
+          syft dir:. -o cyclonedx-json="$env:TRUST_OUT_DIR/sbom.cyclonedx.json"
+
+      - name: Gerar manifest
+        id: manifest
+        shell: pwsh
+        run: ./scripts/security/generate-manifest.ps1 -OutputDir $env:TRUST_OUT_DIR
+
+      - name: Verificar manifest
+        id: verify
+        shell: pwsh
+        run: ./scripts/security/verify-manifest.ps1 -ManifestPath (Join-Path $env:TRUST_OUT_DIR "MANIFEST.sha256")
+
+      - name: Atestar evidencia
+        id: attest
+        continue-on-error: true
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            artifacts/trust/sbom.cyclonedx.json
+            artifacts/trust/MANIFEST.sha256
+            artifacts/trust/MANIFEST.json
+
+      - name: Resumo de confianca
+        if: always()
+        shell: pwsh
+        run: |
+          $lines = @(
+            "## Trust Baseline v0.1",
+            "",
+            "| Passo | Resultado |",
+            "| --- | --- |",
+            "| Gerar SBOM | ${{ steps.sbom.outcome }} |",
+            "| Gerar manifest | ${{ steps.manifest.outcome }} |",
+            "| Verificar manifest | ${{ steps.verify.outcome }} |",
+            "| Atestar evidencia | ${{ steps.attest.outcome }} |"
+          )
+          $lines | Add-Content -Path $env:GITHUB_STEP_SUMMARY -Encoding UTF8
+
+      - name: Upload artefactos de confianca
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: trust-baseline-v0.1
+          path: artifacts/trust/
+          if-no-files-found: warn

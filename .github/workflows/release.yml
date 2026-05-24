@@ -1,0 +1,92 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release SDK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    env:
+      NODE_VERSION: "24"
+      PNPM_VERSION: "10.20.0"
+      RELEASE_OUT_DIR: "artifacts/release"
+      TRUST_OUT_DIR: "artifacts/trust"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4.1.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Validar release
+        run: pnpm run check
+
+      - name: Empacotar SDK
+        run: |
+          mkdir -p "$RELEASE_OUT_DIR"
+          pnpm pack --json --pack-destination "$RELEASE_OUT_DIR" | tee "$RELEASE_OUT_DIR/pack.json"
+
+      - name: Gerar manifest
+        run: bash ./scripts/security/generate-manifest.sh "$TRUST_OUT_DIR"
+
+      - name: Verificar manifest
+        run: bash ./scripts/security/verify-manifest.sh "$TRUST_OUT_DIR/MANIFEST.sha256"
+
+      - name: Atestar pacote e evidencia
+        id: attest
+        continue-on-error: true
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            artifacts/release/*.tgz
+            artifacts/release/pack.json
+            artifacts/trust/MANIFEST.sha256
+            artifacts/trust/MANIFEST.json
+
+      - name: Upload artefactos
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: normordis-core-ui-release
+          path: |
+            artifacts/release/
+            artifacts/trust/
+          if-no-files-found: error
+
+      - name: Criar GitHub Release draft
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          notes="Release draft de @normordis/core-ui ${tag}. Inclui pacote npm local, manifest SHA-256 e evidencia de provenance quando suportada."
+          gh release create "$tag" artifacts/release/*.tgz artifacts/release/pack.json artifacts/trust/MANIFEST.sha256 artifacts/trust/MANIFEST.json \
+            --draft \
+            --title "normordis-core-ui ${tag}" \
+            --notes "$notes"
