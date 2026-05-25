@@ -211,7 +211,7 @@ function SimpleTableComponent({ columns, includeHeader, nodeKey, rows }) {
                           }}
                           onKeyDown={(e) => handleCellKeyDown(e, ri, ci)}
                           className={cn(
-                            "w-full resize-none bg-transparent p-2 text-sm text-foreground outline-none",
+                            "w-full resize-none bg-transparent px-2 py-1 text-sm leading-normal text-foreground outline-none",
                             "focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring",
                             isHeaderRow && "font-semibold"
                           )}
