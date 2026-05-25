@@ -17,7 +17,7 @@ do host consumidor.
 - O pacote publicado deve ser verificável antes do consumo por hash, SBOM e
   provenance quando disponível.
 - O SDK não deve introduzir dependências runtime obrigatórias de backend,
-  filesystem, Tauri, Base44 ou `normordis-kernel`.
+  filesystem, Tauri, fornecedores de app externos ou `normordis-kernel`.
 - Qualquer futura verificação de integridade deve ser opt-in e compatível com
   ambientes sem `window` ou `document`.
 

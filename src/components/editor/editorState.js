@@ -5,6 +5,7 @@ export const lexicalTheme = {
   heading: {
     h1: "text-2xl font-semibold leading-tight text-foreground",
     h2: "text-xl font-semibold leading-tight text-foreground",
+    h3: "mt-4 text-base !font-bold leading-tight text-foreground",
   },
   link: "text-primary underline underline-offset-2",
   list: {
@@ -12,11 +13,15 @@ export const lexicalTheme = {
     nested: {
       listitem: "list-none",
     },
-    ol: "ml-6 list-decimal space-y-1",
-    ul: "ml-6 list-disc space-y-1",
+    ol: "list-outside !list-decimal space-y-1 pl-6",
+    ul: "list-outside !list-disc space-y-1 pl-6",
   },
   paragraph: "my-2",
-  quote: "border-l-2 border-border pl-3 text-muted-foreground",
+  quote: "my-3 border-l-2 border-border pl-4 text-muted-foreground",
+  table: "my-3 w-full border-collapse border border-border text-sm",
+  tableCell: "border border-border p-2 align-top",
+  tableCellHeader: "border border-border bg-muted/15 p-2 font-semibold align-top",
+  tableScrollableWrapper: "my-3 overflow-x-auto",
   text: {
     bold: "font-semibold",
     italic: "italic",

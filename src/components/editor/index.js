@@ -11,10 +11,21 @@ export {
   useEditorToolbarState,
 } from "./NormordisEditorToolbar";
 export {
+  convertSelectionToPlaceholder,
+  getPlaceholderToken,
   getSemanticBlockParagraphs,
+  insertImage,
+  insertPlaceholder,
   insertSemanticBlock,
+  insertTable,
   setBlockType,
 } from "./editorCommands";
+export { ImageNode, $createImageNode, $isImageNode } from "./nodes/ImageNode";
+export {
+  SimpleTableNode,
+  $createSimpleTableNode,
+  $isSimpleTableNode,
+} from "./nodes/SimpleTableNode";
 export {
   createDocumentPayload,
   createInitialEditorState,

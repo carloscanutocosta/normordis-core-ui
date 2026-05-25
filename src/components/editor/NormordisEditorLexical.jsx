@@ -21,6 +21,8 @@ import {
   lexicalTheme,
 } from "./editorState";
 import NormordisEditorToolbar from "./NormordisEditorToolbar";
+import { ImageNode } from "./nodes/ImageNode";
+import { SimpleTableNode } from "./nodes/SimpleTableNode";
 
 function SyncExternalValuePlugin({ value }) {
   const [editor] = useLexicalComposerContext();
@@ -32,6 +34,12 @@ function SyncExternalValuePlugin({ value }) {
 
     const serialized = JSON.stringify(payload);
     if (serialized === lastValueRef.current) return;
+
+    const currentSerialized = JSON.stringify(editor.getEditorState().toJSON());
+    if (serialized === currentSerialized) {
+      lastValueRef.current = serialized;
+      return;
+    }
 
     lastValueRef.current = serialized;
     const nextState = editor.parseEditorState(serialized);
@@ -55,8 +63,10 @@ export default function NormordisEditorLexical({
   namespace = "NormordisEditorLexical",
   onChange,
   onError,
+  onPlaceholderInsert,
   onSemanticBlockInsert,
   placeholder = "Escrever documento...",
+  placeholderDefinitions = [],
   readOnly = false,
   required = false,
   semanticBlocks = [],
@@ -77,7 +87,15 @@ export default function NormordisEditorLexical({
       editable: !isReadOnly,
       editorState: createInitialEditorState(value, defaultValue),
       namespace,
-      nodes: [HeadingNode, QuoteNode, ListNode, ListItemNode, LinkNode],
+      nodes: [
+        HeadingNode,
+        QuoteNode,
+        ListNode,
+        ListItemNode,
+        LinkNode,
+        ImageNode,
+        SimpleTableNode,
+      ],
       onError: (err) => {
         onError?.(err);
         if (!onError) {
@@ -123,7 +141,9 @@ export default function NormordisEditorLexical({
           {!isReadOnly && ToolbarComponent && (
             <ToolbarComponent
               disabled={disabled}
+              onPlaceholderInsert={onPlaceholderInsert}
               onSemanticBlockInsert={onSemanticBlockInsert}
+              placeholderDefinitions={placeholderDefinitions}
               semanticBlocks={semanticBlocks}
               toolbarLabel={toolbarLabel}
               {...toolbarProps}
@@ -145,6 +165,10 @@ export default function NormordisEditorLexical({
                   aria-required={required || undefined}
                   className={cn(
                     "prose prose-sm max-w-none px-4 py-3 text-sm text-foreground outline-none",
+                    "[&_h3]:mt-4 [&_h3]:text-base [&_h3]:font-bold [&_h3]:leading-tight [&_h3]:text-foreground",
+                    "[&_li]:my-1 [&_ol]:!list-decimal [&_ol]:list-outside [&_ol]:space-y-1 [&_ol]:pl-6 [&_ul]:!list-disc [&_ul]:list-outside [&_ul]:space-y-1 [&_ul]:pl-6",
+                    "[&_table]:my-3 [&_table]:w-full [&_table]:border-collapse [&_table]:border [&_table]:border-border [&_table]:text-sm",
+                    "[&_td]:border [&_td]:border-border [&_td]:p-2 [&_th]:border [&_th]:border-border [&_th]:bg-muted/15 [&_th]:p-2 [&_th]:font-semibold",
                     "focus:outline-none disabled:cursor-not-allowed",
                     isReadOnly && "cursor-default"
                   )}

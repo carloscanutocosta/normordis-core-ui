@@ -90,5 +90,5 @@ configurar trusted publishing/OIDC no npm.
 
 Este repositório começou como uma app/showcase Vite. A base
 visual foi mantida, mas o pacote principal está a ser convertido para SDK. Código
-específico de app, automações e integrações devem permanecer fora da API
+específico de app, automações e integrações de negócio devem permanecer fora da API
 pública.

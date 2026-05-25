@@ -16,8 +16,11 @@ uma app concreta.
 - As apps consumidoras decidem onde gravar, como descarregar ou como enviar os
   payloads.
 - Lexical JSON é a representação canónica interna.
-- `.ndt`, `.ndf` e `.ncrft` devem ter contratos documentados antes de estabilizar
-  API pública.
+- `.ncrtf` é o formato canónico do editor. Formatos finais ou de intercâmbio
+  devem ser derivados por renderizadores/exportadores posteriores.
+- O `core-documental` deve consumir NCRTF, não Lexical JSON. Se no futuro for
+  usado outro editor rich text, como Quill, deve bastar criar um serializador
+  `quill -> ncrtf`.
 - Acessibilidade é requisito funcional: teclado, foco visível, nomes acessíveis,
   contraste e estados percetíveis sem depender apenas da cor.
 
@@ -37,9 +40,7 @@ src/components/editor/
     SemanticBlockNode.jsx
   serializers/
     lexical-json.js
-    ndt.js
-    ndf.js
-    ncrft.js
+    ncrtf.js
   index.js
 ```
 
@@ -93,7 +94,7 @@ Componente composto para uso directo pelas apps:
   value={value}
   onChange={setValue}
   semanticBlocks={blocks}
-  formats={["ndt", "ndf", "ncrft"]}
+  formats={["ncrtf"]}
   onExport={(format, payload) => {}}
 />
 ```
@@ -170,51 +171,42 @@ Possível nó Lexical:
 }
 ```
 
-## Formatos
+## Formato
 
-### `.ndt`
-
-Formato editável NORMORDIS.
-
-Uso esperado:
-
-- reabrir no editor sem perda;
-- preservar Lexical JSON, metadata e blocos semânticos;
-- guardar versão de schema.
-
-### `.ndf`
-
-Formato final/intercâmbio.
-
-Uso esperado:
-
-- representar documento estabilizado;
-- reduzir dependência directa de Lexical;
-- preservar estrutura essencial, metadata e blocos resolvidos.
-
-### `.ncrft`
+### `.ncrtf`
 
 Formato de template/craft.
 
 Uso esperado:
 
+- reabrir no editor sem perda;
 - representar rascunhos, modelos ou documentos com placeholders;
 - preservar blocos semânticos configuráveis;
-- suportar composição por apps ou workflows externos.
+- suportar composição por apps ou workflows externos;
+- transportar estado editorial (`draft`, `review`, `final`) sem criar formatos
+  editoriais paralelos;
+- servir como ponte estável entre editores rich text e `core-documental`;
+- alimentar a conversão `NCRTF -> NDF de custódia em DB` fora do `core-ui`.
+
+Fluxo previsto:
+
+```text
+Lexical JSON -> NCRTF -> core-documental -> NDF de custódia em DB
+```
+
+Fluxo alternativo futuro:
+
+```text
+Quill Delta -> NCRTF -> core-documental -> NDF de custódia em DB
+```
 
 ## API de serialização
 
 Funções puras, sem efeitos laterais:
 
 ```js
-exportToNdt(editorState, options)
-importFromNdt(payload)
-
-exportToNdf(editorState, options)
-importFromNdf(payload)
-
-exportToNcrft(editorState, options)
-importFromNcrft(payload)
+exportToNcrtf(editorState, options)
+importFromNcrtf(payload)
 ```
 
 As funções devem devolver `string`, `Blob` ou objecto serializado. A app decide
@@ -222,8 +214,7 @@ se faz download, grava em disco ou envia para backend.
 
 ## Fases
 
-1. Documentar contratos iniciais de `.ndt`, `.ndf` e `.ncrft`. Concluído em
-   `docs/formats/`.
+1. Documentar contrato inicial de `.ncrtf`. Concluído em `docs/formats/NCRTF.md`.
 2. Criar editor Lexical base com tema `core-ui`. Concluído em
    `NormordisEditorLexical`.
 3. Implementar toolbar acessível. Concluído em `NormordisEditorToolbar`, com
@@ -232,9 +223,11 @@ se faz download, grava em disco ou envia para backend.
    concluído.
 5. Implementar blocos semânticos configuráveis. Parcialmente concluído por
    inserção textual; falta nó Lexical próprio com metadata.
-6. Implementar serialização `.ndt`. Concluído em `exportToNdt`.
-7. Implementar serialização `.ndf`. Concluído em `exportToNdf`.
-8. Implementar serialização `.ncrft`. Concluído em `exportToNcrft`.
+6. Implementar serialização `.ncrtf`. Concluído em `exportToNcrtf`.
+7. Implementar renderizadores/exportadores derivados quando houver necessidade
+   real de formatos finais.
+8. Integrar com `core-documental` através do contrato NCRTF, mantendo NDF fora
+   do `core-ui`.
 9. Criar showcase com import/export local apenas para demonstração.
 10. Validar acessibilidade e comportamento em temas claro, escuro e alto
     contraste.
