@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  $getSelectionStyleValueForProperty,
+  $patchStyleText,
+} from "@lexical/selection";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -62,11 +66,13 @@ import {
   setBlockType,
 } from "./editorCommands";
 
-// Font families defined in normordis-pdf (LiberationSans / LiberationSerif / LiberationMono)
+// Font families defined in normordis-pdf (LiberationSans / LiberationSerif / LiberationMono).
+// `css`   — value stored in Lexical text node style and applied to the DOM.
+// `ncrtf` — canonical name used in NCRTF font_family mark / paragraph field.
 export const EDITOR_FONT_FAMILIES = [
-  { value: "sans-serif", label: "Sans Serif",  css: "LiberationSans, Arial, sans-serif" },
-  { value: "serif",      label: "Serif",        css: "LiberationSerif, Georgia, serif" },
-  { value: "monospace",  label: "Monospaced",   css: "LiberationMono, 'Courier New', monospace" },
+  { value: "sans-serif", label: "Sans Serif",  css: "LiberationSans, Arial, sans-serif",        ncrtf: "LiberationSans"  },
+  { value: "serif",      label: "Serif",        css: "LiberationSerif, Georgia, serif",          ncrtf: "LiberationSerif" },
+  { value: "monospace",  label: "Monospaced",   css: "LiberationMono, 'Courier New', monospace", ncrtf: "LiberationMono"  },
 ];
 
 const BLOCK_STYLE_OPTIONS = [
@@ -262,6 +268,7 @@ export function useEditorToolbarState() {
     superscript: false,
     underline: false,
   });
+  const [activeFontFamily, setActiveFontFamily] = useState("");
 
   const updateToolbarState = useCallback(() => {
     const selection = $getSelection();
@@ -280,6 +287,10 @@ export function useEditorToolbarState() {
       superscript: selection.hasFormat("superscript"),
       underline: selection.hasFormat("underline"),
     });
+
+    const rawFont = $getSelectionStyleValueForProperty(selection, "font-family", "");
+    const fontEntry = EDITOR_FONT_FAMILIES.find((f) => f.css === rawFont);
+    setActiveFontFamily(fontEntry?.value ?? "");
     setActiveIndentLevel(
       Math.min(MAX_INDENT_LEVEL, getNodeIndentLevel(anchorNode, topLevelElement))
     );
@@ -339,12 +350,12 @@ export function useEditorToolbarState() {
     activeFormats,
     activeBlockType,
     activeIndentLevel,
+    activeFontFamily,
   };
 }
 
 export function NormordisEditorToolbar({
   disabled,
-  fontFamily: fontFamilyProp,
   onFontFamilyChange,
   onSemanticBlockInsert,
   placeholderDefinitions = [],
@@ -361,23 +372,20 @@ export function NormordisEditorToolbar({
   } = useEditorToolbarState();
   const imageInputRef = useRef(null);
 
-  const [internalFontFamily, setInternalFontFamily] = useState("sans-serif");
-  const activeFontFamily = fontFamilyProp ?? internalFontFamily;
-
-  // Apply font family to the editor's content-editable root DOM element
-  useEffect(() => {
-    const option = EDITOR_FONT_FAMILIES.find((o) => o.value === activeFontFamily);
-    const root = editor.getRootElement();
-    if (root && option) root.style.fontFamily = option.css;
-  }, [editor, activeFontFamily]);
-
   const handleFontFamilyChange = useCallback(
     (value) => {
-      if (fontFamilyProp === undefined) setInternalFontFamily(value);
+      const option = EDITOR_FONT_FAMILIES.find((o) => o.value === value);
+      if (!option) return;
+      editor.update(() => {
+        const selection = $getSelection();
+        if ($isRangeSelection(selection)) {
+          $patchStyleText(selection, { "font-family": option.css });
+        }
+      });
       onFontFamilyChange?.(value);
       window.setTimeout(() => editor.focus(), 0);
     },
-    [editor, fontFamilyProp, onFontFamilyChange]
+    [editor, onFontFamilyChange]
   );
 
   return (
@@ -448,7 +456,7 @@ export function NormordisEditorToolbar({
 
       <Select
         disabled={disabled}
-        value={activeFontFamily}
+        value={activeFontFamily || "sans-serif"}
         onValueChange={handleFontFamilyChange}
       >
         <SelectTrigger

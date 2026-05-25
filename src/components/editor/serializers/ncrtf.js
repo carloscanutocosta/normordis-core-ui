@@ -3,6 +3,46 @@ import { getLexicalPayload } from "../editorState";
 export const NCRTF_VERSION = "1.3.0";
 export const NCRTF_MIME_TYPE = "application/vnd.normordis.ncrtf+json";
 
+// ---------------------------------------------------------------------------
+// Font family mapping  (CSS stored in Lexical ↔ canonical name in NCRTF)
+// ---------------------------------------------------------------------------
+
+const FONT_MAP = [
+  { ncrtf: "LiberationSans",  css: "LiberationSans, Arial, sans-serif"        },
+  { ncrtf: "LiberationSerif", css: "LiberationSerif, Georgia, serif"           },
+  { ncrtf: "LiberationMono",  css: "LiberationMono, 'Courier New', monospace"  },
+];
+
+function cssToNcrtfFont(cssValue) {
+  if (!cssValue) return null;
+  const entry = FONT_MAP.find((f) => f.css === cssValue);
+  // Fallback: match on first font name in the stack
+  if (!entry) {
+    const first = cssValue.split(",")[0].trim();
+    return FONT_MAP.find((f) => f.ncrtf === first)?.ncrtf ?? null;
+  }
+  return entry.ncrtf;
+}
+
+function ncrtfFontToCss(ncrtfFont) {
+  return FONT_MAP.find((f) => f.ncrtf === ncrtfFont)?.css ?? null;
+}
+
+// Extract a single CSS property value from a Lexical style string
+// e.g. parseCssProperty("font-family: LiberationSans, Arial, sans-serif;", "font-family")
+//   → "LiberationSans, Arial, sans-serif"
+function parseCssProperty(cssString, property) {
+  if (!cssString) return null;
+  const re = new RegExp(`(?:^|;)\\s*${property}\\s*:\\s*([^;]+)`, "i");
+  const m = cssString.match(re);
+  return m ? m[1].trim() : null;
+}
+
+// Build a CSS string fragment for a property
+function buildCssProperty(property, value) {
+  return `${property}: ${value};`;
+}
+
 // =============================================================================
 // Lexical → NCRTF
 // =============================================================================
@@ -54,9 +94,11 @@ function convertInlineNode(node) {
 
   switch (node.type) {
     case "text": {
-      const marks = textFormatToMarks(node.format);
+      const marks = textFormatToMarks(node.format) ?? [];
+      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.style, "font-family"));
+      if (fontNcrtf) marks.push({ type: "font_family", value: fontNcrtf });
       const n = { type: "text", text: node.text ?? "" };
-      if (marks) n.marks = marks;
+      if (marks.length > 0) n.marks = marks;
       return n;
     }
 
@@ -90,9 +132,12 @@ function convertBlock(node) {
     case "paragraph": {
       const alignment = elementFormatToAlign(node.format);
       const indent = node.indent > 0 ? node.indent : undefined;
+      // textStyle holds the paragraph-level pending font (Lexical ParagraphNode.__textStyle)
+      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.textStyle, "font-family"));
       const n = { type: "paragraph" };
       if (alignment) n.alignment = alignment;
       if (indent != null) n.indent = indent;
+      if (fontNcrtf) n.font_family = fontNcrtf;
       n.children = convertInlines(node.children);
       return n;
     }
@@ -100,8 +145,10 @@ function convertBlock(node) {
     case "heading": {
       const level = parseInt(node.tag?.replace("h", "") ?? "1", 10);
       const alignment = elementFormatToAlign(node.format);
+      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.textStyle, "font-family"));
       const n = { type: "heading", level };
       if (alignment) n.alignment = alignment;
+      if (fontNcrtf) n.font_family = fontNcrtf;
       n.children = convertInlines(node.children);
       return n;
     }
@@ -229,29 +276,38 @@ function makeElement(type, extra, children) {
   };
 }
 
-function makeText(text, format = 0) {
-  return { type: "text", version: 1, format, detail: 0, mode: "normal", style: "", text };
+function makeText(text, format = 0, style = "") {
+  return { type: "text", version: 1, format, detail: 0, mode: "normal", style, text };
 }
 
 // ---------------------------------------------------------------------------
 // Inline converters (NCRTF → Lexical)
 // ---------------------------------------------------------------------------
 
-function importInlines(inlines) {
+// blockFont: paragraph-level font_family from NCRTF, applied to text nodes
+// that don't carry their own font_family mark.
+function importInlines(inlines, blockFont) {
   if (!Array.isArray(inlines)) return [];
   return inlines.flatMap((node) => {
-    const result = importInlineNode(node);
+    const result = importInlineNode(node, blockFont);
     return result ? [result] : [];
   });
 }
 
-function importInlineNode(node) {
+function importInlineNode(node, blockFont) {
   if (!node) return null;
 
   switch (node.type) {
     case "text": {
       const format = marksToTextFormat(node.marks);
-      return makeText(node.text ?? "", format);
+      const fontMark = (node.marks ?? []).find(
+        (m) => typeof m === "object" && m.type === "font_family"
+      );
+      // Inline mark takes precedence; fall back to block-level font
+      const resolvedNcrtf = fontMark?.value ?? blockFont ?? null;
+      const css = resolvedNcrtf ? ncrtfFontToCss(resolvedNcrtf) : null;
+      const style = css ? buildCssProperty("font-family", css) : "";
+      return makeText(node.text ?? "", format, style);
     }
 
     case "link": {
@@ -263,7 +319,7 @@ function importInlineNode(node) {
           target: node.target ?? null,
           title: node.title ?? null,
         },
-        importInlines(node.children)
+        importInlines(node.children, blockFont)
       );
     }
 
@@ -294,7 +350,7 @@ function importBlock(block) {
           format: alignToElementFormat(block.alignment),
           indent: block.indent ?? 0,
         },
-        importInlines(block.children)
+        importInlines(block.children, block.font_family)
       );
     }
 
@@ -306,7 +362,7 @@ function importBlock(block) {
           tag: `h${level}`,
           format: alignToElementFormat(block.alignment),
         },
-        importInlines(block.children)
+        importInlines(block.children, block.font_family)
       );
     }
 
