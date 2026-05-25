@@ -26,6 +26,7 @@ jobs:
       PNPM_VERSION: "10.20.0"
       RELEASE_OUT_DIR: "artifacts/release"
       TRUST_OUT_DIR: "artifacts/trust"
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout
@@ -45,8 +46,14 @@ jobs:
       - name: Instalar dependencias
         run: pnpm install --frozen-lockfile
 
-      - name: Validar release
-        run: pnpm run check
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Build (validar release)
+        run: pnpm run build
 
       - name: Empacotar SDK
         run: |
