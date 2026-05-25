@@ -27,8 +27,10 @@ uma app concreta.
 src/components/editor/
   DocumentEditor.jsx
   NormordisLexicalEditor.jsx
-  EditorToolbar.jsx
+  NormordisEditorToolbar.jsx
   SemanticBlockMenu.jsx
+  editorCommands.js
+  editorState.js
   plugins/
     SemanticBlocksPlugin.jsx
   nodes/
@@ -57,7 +59,9 @@ Responsabilidades:
 
 ### `EditorToolbar`
 
-Toolbar acessível e operável por teclado.
+Toolbar acessível e operável por teclado. A toolbar default deve viver separada
+do editor e poder ser substituída pelas apps consumidoras via prop, sem obrigar
+à reimplementação do editor Lexical.
 
 Comandos mínimos:
 
@@ -77,6 +81,8 @@ Regras:
 - botões toggle devem expor `aria-pressed`;
 - botões indisponíveis devem usar `disabled`;
 - tooltips são complemento, não substituto de nome acessível.
+- helpers de comandos e componentes básicos da toolbar devem ser exportáveis
+  para permitir toolbars personalizadas consistentes.
 
 ### `DocumentEditor`
 
@@ -216,14 +222,19 @@ se faz download, grava em disco ou envia para backend.
 
 ## Fases
 
-1. Documentar contratos iniciais de `.ndt`, `.ndf` e `.ncrft`.
-2. Criar editor Lexical base com tema `core-ui`.
-3. Implementar toolbar acessível.
-4. Implementar plugins básicos: history, lists, links, headings.
-5. Implementar blocos semânticos configuráveis.
-6. Implementar serialização `.ndt`.
-7. Implementar serialização `.ndf`.
-8. Implementar serialização `.ncrft`.
+1. Documentar contratos iniciais de `.ndt`, `.ndf` e `.ncrft`. Concluído em
+   `docs/formats/`.
+2. Criar editor Lexical base com tema `core-ui`. Concluído em
+   `NormordisEditorLexical`.
+3. Implementar toolbar acessível. Concluído em `NormordisEditorToolbar`, com
+   possibilidade de substituição por `ToolbarComponent`.
+4. Implementar plugins básicos: history, lists, links, headings. Parcialmente
+   concluído.
+5. Implementar blocos semânticos configuráveis. Parcialmente concluído por
+   inserção textual; falta nó Lexical próprio com metadata.
+6. Implementar serialização `.ndt`. Concluído em `exportToNdt`.
+7. Implementar serialização `.ndf`. Concluído em `exportToNdf`.
+8. Implementar serialização `.ncrft`. Concluído em `exportToNcrft`.
 9. Criar showcase com import/export local apenas para demonstração.
 10. Validar acessibilidade e comportamento em temas claro, escuro e alto
     contraste.

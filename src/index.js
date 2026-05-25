@@ -56,6 +56,7 @@ export * from './components/ui/use-toast'
 
 export * from './components/forms'
 export * from './components/display'
+export * from './components/editor'
 
 export { default as AlertBanner } from './components/data/AlertBanner'
 export { default as Breadcrumbs } from './components/data/Breadcrumbs'
