@@ -1,20 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import NormordisEditorLexical from "./NormordisEditorLexical";
-import { exportToNcrft, exportToNdf, exportToNdt } from "./serializers";
+import { exportToNcrtf } from "./serializers";
 
 const EXPORTERS = {
-  ncrft: exportToNcrft,
-  ndf: exportToNdf,
-  ndt: exportToNdt,
+  ncrtf: exportToNcrtf,
 };
 
 export default function DocumentEditor({
   className,
   exportOptions,
-  formats = ["ndt", "ndf", "ncrft"],
+  formats = ["ncrtf"],
   onChange,
   onExport,
+  placeholderDefinitions = [],
   semanticBlocks = [],
   value,
   ...editorProps
@@ -45,12 +44,13 @@ export default function DocumentEditor({
 
       const payload = exporter(currentValue, {
         ...(exportOptions?.[format] ?? exportOptions ?? {}),
+        placeholders: placeholderDefinitions,
         semanticBlocks,
       });
 
       onExport?.(format, payload);
     },
-    [currentValue, exportOptions, onExport, semanticBlocks]
+    [currentValue, exportOptions, onExport, placeholderDefinitions, semanticBlocks]
   );
 
   return (
@@ -58,6 +58,7 @@ export default function DocumentEditor({
       <NormordisEditorLexical
         value={value}
         onChange={handleChange}
+        placeholderDefinitions={placeholderDefinitions}
         semanticBlocks={semanticBlocks}
         {...editorProps}
       />

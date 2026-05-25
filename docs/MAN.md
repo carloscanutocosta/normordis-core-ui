@@ -10,9 +10,9 @@ O contrato público é a API exportada por `src/index.js`, o CSS publicado como
 ## Invariantes
 
 - Componentes exportados devem ser reutilizáveis entre apps NORMORDIS.
-- Componentes exportados não devem depender de Base44, Tauri, browser storage
-  obrigatório, autenticação concreta, routing da app host ou chamadas diretas a
-  backend.
+- Componentes exportados não devem depender de Tauri, browser storage
+  obrigatório, autenticação concreta, routing da app host, fornecedores de app
+  externos ou chamadas diretas a backend.
 - `react` e `react-dom` são dependências pares.
 - Temas devem funcionar por classes CSS no elemento raiz: `dark`,
   `high-contrast` e `high-contrast-dark`.
@@ -46,12 +46,21 @@ O componente não grava ficheiros, não chama backend e não depende de web app 
 ou Tauri; consumidores decidem como persistir ou exportar o payload. A toolbar
 default é exportada como `NormordisEditorToolbar` e pode ser substituída por
 `ToolbarComponent` para apps que precisem de comandos próprios.
+Na v1, a toolbar default converte a palavra/seleção atual em placeholder
+textual, por exemplo `nome` -> `{{nome}}`, sem expor catálogo de placeholders.
+`placeholderDefinitions` fica disponível para toolbars personalizadas e para a
+v2 de templates, onde poderá suportar catálogo por template, validação,
+obrigatoriedade, tipos e origem dos dados.
 
-`DocumentEditor` compõe o editor com botões de exportação e chama
-`onExport(format, payload)` para os formatos configurados. Os serializadores
-puros `exportToNdt`, `exportToNdf`, `exportToNcrft` e os respetivos imports são
-exportados pelo pacote. Os contratos iniciais estão documentados em
-`docs/formats/`.
+`DocumentEditor` compõe o editor com botão de exportação e chama
+`onExport("ncrtf", payload)`. O serializer puro `exportToNcrtf` e o respetivo
+`importFromNcrtf` são exportados pelo pacote. O contrato inicial está
+documentado em `docs/formats/NCRTF.md`.
+
+NCRTF é a fronteira entre editor rich text e domínio documental. O fluxo previsto
+é `Lexical JSON -> NCRTF -> core-documental -> NDF de custódia em DB`. Se outro
+editor, como Quill, vier a ser usado, deve bastar criar um serializador
+`quill -> ncrtf`; o `core-documental` continua a consumir NCRTF.
 
 ## Qualidade
 
@@ -110,7 +119,7 @@ componentes mais usados e documentação visual com Storybook ou equivalente.
 ## Trabalhos futuros
 
 - Separar fisicamente o showcase herdado para `demo/` ou `examples/`.
-- Remover integrações Base44 do caminho principal de desenvolvimento.
+- Manter integrações de negócio fora do SDK e do bundle publicado.
 - Adicionar testes com Vitest e Testing Library.
 - Adicionar Changesets para versionamento e release automatizado.
 - Gerar declarações TypeScript para consumidores.
