@@ -15,7 +15,7 @@ Este pacote fornece uma camada de apresentação partilhada:
 ## Não responsabilidade
 
 Este pacote não deve conter regras de negócio, persistência, autenticação de uma
-app concreta, integrações Base44/Tauri/backend, nem workflows institucionais
+app concreta, integrações Tauri/backend, nem workflows institucionais
 completos. Exemplos e showcases podem existir no repositório, mas não fazem parte
 do contrato público do SDK.
 
