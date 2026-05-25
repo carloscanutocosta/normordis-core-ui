@@ -5,9 +5,9 @@ import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { $generateHtmlFromNodes } from "@lexical/html";
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { FORMAT_TEXT_COMMAND, UNDO_COMMAND, REDO_COMMAND } from "lexical";
+import { FORMAT_TEXT_COMMAND, UNDO_COMMAND, REDO_COMMAND, $getRoot, $insertNodes } from "lexical";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { ListNode, ListItemNode } from "@lexical/list";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
@@ -67,6 +67,16 @@ const theme = {
   },
 };
 
+/**
+ * Rich text input backed by Lexical.
+ *
+ * `value` (HTML string) is used to populate the editor on first mount only —
+ * the "defaultValue" pattern. After mount the editor runs uncontrolled and
+ * fires `onChange(html)` on every change. For a fully controlled editor use
+ * NormordisEditorLexical which has SyncExternalValuePlugin.
+ *
+ * @param {{ value?: string, onChange?: (html: string) => void, label?: string, description?: string, error?: string, required?: boolean, disabled?: boolean, placeholder?: string, className?: string }} props
+ */
 export default function RichTextInput({
   label,
   description,
@@ -84,6 +94,17 @@ export default function RichTextInput({
     nodes: [HeadingNode, QuoteNode, ListNode, ListItemNode],
     onError: (err) => console.error(err),
     editable: !disabled,
+    // Populate the editor from the HTML value on first mount.
+    // After mount the editor is uncontrolled — use onChange to capture updates.
+    editorState: value
+      ? (editor) => {
+          const parser = new DOMParser();
+          const dom = parser.parseFromString(value, "text/html");
+          const nodes = $generateNodesFromDOM(editor, dom);
+          $getRoot().select();
+          $insertNodes(nodes);
+        }
+      : undefined,
   };
 
   const handleChange = useCallback((editorState, editor) => {

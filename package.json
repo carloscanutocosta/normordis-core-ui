@@ -55,6 +55,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "dompurify": "^3.4.5",
     "embla-carousel-react": "^8.5.2",
     "input-otp": "^1.4.2",
     "sonner": "^2.0.1",
@@ -63,8 +64,6 @@
     "vaul": "^1.1.2"
   },
   "peerDependencies": {
-    "react": ">=18.2.0",
-    "react-dom": ">=18.2.0",
     "@hello-pangea/dnd": ">=17.0.0",
     "@hookform/resolvers": ">=4.0.0",
     "@lexical/react": ">=0.21.0",
@@ -107,7 +106,9 @@
     "lucide-react": ">=0.400.0",
     "moment": ">=2.30.0",
     "next-themes": ">=0.4.0",
+    "react": ">=18.2.0",
     "react-day-picker": ">=8.10.0",
+    "react-dom": ">=18.2.0",
     "react-hook-form": ">=7.54.0",
     "react-hot-toast": ">=2.6.0",
     "react-leaflet": ">=4.2.0",
@@ -120,59 +121,165 @@
     "zod": ">=3.24.0"
   },
   "peerDependenciesMeta": {
-    "@hello-pangea/dnd": { "optional": true },
-    "@hookform/resolvers": { "optional": true },
-    "@lexical/react": { "optional": true },
-    "@lexical/table": { "optional": true },
-    "@radix-ui/react-accordion": { "optional": true },
-    "@radix-ui/react-alert-dialog": { "optional": true },
-    "@radix-ui/react-aspect-ratio": { "optional": true },
-    "@radix-ui/react-avatar": { "optional": true },
-    "@radix-ui/react-checkbox": { "optional": true },
-    "@radix-ui/react-collapsible": { "optional": true },
-    "@radix-ui/react-context-menu": { "optional": true },
-    "@radix-ui/react-dialog": { "optional": true },
-    "@radix-ui/react-dropdown-menu": { "optional": true },
-    "@radix-ui/react-hover-card": { "optional": true },
-    "@radix-ui/react-label": { "optional": true },
-    "@radix-ui/react-menubar": { "optional": true },
-    "@radix-ui/react-navigation-menu": { "optional": true },
-    "@radix-ui/react-popover": { "optional": true },
-    "@radix-ui/react-progress": { "optional": true },
-    "@radix-ui/react-radio-group": { "optional": true },
-    "@radix-ui/react-scroll-area": { "optional": true },
-    "@radix-ui/react-select": { "optional": true },
-    "@radix-ui/react-separator": { "optional": true },
-    "@radix-ui/react-slider": { "optional": true },
-    "@radix-ui/react-slot": { "optional": true },
-    "@radix-ui/react-switch": { "optional": true },
-    "@radix-ui/react-tabs": { "optional": true },
-    "@radix-ui/react-toast": { "optional": true },
-    "@radix-ui/react-toggle": { "optional": true },
-    "@radix-ui/react-toggle-group": { "optional": true },
-    "@radix-ui/react-tooltip": { "optional": true },
-    "@tanstack/react-query": { "optional": true },
-    "canvas-confetti": { "optional": true },
-    "date-fns": { "optional": true },
-    "framer-motion": { "optional": true },
-    "html2canvas": { "optional": true },
-    "jspdf": { "optional": true },
-    "lexical": { "optional": true },
-    "lodash": { "optional": true },
-    "lucide-react": { "optional": true },
-    "moment": { "optional": true },
-    "next-themes": { "optional": true },
-    "react-day-picker": { "optional": true },
-    "react-hook-form": { "optional": true },
-    "react-hot-toast": { "optional": true },
-    "react-leaflet": { "optional": true },
-    "react-markdown": { "optional": true },
-    "react-quill": { "optional": true },
-    "react-resizable-panels": { "optional": true },
-    "react-router-dom": { "optional": true },
-    "recharts": { "optional": true },
-    "three": { "optional": true },
-    "zod": { "optional": true }
+    "@hello-pangea/dnd": {
+      "optional": true
+    },
+    "@hookform/resolvers": {
+      "optional": true
+    },
+    "@lexical/react": {
+      "optional": true
+    },
+    "@lexical/table": {
+      "optional": true
+    },
+    "@radix-ui/react-accordion": {
+      "optional": true
+    },
+    "@radix-ui/react-alert-dialog": {
+      "optional": true
+    },
+    "@radix-ui/react-aspect-ratio": {
+      "optional": true
+    },
+    "@radix-ui/react-avatar": {
+      "optional": true
+    },
+    "@radix-ui/react-checkbox": {
+      "optional": true
+    },
+    "@radix-ui/react-collapsible": {
+      "optional": true
+    },
+    "@radix-ui/react-context-menu": {
+      "optional": true
+    },
+    "@radix-ui/react-dialog": {
+      "optional": true
+    },
+    "@radix-ui/react-dropdown-menu": {
+      "optional": true
+    },
+    "@radix-ui/react-hover-card": {
+      "optional": true
+    },
+    "@radix-ui/react-label": {
+      "optional": true
+    },
+    "@radix-ui/react-menubar": {
+      "optional": true
+    },
+    "@radix-ui/react-navigation-menu": {
+      "optional": true
+    },
+    "@radix-ui/react-popover": {
+      "optional": true
+    },
+    "@radix-ui/react-progress": {
+      "optional": true
+    },
+    "@radix-ui/react-radio-group": {
+      "optional": true
+    },
+    "@radix-ui/react-scroll-area": {
+      "optional": true
+    },
+    "@radix-ui/react-select": {
+      "optional": true
+    },
+    "@radix-ui/react-separator": {
+      "optional": true
+    },
+    "@radix-ui/react-slider": {
+      "optional": true
+    },
+    "@radix-ui/react-slot": {
+      "optional": true
+    },
+    "@radix-ui/react-switch": {
+      "optional": true
+    },
+    "@radix-ui/react-tabs": {
+      "optional": true
+    },
+    "@radix-ui/react-toast": {
+      "optional": true
+    },
+    "@radix-ui/react-toggle": {
+      "optional": true
+    },
+    "@radix-ui/react-toggle-group": {
+      "optional": true
+    },
+    "@radix-ui/react-tooltip": {
+      "optional": true
+    },
+    "@tanstack/react-query": {
+      "optional": true
+    },
+    "canvas-confetti": {
+      "optional": true
+    },
+    "date-fns": {
+      "optional": true
+    },
+    "framer-motion": {
+      "optional": true
+    },
+    "html2canvas": {
+      "optional": true
+    },
+    "jspdf": {
+      "optional": true
+    },
+    "lexical": {
+      "optional": true
+    },
+    "lodash": {
+      "optional": true
+    },
+    "lucide-react": {
+      "optional": true
+    },
+    "moment": {
+      "optional": true
+    },
+    "next-themes": {
+      "optional": true
+    },
+    "react-day-picker": {
+      "optional": true
+    },
+    "react-hook-form": {
+      "optional": true
+    },
+    "react-hot-toast": {
+      "optional": true
+    },
+    "react-leaflet": {
+      "optional": true
+    },
+    "react-markdown": {
+      "optional": true
+    },
+    "react-quill": {
+      "optional": true
+    },
+    "react-resizable-panels": {
+      "optional": true
+    },
+    "react-router-dom": {
+      "optional": true
+    },
+    "recharts": {
+      "optional": true
+    },
+    "three": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
