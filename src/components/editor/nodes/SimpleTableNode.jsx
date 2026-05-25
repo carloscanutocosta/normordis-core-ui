@@ -53,8 +53,8 @@ function ColActions({ colIndex, totalColumns, onAdd, onRemove }) {
 
 function RowActions({ rowIndex, totalRows, onAdd, onRemove }) {
   return (
-    <td className="w-9 border-none p-0 align-top" aria-hidden="true">
-      <div className="flex flex-col items-center gap-px p-0.5 opacity-0 transition-opacity group-hover/row:opacity-100">
+    <td className="border-none p-0 align-middle" aria-hidden="true">
+      <div className="flex flex-row items-center gap-px px-0.5 opacity-0 transition-opacity group-hover/row:opacity-100">
         <button
           type="button"
           tabIndex={-1}
@@ -190,7 +190,7 @@ function SimpleTableComponent({ columns, includeHeader, nodeKey, rows }) {
                         key={ci}
                         className={cn(
                           "relative border border-border p-0 align-top group/cell",
-                          isHeaderRow && "bg-muted"
+                          isHeaderRow && "bg-black/20"
                         )}
                       >
                         {/* Column controls — shown on first row hover regardless of header */}
