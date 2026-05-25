@@ -20,6 +20,7 @@ jobs:
 
     env:
       TRUST_OUT_DIR: artifacts/trust
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout

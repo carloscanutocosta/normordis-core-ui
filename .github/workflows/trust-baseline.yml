@@ -26,6 +26,7 @@ jobs:
       PNPM_VERSION: "10.20.0"
       SYFT_VERSION: "1.20.0"
       TRUST_OUT_DIR: "artifacts/trust"
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout
