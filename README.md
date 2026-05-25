@@ -88,7 +88,7 @@ configurar trusted publishing/OIDC no npm.
 
 ## Estado atual
 
-Este repositório começou como uma app/showcase Vite exportada do Base44. A base
+Este repositório começou como uma app/showcase Vite. A base
 visual foi mantida, mas o pacote principal está a ser convertido para SDK. Código
-específico de app, automações e integrações Base44 deve permanecer fora da API
+específico de app, automações e integrações devem permanecer fora da API
 pública.

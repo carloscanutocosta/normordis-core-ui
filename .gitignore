@@ -58,3 +58,6 @@ Desktop.ini
 # Local agent/design guidance
 AGENTS.md
 DESIGN.md
+
+# Claude Code local state
+.claude/
