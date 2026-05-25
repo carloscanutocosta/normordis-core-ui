@@ -22,3 +22,9 @@ quando o pacote começar a ser publicado.
   inspeção de pacote e checklist a11y.
 - Baseline de segurança e release com workflows CI/Trust/Release, scripts de
   manifest, política de dependências/provenance e Security Policy.
+- Componente inicial `NormordisEditorLexical`, baseado em Lexical, exportado na
+  API pública do SDK.
+- Toolbar Lexical separada em `NormordisEditorToolbar`, com helpers exportados
+  para permitir personalização por apps consumidoras.
+- Serializadores iniciais para `.ndt`, `.ndf` e `.ncrft`, mais contratos em
+  `docs/formats/` e componente composto `DocumentEditor`.

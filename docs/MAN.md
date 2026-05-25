@@ -34,11 +34,24 @@ CSS uma vez na entrada da aplicação.
 
 ```jsx
 import "@normordis/core-ui/styles.css";
-import { Button } from "@normordis/core-ui";
+import { Button, NormordisEditorLexical } from "@normordis/core-ui";
 ```
 
 Apps que usem Tailwind devem incluir o preset/config do pacote ou replicar os
 tokens CSS publicados.
+
+O editor `NormordisEditorLexical` expõe uma base rich text baseada em Lexical. O
+valor emitido por `onChange` usa Lexical JSON envolvido por metadata NORMORDIS.
+O componente não grava ficheiros, não chama backend e não depende de web app host
+ou Tauri; consumidores decidem como persistir ou exportar o payload. A toolbar
+default é exportada como `NormordisEditorToolbar` e pode ser substituída por
+`ToolbarComponent` para apps que precisem de comandos próprios.
+
+`DocumentEditor` compõe o editor com botões de exportação e chama
+`onExport(format, payload)` para os formatos configurados. Os serializadores
+puros `exportToNdt`, `exportToNdf`, `exportToNcrft` e os respetivos imports são
+exportados pelo pacote. Os contratos iniciais estão documentados em
+`docs/formats/`.
 
 ## Qualidade
 
