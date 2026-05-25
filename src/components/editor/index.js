@@ -6,6 +6,7 @@ export {
 export { default as DocumentEditor } from "./DocumentEditor";
 export {
   default as NormordisEditorToolbar,
+  EDITOR_FONT_FAMILIES,
   ToolbarButton,
   ToolbarDivider,
   useEditorToolbarState,
