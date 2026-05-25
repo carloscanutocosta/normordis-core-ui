@@ -2,11 +2,14 @@ import React from "react";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-export default function FormField({ label, description, error, required, className, children }) {
+/**
+ * @param {{ id?: string, label?: string, description?: string, error?: string, required?: boolean, className?: string, children?: React.ReactNode }} props
+ */
+export default function FormField({ id, label, description, error, required, className, children }) {
   return (
     <div className={cn("space-y-1.5", className)}>
       {label && (
-        <Label className="text-sm font-medium text-foreground">
+        <Label htmlFor={id} className="text-sm font-medium text-foreground">
           {label}
           {required && <span className="text-destructive ml-0.5">*</span>}
         </Label>

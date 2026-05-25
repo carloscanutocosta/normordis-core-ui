@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useId } from "react";
 import { Input } from "@/components/ui/input";
 import FormField from "./FormField";
 import { cn } from "@/lib/utils";
 
 export default function ColorInput({
+  id: idProp,
   label,
   description,
   error,
@@ -13,8 +14,10 @@ export default function ColorInput({
   disabled,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
       <div className="flex items-center gap-3">
         <div
           className="h-10 w-10 rounded-md border border-input shrink-0 overflow-hidden cursor-pointer"

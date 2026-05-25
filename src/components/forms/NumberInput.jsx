@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus } from "lucide-react";
@@ -6,6 +6,7 @@ import FormField from "./FormField";
 import { cn } from "@/lib/utils";
 
 export default function NumberInput({
+  id: idProp,
   label,
   description,
   error,
@@ -22,6 +23,9 @@ export default function NumberInput({
   placeholder,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
+
   const handleChange = (newVal) => {
     const num = parseFloat(newVal);
     if (isNaN(num)) { onChange?.(""); return; }
@@ -34,7 +38,7 @@ export default function NumberInput({
   const decrement = () => handleChange((parseFloat(value) || 0) - step);
 
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
       <div className="flex items-center gap-2">
         {showStepper && (
           <Button type="button" variant="outline" size="icon" className="h-10 w-10 shrink-0" onClick={decrement} disabled={disabled || (min !== undefined && (parseFloat(value) || 0) <= min)}>
@@ -44,6 +48,7 @@ export default function NumberInput({
         <div className="relative flex-1">
           {prefix && <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{prefix}</span>}
           <Input
+            id={id}
             type="number"
             value={value ?? ""}
             onChange={(e) => handleChange(e.target.value)}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
@@ -6,6 +6,7 @@ import FormField from "./FormField";
 import { cn } from "@/lib/utils";
 
 export default function TagsInput({
+  id: idProp,
   label,
   description,
   error,
@@ -16,6 +17,8 @@ export default function TagsInput({
   disabled,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
   const [inputValue, setInputValue] = useState("");
 
   const addTag = (tag) => {
@@ -40,7 +43,7 @@ export default function TagsInput({
   };
 
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
       <div className={cn(
         "flex flex-wrap items-center gap-1.5 rounded-md border border-input bg-background px-3 py-2 min-h-[40px] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 transition-all",
         error && "border-destructive",
