@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useMemo } from "react";
+import DOMPurify from "dompurify";
 import { cn } from "@/lib/utils";
 
+const PURIFY_CONFIG = {
+  ALLOWED_TAGS: [
+    "p", "br", "strong", "b", "em", "i", "u", "s", "del", "ins", "mark",
+    "h1", "h2", "h3", "h4", "h5", "h6",
+    "ul", "ol", "li",
+    "blockquote", "pre", "code",
+    "a", "span", "div",
+    "table", "thead", "tbody", "tr", "th", "td",
+    "img",
+  ],
+  ALLOWED_ATTR: ["href", "target", "rel", "src", "alt", "class", "style"],
+  ALLOW_DATA_ATTR: false,
+  FORCE_BODY: true,
+};
+
+/**
+ * Renders sanitized rich-text HTML. Input is always passed through DOMPurify
+ * before rendering to prevent XSS, regardless of source.
+ *
+ * @param {{ value?: string, className?: string }} props
+ */
 export default function RichTextDisplay({ value, className }) {
-  if (!value) return <span className="text-sm text-muted-foreground italic">—</span>;
+  const clean = useMemo(
+    () => (value ? DOMPurify.sanitize(value, PURIFY_CONFIG) : ""),
+    [value]
+  );
+
+  if (!clean) return <span className="text-sm text-muted-foreground italic">—</span>;
 
   return (
     <div
@@ -16,7 +43,7 @@ export default function RichTextDisplay({ value, className }) {
         "[&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-xs",
         className
       )}
-      dangerouslySetInnerHTML={{ __html: value }}
+      dangerouslySetInnerHTML={{ __html: clean }}
     />
   );
 }

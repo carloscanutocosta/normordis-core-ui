@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useId } from "react";
 import FormField from "./FormField";
 import { cn } from "@/lib/utils";
 
@@ -9,29 +9,39 @@ const CURRENCIES = [
   { code: "GBP", symbol: "£" },
 ];
 
+/**
+ * Currency input with currency selector.
+ *
+ * value: { currency: string, amount: string }
+ * onChange: (value: { currency: string, amount: string }) => void
+ */
 export default function CurrencyInput({
+  id: idProp,
   label,
   description,
   error,
   required,
-  value = "",
+  value = { currency: "EUR", amount: "" },
   onChange,
   disabled,
-  currency: defaultCurrency = "EUR",
   placeholder = "0,00",
   className,
 }) {
-  const [currency, setCurrency] = useState(defaultCurrency);
-  const selected = CURRENCIES.find((c) => c.code === currency) || CURRENCIES[0];
+  const autoId = useId();
+  const id = idProp ?? autoId;
 
-  const handleChange = (e) => {
-    // Allow only digits, comma, dot
+  const currency = value?.currency ?? "EUR";
+  const amount = value?.amount ?? "";
+
+  const update = (patch) => onChange?.({ currency, amount, ...patch });
+
+  const handleAmountChange = (e) => {
     const raw = e.target.value.replace(/[^0-9.,]/g, "");
-    onChange(raw);
+    update({ amount: raw });
   };
 
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
       <div className={cn(
         "flex h-9 rounded-md border border-input bg-background overflow-hidden",
         "focus-within:ring-1 focus-within:ring-ring",
@@ -41,7 +51,7 @@ export default function CurrencyInput({
         {/* Currency selector */}
         <select
           value={currency}
-          onChange={(e) => setCurrency(e.target.value)}
+          onChange={(e) => update({ currency: e.target.value })}
           disabled={disabled}
           className="h-full px-2 border-r border-input bg-muted/40 text-sm text-foreground focus:outline-none"
         >
@@ -53,10 +63,11 @@ export default function CurrencyInput({
         </select>
         {/* Amount input */}
         <input
+          id={id}
           type="text"
           inputMode="decimal"
-          value={value}
-          onChange={handleChange}
+          value={amount}
+          onChange={handleAmountChange}
           disabled={disabled}
           placeholder={placeholder}
           className="flex-1 px-3 text-sm bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none text-right"

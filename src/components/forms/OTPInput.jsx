@@ -37,7 +37,7 @@ export default function OTPInput({
 
   return (
     <FormField label={label} description={description} error={error} required={required} className={className}>
-      <div className="flex gap-2" onPaste={handlePaste}>
+      <div className="flex gap-2" onPaste={handlePaste} role="group" aria-label={label ?? "Código OTP"}>
         {digits.map((digit, i) => (
           <input
             key={i}
@@ -47,6 +47,7 @@ export default function OTPInput({
             maxLength={1}
             value={digit}
             disabled={disabled}
+            aria-label={`Dígito ${i + 1} de ${length}`}
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
             className={cn(
