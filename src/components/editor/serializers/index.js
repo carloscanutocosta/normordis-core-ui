@@ -1,9 +1,4 @@
-export {
-  getPlainTextFromLexical,
-  normalizeEditorDocument,
-  parseJsonPayload,
-  serializeJson,
-} from "./lexical-json";
+export { getPlainTextFromLexical } from "./lexical-json";
 export {
   exportToNcrtf,
   importFromNcrtf,
