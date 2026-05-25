@@ -16,7 +16,9 @@ function createEmptyRows(rowCount, columnCount) {
 
 function autoResizeTextarea(el) {
   if (!el) return;
-  el.style.height = "auto";
+  // Reset to 0 antes de ler scrollHeight para que o atributo rows não imponha
+  // um mínimo superior à altura real do conteúdo.
+  el.style.height = "0px";
   el.style.height = `${el.scrollHeight}px`;
 }
 
@@ -188,7 +190,7 @@ function SimpleTableComponent({ columns, includeHeader, nodeKey, rows }) {
                         key={ci}
                         className={cn(
                           "relative border border-border p-0 align-top group/cell",
-                          isHeaderRow && "bg-muted/15"
+                          isHeaderRow && "bg-muted"
                         )}
                       >
                         {/* Column controls — shown on first row hover regardless of header */}
@@ -211,7 +213,7 @@ function SimpleTableComponent({ columns, includeHeader, nodeKey, rows }) {
                           }}
                           onKeyDown={(e) => handleCellKeyDown(e, ri, ci)}
                           className={cn(
-                            "w-full resize-none bg-transparent px-2 py-1 text-sm leading-normal text-foreground outline-none",
+                            "w-full resize-none overflow-hidden bg-transparent px-2 py-0.5 text-sm leading-normal text-foreground outline-none",
                             "focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring",
                             isHeaderRow && "font-semibold"
                           )}
