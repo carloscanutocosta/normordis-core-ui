@@ -1,4 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { mergeRegister } from "@lexical/utils";
 import {
@@ -54,6 +61,13 @@ import {
   insertTable,
   setBlockType,
 } from "./editorCommands";
+
+// Font families defined in normordis-pdf (LiberationSans / LiberationSerif / LiberationMono)
+export const EDITOR_FONT_FAMILIES = [
+  { value: "sans-serif", label: "Sans Serif",  css: "LiberationSans, Arial, sans-serif" },
+  { value: "serif",      label: "Serif",        css: "LiberationSerif, Georgia, serif" },
+  { value: "monospace",  label: "Monospaced",   css: "LiberationMono, 'Courier New', monospace" },
+];
 
 const BLOCK_STYLE_OPTIONS = [
   { value: "paragraph", label: "Normal" },
@@ -330,6 +344,8 @@ export function useEditorToolbarState() {
 
 export function NormordisEditorToolbar({
   disabled,
+  fontFamily: fontFamilyProp,
+  onFontFamilyChange,
   onSemanticBlockInsert,
   placeholderDefinitions = [],
   semanticBlocks = [],
@@ -344,6 +360,25 @@ export function NormordisEditorToolbar({
     activeIndentLevel,
   } = useEditorToolbarState();
   const imageInputRef = useRef(null);
+
+  const [internalFontFamily, setInternalFontFamily] = useState("sans-serif");
+  const activeFontFamily = fontFamilyProp ?? internalFontFamily;
+
+  // Apply font family to the editor's content-editable root DOM element
+  useEffect(() => {
+    const option = EDITOR_FONT_FAMILIES.find((o) => o.value === activeFontFamily);
+    const root = editor.getRootElement();
+    if (root && option) root.style.fontFamily = option.css;
+  }, [editor, activeFontFamily]);
+
+  const handleFontFamilyChange = useCallback(
+    (value) => {
+      if (fontFamilyProp === undefined) setInternalFontFamily(value);
+      onFontFamilyChange?.(value);
+      window.setTimeout(() => editor.focus(), 0);
+    },
+    [editor, fontFamilyProp, onFontFamilyChange]
+  );
 
   return (
     <div
@@ -410,6 +445,26 @@ export function NormordisEditorToolbar({
       </ToolbarButton>
 
       <ToolbarDivider />
+
+      <Select
+        disabled={disabled}
+        value={activeFontFamily}
+        onValueChange={handleFontFamilyChange}
+      >
+        <SelectTrigger
+          aria-label="Família de fonte"
+          className="h-9 w-32 border-input bg-background text-sm font-medium text-foreground"
+        >
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {EDITOR_FONT_FAMILIES.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       <label className="sr-only" htmlFor="normordis-block-style">
         Estilo do bloco
