@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useId } from "react";
 import { Slider } from "@/components/ui/slider";
 import FormField from "./FormField";
 
 export default function SliderInput({
+  id: idProp,
   label,
   description,
   error,
@@ -17,8 +18,10 @@ export default function SliderInput({
   disabled,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
       <div className="space-y-3">
         {showValue && (
           <div className="flex justify-between text-sm">

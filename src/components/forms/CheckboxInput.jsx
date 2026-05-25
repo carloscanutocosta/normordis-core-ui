@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useId } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import FormField from "./FormField";
 
 export default function CheckboxInput({
+  id: idProp,
   label,
   description,
   error,
@@ -12,20 +13,28 @@ export default function CheckboxInput({
   disabled,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
+
   return (
     <FormField error={error} className={className}>
-      <label className="flex items-start gap-3 cursor-pointer group">
+      <div className="flex items-start gap-3">
         <Checkbox
+          id={id}
           checked={checked}
           onCheckedChange={onChange}
           disabled={disabled}
           className="mt-0.5"
         />
         <div className="space-y-0.5">
-          {label && <Label className="cursor-pointer font-medium text-sm group-hover:text-primary transition-colors">{label}</Label>}
+          {label && (
+            <Label htmlFor={id} className="cursor-pointer font-medium text-sm hover:text-primary transition-colors">
+              {label}
+            </Label>
+          )}
           {description && <p className="text-xs text-muted-foreground">{description}</p>}
         </div>
-      </label>
+      </div>
     </FormField>
   );
 }

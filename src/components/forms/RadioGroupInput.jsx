@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useId } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import FormField from "./FormField";
 import { cn } from "@/lib/utils";
 
 export default function RadioGroupInput({
+  id: idProp,
   label,
   description,
   error,
@@ -16,8 +17,10 @@ export default function RadioGroupInput({
   disabled,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
       <RadioGroup
         value={value}
         onValueChange={onChange}

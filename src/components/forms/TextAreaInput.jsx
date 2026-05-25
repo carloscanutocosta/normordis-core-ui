@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useId } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import FormField from "./FormField";
 import { cn } from "@/lib/utils";
 
 export default function TextAreaInput({
+  id: idProp,
   label,
   description,
   error,
@@ -16,9 +17,13 @@ export default function TextAreaInput({
   disabled,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
+
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
       <Textarea
+        id={id}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}

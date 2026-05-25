@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -8,6 +8,7 @@ import FormField from "./FormField";
 import { cn } from "@/lib/utils";
 
 export default function MultiSelectInput({
+  id: idProp,
   label,
   description,
   error,
@@ -19,6 +20,8 @@ export default function MultiSelectInput({
   disabled,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
   const [open, setOpen] = React.useState(false);
 
   const toggleOption = (optValue) => {
@@ -39,7 +42,7 @@ export default function MultiSelectInput({
   };
 
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
