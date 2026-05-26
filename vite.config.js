@@ -3,8 +3,8 @@ import { defineConfig } from 'vite'
 import path from 'node:path'
 import dts from 'vite-plugin-dts'
 
-// All peer dependencies must be external so they are not bundled into the dist.
-// Consumers install the peers they need; the SDK tree-shakes the rest.
+// Peer deps externos ao bundle do SDK.
+// Aplicado APENAS no build — o dev server serve tudo localmente.
 const PEER_EXTERNALS = [
   'react',
   'react-dom',
@@ -42,35 +42,37 @@ const PEER_EXTERNALS = [
   'zod',
 ];
 
-export default defineConfig({
-  logLevel: 'error',
+export default defineConfig(({ command }) => ({
+  logLevel: command === 'serve' ? 'info' : 'error',
   plugins: [
     react(),
-    dts({
+    ...(command === 'build' ? [dts({
       include: ['src'],
       exclude: ['src/App.jsx', 'src/main.jsx', 'src/demo', 'src/pages', 'src/showcase'],
       rollupTypes: true,
       insertTypesEntry: true,
-    }),
+    })] : []),
   ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-  build: {
-    lib: {
-      entry: path.resolve(__dirname, 'src/index.js'),
-      formats: ['es'],
-      cssFileName: 'normordis-core-ui',
-    },
-    rollupOptions: {
-      external: PEER_EXTERNALS,
-      output: {
-        preserveModules: true,
-        preserveModulesRoot: 'src',
-        entryFileNames: '[name].js',
+  ...(command === 'build' ? {
+    build: {
+      lib: {
+        entry: path.resolve(__dirname, 'src/index.js'),
+        formats: ['es'],
+        cssFileName: 'normordis-core-ui',
+      },
+      rollupOptions: {
+        external: PEER_EXTERNALS,
+        output: {
+          preserveModules: true,
+          preserveModulesRoot: 'src',
+          entryFileNames: '[name].js',
+        },
       },
     },
-  },
-});
+  } : {}),
+}));
