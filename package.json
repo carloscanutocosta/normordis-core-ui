@@ -10,17 +10,15 @@
     "node": ">=18.0.0",
     "pnpm": ">=9.0.0"
   },
-  "main": "./dist/normordis-core-ui.umd.cjs",
-  "module": "./dist/normordis-core-ui.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/normordis-core-ui.js",
-      "require": "./dist/normordis-core-ui.umd.cjs"
+      "import": "./dist/index.js"
     },
-    "./styles.css": "./dist/normordis-core-ui.css",
-    "./tailwind.config": "./tailwind.config.js"
+    "./dist/normordis-core-ui.css": "./dist/normordis-core-ui.css"
   },
   "files": [
     "dist",
@@ -134,94 +132,7 @@
     "@lexical/table": {
       "optional": true
     },
-    "@radix-ui/react-accordion": {
-      "optional": true
-    },
-    "@radix-ui/react-alert-dialog": {
-      "optional": true
-    },
-    "@radix-ui/react-aspect-ratio": {
-      "optional": true
-    },
-    "@radix-ui/react-avatar": {
-      "optional": true
-    },
-    "@radix-ui/react-checkbox": {
-      "optional": true
-    },
-    "@radix-ui/react-collapsible": {
-      "optional": true
-    },
-    "@radix-ui/react-context-menu": {
-      "optional": true
-    },
-    "@radix-ui/react-dialog": {
-      "optional": true
-    },
-    "@radix-ui/react-dropdown-menu": {
-      "optional": true
-    },
-    "@radix-ui/react-hover-card": {
-      "optional": true
-    },
-    "@radix-ui/react-label": {
-      "optional": true
-    },
-    "@radix-ui/react-menubar": {
-      "optional": true
-    },
-    "@radix-ui/react-navigation-menu": {
-      "optional": true
-    },
-    "@radix-ui/react-popover": {
-      "optional": true
-    },
-    "@radix-ui/react-progress": {
-      "optional": true
-    },
-    "@radix-ui/react-radio-group": {
-      "optional": true
-    },
-    "@radix-ui/react-scroll-area": {
-      "optional": true
-    },
-    "@radix-ui/react-select": {
-      "optional": true
-    },
-    "@radix-ui/react-separator": {
-      "optional": true
-    },
-    "@radix-ui/react-slider": {
-      "optional": true
-    },
-    "@radix-ui/react-slot": {
-      "optional": true
-    },
-    "@radix-ui/react-switch": {
-      "optional": true
-    },
-    "@radix-ui/react-tabs": {
-      "optional": true
-    },
-    "@radix-ui/react-toast": {
-      "optional": true
-    },
-    "@radix-ui/react-toggle": {
-      "optional": true
-    },
-    "@radix-ui/react-toggle-group": {
-      "optional": true
-    },
-    "@radix-ui/react-tooltip": {
-      "optional": true
-    },
-    "@tanstack/react-query": {
-      "optional": true
-    },
     "canvas-confetti": {
-      "optional": true
-    },
-    "date-fns": {
       "optional": true
     },
     "framer-motion": {
@@ -237,9 +148,6 @@
       "optional": true
     },
     "lodash": {
-      "optional": true
-    },
-    "lucide-react": {
       "optional": true
     },
     "moment": {

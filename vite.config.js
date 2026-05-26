@@ -61,24 +61,15 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.js'),
-      name: 'NormordisCoreUi',
+      formats: ['es'],
       cssFileName: 'normordis-core-ui',
-      fileName: (format) => `normordis-core-ui.${format === 'umd' ? 'umd.cjs' : 'js'}`,
-      formats: ['es', 'umd'],
     },
     rollupOptions: {
       external: PEER_EXTERNALS,
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'jsxRuntime',
-          'lucide-react': 'LucideReact',
-          recharts: 'Recharts',
-          lexical: 'Lexical',
-          'framer-motion': 'FramerMotion',
-          lodash: '_',
-        },
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+        entryFileNames: '[name].js',
       },
     },
   },
