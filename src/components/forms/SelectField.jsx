@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { cn } from "@/lib/utils";
 import FieldWrapper from "./FieldWrapper";
 import {
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/select";
 
 export default function SelectField({
+  id: idProp,
   label,
   hint,
   error,
@@ -20,15 +22,19 @@ export default function SelectField({
   disabled,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
+
   // options: [{ value, label, disabled? }] or ["string", ...]
   const normalized = options.map((o) =>
     typeof o === "string" ? { value: o, label: o } : o
   );
 
   return (
-    <FieldWrapper label={label} hint={hint} error={error} required={required} className={className}>
+    <FieldWrapper id={id} label={label} hint={hint} error={error} required={required} className={className}>
       <Select value={value ?? ""} onValueChange={onChange} disabled={disabled}>
         <SelectTrigger
+          id={id}
           className={cn(
             "w-full",
             error && "border-destructive focus:ring-destructive/30"

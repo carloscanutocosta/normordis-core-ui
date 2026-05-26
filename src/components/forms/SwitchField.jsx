@@ -23,6 +23,7 @@ export default function SwitchField({
           checked={!!value}
           onCheckedChange={onChange}
           disabled={disabled}
+          aria-label={switchLabel ?? label}
         />
       </div>
     </FieldWrapper>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useId } from "react";
 import { Calendar, Clock, X } from "lucide-react";
 import { format, isValid, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -8,6 +8,7 @@ import { Calendar as CalendarPicker } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export default function DateField({
+  id: idProp,
   label,
   hint,
   error,
@@ -20,6 +21,8 @@ export default function DateField({
   clearable = true,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState("00:00");
 
@@ -64,10 +67,11 @@ export default function DateField({
     : "";
 
   return (
-    <FieldWrapper label={label} hint={hint} error={error} required={required} className={className}>
+    <FieldWrapper id={id} label={label} hint={hint} error={error} required={required} className={className}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button
+            id={id}
             type="button"
             disabled={disabled}
             className={cn(
