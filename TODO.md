@@ -35,6 +35,27 @@
     `ncrtf→Lexical` achata o conteúdo rich text das células para plain text;
     em v2 as células devem suportar inlines completos para round-trip perfeito.
 
+## Shell institucional (v2)
+
+Implementar uma shell reutilizável que sirva de envolvente standard para todas
+as aplicações desenvolvidas com o core-ui — Normordis ou externas — garantindo
+coerência visual, estrutural e de navegação entre produtos.
+
+Objectivo: qualquer app que use a shell herda automaticamente o layout, os
+temas, a navegação e a identidade Normordis, sem ter de reimplementar estas
+camadas.
+
+Requisitos a definir:
+- estrutura de layout (sidebar / topbar / conteúdo / footer);
+- suporte a navegação configurável por props (itens de menu, rotas, permissões);
+- integração nativa com o `ThemeSwitcher` e o sistema de temas do core-ui;
+- zona de identidade configurável (logótipo, nome da aplicação, ambiente);
+- suporte a notificações, perfil de utilizador e acções globais no header;
+- compatibilidade com React Router e navegação por hash;
+- responsiva e acessível (WCAG AA mínimo);
+- exportada como componente de layout (`AppShell`) com slots bem definidos para
+  que o consumidor injete o conteúdo das páginas.
+
 ## MapView (v2)
 - Requer que o consumidor importe manualmente o CSS do Leaflet:
   ```js
