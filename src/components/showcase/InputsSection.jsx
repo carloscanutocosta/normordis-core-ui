@@ -33,7 +33,6 @@ export default function InputsSection() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    phone: "",
     url: "",
     password: "",
     search: "",
