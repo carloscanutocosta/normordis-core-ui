@@ -1,4 +1,3 @@
-export { default as FormField } from "./FormField";
 export { default as FieldWrapper } from "./FieldWrapper";
 export { default as TextInput } from "./TextInput";
 export { default as NumberInput } from "./NumberInput";
