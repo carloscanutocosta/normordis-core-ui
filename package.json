@@ -47,7 +47,9 @@
     "security:manifest": "powershell -ExecutionPolicy Bypass -File ./scripts/security/generate-manifest.ps1",
     "security:verify": "powershell -ExecutionPolicy Bypass -File ./scripts/security/verify-manifest.ps1",
     "restore:list": "powershell -ExecutionPolicy Bypass -File ./scripts/backup/full-repo-restore.ps1 -List",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "demo": "powershell -ExecutionPolicy Bypass -File ./scripts/dev.ps1",
+    "publish:sdk": "powershell -ExecutionPolicy Bypass -File ./scripts/publish-sdk.ps1"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
