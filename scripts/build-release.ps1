@@ -7,7 +7,7 @@
 param(
     [switch]$SkipInstall,
     [switch]$NoPack,
-    [string]$PackDestination = "C:\tmp"
+    [string]$PackDestination = "$env:TEMP\normordis-releases"
 )
 
 $ErrorActionPreference = "Stop"
@@ -49,18 +49,29 @@ try {
     pnpm run typecheck
     if ($LASTEXITCODE -ne 0) { throw "typecheck falhou" }
 
-    Write-Host ">>> 5. A construir biblioteca..." -ForegroundColor Cyan
+    Write-Host ">>> 5. A verificar barrel (colisoes e exports em falta)..." -ForegroundColor Cyan
+    node (Join-Path $RepoRoot "scripts\check-exports.mjs")
+    if ($LASTEXITCODE -ne 0) { throw "colisoes de nomes no barrel detectadas" }
+    node (Join-Path $RepoRoot "scripts\check-missing-exports.mjs")
+    if ($LASTEXITCODE -ne 0) { throw "componentes sem export publico detectados" }
+
+    Write-Host ">>> 6. A construir biblioteca SDK..." -ForegroundColor Cyan
     pnpm run build
     if ($LASTEXITCODE -ne 0) { throw "build falhou" }
 
     if (-not $NoPack) {
-        Write-Host ">>> 6. A validar pacote..." -ForegroundColor Cyan
+        Write-Host ">>> 7. A validar pacote..." -ForegroundColor Cyan
         & (Join-Path $RepoRoot "tools\package\inspect-pack.ps1") -PackDestination $PackDestination
         if ($LASTEXITCODE -ne 0) { throw "validacao do pacote falhou" }
     }
     else {
-        Write-Host ">>> 6. Empacotamento ignorado (-NoPack)." -ForegroundColor DarkGray
+        Write-Host ">>> 7. Empacotamento ignorado (-NoPack)." -ForegroundColor DarkGray
     }
+
+    Write-Host ""
+    Write-Host "    Para publicar no GitHub Packages:" -ForegroundColor DarkGray
+    Write-Host "    pnpm publish --no-git-checks" -ForegroundColor DarkGray
+    Write-Host "    (requer GITHUB_TOKEN definido — ver scripts\publish-sdk.bat)" -ForegroundColor DarkGray
 
     Write-Host ""
     Write-Host "------------------------------------------------" -ForegroundColor Green
