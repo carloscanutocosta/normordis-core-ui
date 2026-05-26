@@ -121,6 +121,47 @@ export default function MyForm() {
 
 ---
 
+## Temas
+
+O CSS publicado inclui as 4 paletas: **light** (default), **dark**, **high-contrast** e **high-contrast-dark**. O tema activo é controlado por classes no elemento `<html>`.
+
+### Opção A — ThemeSwitcher (pronto a usar)
+
+```jsx
+import { ThemeSwitcher } from '@carloscanutocosta/core-ui'
+
+// Coloca no header ou onde quiseres
+<ThemeSwitcher />
+```
+
+Persiste a escolha em `localStorage` automaticamente.
+
+### Opção B — controlo manual
+
+```js
+import { applyTheme, getStoredTheme, THEMES } from '@carloscanutocosta/core-ui'
+
+// Restaurar tema guardado no arranque da app
+applyTheme(getStoredTheme())
+
+// Mudar tema programaticamente
+applyTheme('dark')             // → adiciona classe .dark ao <html>
+applyTheme('high-contrast')    // → adiciona .high-contrast
+applyTheme('high-contrast-dark')
+applyTheme('light')            // → remove todas as classes de tema
+
+// THEMES — lista de { id, label, icon } para construir o teu próprio selector
+console.log(THEMES)
+// [
+//   { id: 'light',            label: 'Light',              icon: 'Sun' },
+//   { id: 'dark',             label: 'Dark',               icon: 'Moon' },
+//   { id: 'high-contrast',    label: 'High Contrast',      icon: 'Contrast' },
+//   { id: 'high-contrast-dark', label: 'High Contrast Dark', icon: 'Monitor' },
+// ]
+```
+
+---
+
 ## CI / GitHub Actions
 
 Para publicar automaticamente num workflow:
