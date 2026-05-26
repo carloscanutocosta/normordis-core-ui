@@ -34,3 +34,16 @@
     actualmente o `SimpleTableNode` guarda strings planas, pelo que a conversão
     `ncrtf→Lexical` achata o conteúdo rich text das células para plain text;
     em v2 as células devem suportar inlines completos para round-trip perfeito.
+
+## MapView (v2)
+- Requer que o consumidor importe manualmente o CSS do Leaflet:
+  ```js
+  import 'leaflet/dist/leaflet.css'
+  ```
+  Sem este import os marcadores ficam sem ícone e o mapa pode renderizar incorrectamente.
+  Para v2: considerar alternativa sem CSS externo (ex: maplibre-gl) ou injecção automática do CSS.
+
+## AddressInput (v2)
+- Lista de países hardcoded com apenas 7 entradas (PT, BR, ES, FR, DE, GB, US).
+  Para v2: aceitar prop `countries` com lista configurável, ou integrar lista ISO 3166-1 completa.
+- Usa `<select>` nativo em vez do componente `Select` do design system — inconsistência visual.
