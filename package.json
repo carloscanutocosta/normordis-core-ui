@@ -1,7 +1,7 @@
 {
   "name": "@carloscanutocosta/core-ui",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "SDK React de componentes, tokens e padrões UX reutilizáveis do ecossistema NORMORDIS.",
   "license": "EUPL-1.2",
   "type": "module",
