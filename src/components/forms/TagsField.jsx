@@ -1,9 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useId } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FieldWrapper from "./FieldWrapper";
 
 export default function TagsField({
+  id: idProp,
   label,
   hint,
   error,
@@ -16,6 +17,8 @@ export default function TagsField({
   maxTags,
   className,
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
   const [input, setInput] = useState("");
   const [focused, setFocused] = useState(false);
   const inputRef = useRef();
@@ -48,7 +51,7 @@ export default function TagsField({
   );
 
   return (
-    <FieldWrapper label={label} hint={hint} error={error} required={required} className={className}>
+    <FieldWrapper id={id} label={label} hint={hint} error={error} required={required} className={className}>
       <div
         onClick={() => inputRef.current?.focus()}
         className={cn(
@@ -73,6 +76,7 @@ export default function TagsField({
           </span>
         ))}
         <input
+          id={id}
           ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}

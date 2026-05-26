@@ -1,8 +1,10 @@
+import { useId } from "react";
 import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import FieldWrapper from "./FieldWrapper";
 
 export default function NumberField({
+  id: idProp,
   label,
   hint,
   error,
@@ -20,6 +22,8 @@ export default function NumberField({
   className,
   ...props
 }) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
   const handleChange = (e) => {
     const v = e.target.value;
     if (v === "" || v === "-") { onChange?.(v); return; }
@@ -42,7 +46,7 @@ export default function NumberField({
   };
 
   return (
-    <FieldWrapper label={label} hint={hint} error={error} required={required} className={className}>
+    <FieldWrapper id={id} label={label} hint={hint} error={error} required={required} className={className}>
       <div className={cn(
         "flex items-center rounded-lg border border-input bg-background transition-all focus-within:ring-2 focus-within:ring-ring/40 focus-within:border-ring overflow-hidden",
         error && "border-destructive focus-within:ring-destructive/30",
@@ -64,6 +68,7 @@ export default function NumberField({
           </button>
         )}
         <input
+          id={id}
           type="number"
           value={value ?? ""}
           onChange={handleChange}
