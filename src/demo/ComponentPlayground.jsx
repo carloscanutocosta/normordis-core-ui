@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy, Suspense, Component } from "react";
 import { cn } from "@/lib/utils";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import InputsSection from "@/components/showcase/InputsSection";
@@ -10,7 +10,34 @@ import ChartsSection from "@/components/showcase/ChartsSection";
 import DataAdvancedSection from "@/components/showcase/DataAdvancedSection";
 import UIExtrasSection from "@/components/showcase/UIExtrasSection";
 import LayoutSection from "@/components/showcase/LayoutSection";
-import EditorPlayground from "./EditorPlayground";
+
+const EditorPlayground = lazy(() =>
+  import("./EditorPlayground").catch(() => ({
+    default: () => (
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-sm text-amber-800">
+        <strong>Editor não disponível</strong> — as dependências Lexical não estão instaladas neste ambiente.
+        <br />
+        <code className="mt-1 block text-xs opacity-70">pnpm add lexical @lexical/react @lexical/rich-text @lexical/list @lexical/link @lexical/history @lexical/code @lexical/selection @lexical/utils @lexical/overflow</code>
+      </div>
+    ),
+  }))
+);
+
+class TabErrorBoundary extends Component {
+  state = { error: null };
+  static getDerivedStateFromError(error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-sm text-red-800">
+          <strong>Erro ao carregar componente</strong>
+          <pre className="mt-2 overflow-auto text-xs opacity-70">{String(this.state.error)}</pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const TAB_GROUPS = [
   {
@@ -69,7 +96,7 @@ const ALL_TABS = TAB_GROUPS.flatMap((group) =>
 
 export default function ComponentPlayground() {
   const [activeGroup, setActiveGroup] = useState(TAB_GROUPS[0].id);
-  const [activeTab, setActiveTab] = useState("editor");
+  const [activeTab, setActiveTab] = useState("inputs");
 
   const currentGroup =
     TAB_GROUPS.find((group) => group.id === activeGroup) ?? TAB_GROUPS[0];
@@ -154,7 +181,11 @@ export default function ComponentPlayground() {
       </div>
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-        <ActiveComponent />
+        <TabErrorBoundary key={activeTab}>
+          <Suspense fallback={<div className="py-12 text-center text-sm text-muted-foreground">A carregar...</div>}>
+            <ActiveComponent />
+          </Suspense>
+        </TabErrorBoundary>
       </main>
     </div>
   );

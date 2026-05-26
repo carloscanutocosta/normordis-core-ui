@@ -369,6 +369,7 @@ export function NormordisEditorToolbar({
     activeFormats,
     activeBlockType,
     activeIndentLevel,
+    activeFontFamily,
   } = useEditorToolbarState();
   const imageInputRef = useRef(null);
 
