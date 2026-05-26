@@ -84,6 +84,41 @@ pnpm add @carloscanutocosta/core-ui
 import '@carloscanutocosta/core-ui/dist/normordis-core-ui.css'
 ```
 
+### 4. Configurar Tailwind para processar as classes do SDK
+
+O SDK não inclui um stylesheet Tailwind pré-processado — as classes são geradas pelo Tailwind do projecto consumidor. É necessário adicionar o caminho dos ficheiros do SDK ao `content` do `tailwind.config.js`:
+
+```js
+// tailwind.config.js
+export default {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx}',
+    // Permite ao Tailwind detectar as classes usadas pelo SDK
+    './node_modules/@carloscanutocosta/core-ui/dist/**/*.js',
+  ],
+  // ...resto da config
+}
+```
+
+> Sem esta linha, os componentes do SDK renderizam sem estilos.
+
+### 5. Usar componentes
+
+```jsx
+import { TextInput, SelectInput, DateInput } from '@carloscanutocosta/core-ui'
+
+export default function MyForm() {
+  return (
+    <TextInput
+      label="Nome"
+      value={name}
+      onChange={setName}
+      required
+    />
+  )
+}
+```
+
 ---
 
 ## CI / GitHub Actions
