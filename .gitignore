@@ -40,6 +40,7 @@ test-results
 tmp
 temp
 *.local
+.artifacts
 
 # Editor directories and files
 .vscode/*
