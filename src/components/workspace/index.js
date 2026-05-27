@@ -1,0 +1,10 @@
+export { WorkspaceProvider, useWorkspace } from './WorkspaceContext';
+export { default as AppShell } from './AppShell';
+export { default as Header } from './Header';
+export { default as LeftRail } from './LeftRail';
+export { default as RightRail } from './RightRail';
+export { default as RightPanel } from './RightPanel';
+export { default as TabBar } from './TabBar';
+export { default as ContentArea } from './ContentArea';
+export { default as StatusBar } from './StatusBar';
+export { default as AtendimentoPanel } from './AtendimentoPanel';
