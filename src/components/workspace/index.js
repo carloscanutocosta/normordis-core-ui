@@ -8,3 +8,5 @@ export { default as TabBar } from './TabBar';
 export { default as ContentArea } from './ContentArea';
 export { default as StatusBar } from './StatusBar';
 export { default as AtendimentoPanel } from './AtendimentoPanel';
+export { default as WorkspaceCommandPalette } from './WorkspaceCommandPalette';
+export { default as NotificationsPanel } from './NotificationsPanel';

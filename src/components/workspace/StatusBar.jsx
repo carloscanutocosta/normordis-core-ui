@@ -32,7 +32,7 @@ function useOnline() {
  * @param {boolean}  showAtendimento   - show/hide "Registar Atendimento" button (default true)
  * @param {(data: object) => Promise<void>} onAtendimentoSave
  */
-export default function StatusBar({ user, locale = 'pt-PT', showAtendimento = true, onAtendimentoSave }) {
+export default function StatusBar({ user, locale = 'pt-PT', showAtendimento = true, onAtendimentoSave, areas, canais, prioridades, estados }) {
   const online = useOnline();
   const { timeStr, dateStr } = useClock(locale);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -84,6 +84,10 @@ export default function StatusBar({ user, locale = 'pt-PT', showAtendimento = tr
           onClose={() => setPanelOpen(false)}
           onSave={onAtendimentoSave}
           locale={locale}
+          areas={areas}
+          canais={canais}
+          prioridades={prioridades}
+          estados={estados}
         />
       )}
     </>
