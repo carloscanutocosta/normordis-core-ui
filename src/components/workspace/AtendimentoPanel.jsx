@@ -105,16 +105,22 @@ export default function AtendimentoPanel({ open, onClose, onSave, locale = 'pt-P
             onClick={onClose}
           />
           <motion.aside
-            key="drawer"
-            initial={{ x: '100%', opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0 }}
+            key="sheet"
+            initial={{ y: '100%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: '100%', opacity: 0 }}
             transition={{ type: 'spring', stiffness: 380, damping: 34 }}
             role="dialog"
             aria-modal="true"
             aria-label="Registar Atendimento"
-            className="fixed right-0 top-0 bottom-0 w-[440px] max-w-full bg-card border-l border-border z-50 flex flex-col shadow-2xl"
+            className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-card border border-border border-b-0 rounded-t-xl z-50 flex flex-col shadow-2xl"
+            style={{ maxHeight: '90vh' }}
           >
+            {/* Drag handle */}
+            <div className="flex justify-center pt-3 pb-1 shrink-0">
+              <div className="w-10 h-1 rounded-full bg-border" />
+            </div>
+
             {/* Header */}
             <div className="flex items-center justify-between px-5 h-14 border-b border-border shrink-0 bg-muted/40">
               <div className="flex items-center gap-2.5">
