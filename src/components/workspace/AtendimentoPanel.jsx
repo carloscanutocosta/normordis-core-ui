@@ -11,32 +11,28 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
-const AREAS = ['Recursos Humanos', 'Tecnologia', 'Financeiro', 'Jurídico', 'Comercial', 'Operações', 'Suporte', 'Outro'];
-const CANAIS = [
+const DEFAULT_AREAS = ['Recursos Humanos', 'Tecnologia', 'Financeiro', 'Jurídico', 'Comercial', 'Operações', 'Suporte', 'Outro'];
+const DEFAULT_CANAIS = [
   { label: 'Presencial', icon: Users },
   { label: 'Telefone', icon: Phone },
   { label: 'Email', icon: Mail },
   { label: 'Chat', icon: MessageSquare },
   { label: 'Portal', icon: Globe },
 ];
-const PRIORIDADES = [
+const DEFAULT_PRIORIDADES = [
   { label: 'Baixa', color: 'bg-emerald-500/15 text-emerald-600 border-emerald-500/30' },
   { label: 'Normal', color: 'bg-blue-500/15 text-blue-600 border-blue-500/30' },
   { label: 'Alta', color: 'bg-amber-500/15 text-amber-600 border-amber-500/30' },
   { label: 'Urgente', color: 'bg-red-500/15 text-red-600 border-red-500/30' },
 ];
-const ESTADOS = ['Aberto', 'Em Progresso', 'Resolvido', 'Escalado', 'Fechado'];
+const DEFAULT_ESTADOS = ['Aberto', 'Em Progresso', 'Resolvido', 'Escalado', 'Fechado'];
 const STEPS = [
   { id: 'hora',          label: 'Hora',          icon: Clock },
   { id: 'identificacao', label: 'Identificação', icon: User },
   { id: 'assunto',       label: 'Assunto',        icon: Tag },
   { id: 'resposta',      label: 'Resposta',       icon: MessageSquare },
 ];
-const EMPTY = {
-  area: '', assunto: '', descricao: '', resposta: '',
-  canal: 'Presencial', prioridade: 'Normal', estado: 'Aberto',
-  utilizador_contacto: '', duracao_minutos: '', notas_internas: '',
-};
+// default empty form — initialised inside the component to pick up prop defaults
 
 function useClock() {
   const [now, setNow] = useState(() => new Date());
@@ -48,12 +44,30 @@ function useClock() {
 }
 
 /**
- * @param {boolean}  open
+ * @param {boolean}   open
  * @param {() => void} onClose
- * @param {(formData: object) => Promise<void>} onSave  - consumer persists the record
- * @param {string}   locale  - date/time locale (default 'pt-PT')
+ * @param {(formData: object) => Promise<void>} onSave
+ * @param {string}    locale      - date/time locale (default 'pt-PT')
+ * @param {string[]}  areas       - override default area list
+ * @param {Array}     canais      - override default channels: [{ label, icon }]
+ * @param {Array}     prioridades - override default priorities: [{ label, color }]
+ * @param {string[]}  estados     - override default status list
  */
-export default function AtendimentoPanel({ open, onClose, onSave, locale = 'pt-PT' }) {
+export default function AtendimentoPanel({
+  open, onClose, onSave, locale = 'pt-PT',
+  areas = DEFAULT_AREAS,
+  canais = DEFAULT_CANAIS,
+  prioridades = DEFAULT_PRIORIDADES,
+  estados = DEFAULT_ESTADOS,
+}) {
+  const EMPTY = {
+    area: '', assunto: '', descricao: '', resposta: '',
+    canal: canais[0]?.label ?? '',
+    prioridade: prioridades[1]?.label ?? prioridades[0]?.label ?? '',
+    estado: estados[0] ?? '',
+    utilizador_contacto: '', duracao_minutos: '', notas_internas: '',
+  };
+
   const [form, setForm] = useState(EMPTY);
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);

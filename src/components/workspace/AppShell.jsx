@@ -5,39 +5,33 @@ import RightRail from './RightRail';
 import RightPanel from './RightPanel';
 import ContentArea from './ContentArea';
 import StatusBar from './StatusBar';
+import WorkspaceCommandPalette from './WorkspaceCommandPalette';
 
 /**
  * AppShell — institutional layout shell for Normordis applications.
  *
- * Usage:
- * ```jsx
- * <AppShell
- *   apps={[{ id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, category: 'core' }]}
- *   rightTools={[{ id: 'calendar', label: 'Calendário', icon: Calendar }]}
- *   panels={{ calendar: { title: 'Calendário', icon: Calendar, content: <MyCalendar /> } }}
- *   appName="Normordis"
- *   user={{ name: 'João Silva', email: 'joao@example.com' }}
- *   onLogout={handleLogout}
- *   onAtendimentoSave={async (data) => await api.saveAtendimento(data)}
- * >
- *   {(activeApp) => <AppRouter activeApp={activeApp} />}
- * </AppShell>
- * ```
- *
- * @param {Array}    apps               - Navigation apps for LeftRail
- * @param {Array}    rightTools         - Tool icons for RightRail
- * @param {string}   defaultApp         - Initially active app id
- * @param {Object}   panels             - { [toolId]: { title, icon, content: ReactNode } }
- * @param {ReactNode} logo              - Custom logo element
- * @param {string}   appName            - Application name shown in header
- * @param {{ name?, email? }} user      - Current user info
- * @param {() => void} onLogout         - Logout handler
- * @param {() => void} onSearch         - Search handler (omit to hide search bar)
- * @param {ReactNode} headerActions     - Extra elements in the header action area
- * @param {boolean}  showAtendimento    - Show/hide "Registar Atendimento" in status bar
- * @param {(data) => Promise<void>} onAtendimentoSave
- * @param {string}   locale             - Date/time locale (default 'pt-PT')
- * @param {Function|ReactNode} children - (activeApp: string) => ReactNode, or plain ReactNode
+ * @param {Array}    apps
+ * @param {Array}    rightTools
+ * @param {string}   defaultApp
+ * @param {Object}   panels              - { [toolId]: { title, icon, content: ReactNode } }
+ * @param {ReactNode} logo
+ * @param {string}   appName
+ * @param {{ name?, email? }} user
+ * @param {() => void} onLogout
+ * @param {ReactNode} headerActions
+ * @param {Array}    notifications       - [{ id, title, description?, time?, read?, type? }]
+ * @param {Function} onNotificationRead  - (id) => void
+ * @param {Function} onNotificationsReadAll
+ * @param {Function} onNotificationClear - (id?) => void
+ * @param {Array}    commands            - extra command palette items [{ id, label, description?, icon?, onSelect }]
+ * @param {boolean}  showAtendimento
+ * @param {Function} onAtendimentoSave   - async (data) => void
+ * @param {string[]} atendimentoAreas
+ * @param {Array}    atendimentoCanais
+ * @param {Array}    atendimentoPrioridades
+ * @param {string[]} atendimentoEstados
+ * @param {string}   locale
+ * @param {Function|ReactNode} children
  */
 export default function AppShell({
   apps = [],
@@ -48,10 +42,18 @@ export default function AppShell({
   appName,
   user,
   onLogout,
-  onSearch,
   headerActions,
+  notifications,
+  onNotificationRead,
+  onNotificationsReadAll,
+  onNotificationClear,
+  commands = [],
   showAtendimento = true,
   onAtendimentoSave,
+  atendimentoAreas,
+  atendimentoCanais,
+  atendimentoPrioridades,
+  atendimentoEstados,
   locale = 'pt-PT',
   children,
 }) {
@@ -63,8 +65,11 @@ export default function AppShell({
           appName={appName}
           user={user}
           onLogout={onLogout}
-          onSearch={onSearch}
           actions={headerActions}
+          notifications={notifications}
+          onNotificationRead={onNotificationRead}
+          onNotificationsReadAll={onNotificationsReadAll}
+          onNotificationClear={onNotificationClear}
         />
 
         <div className="flex-1 flex overflow-hidden">
@@ -87,7 +92,13 @@ export default function AppShell({
           locale={locale}
           showAtendimento={showAtendimento}
           onAtendimentoSave={onAtendimentoSave}
+          areas={atendimentoAreas}
+          canais={atendimentoCanais}
+          prioridades={atendimentoPrioridades}
+          estados={atendimentoEstados}
         />
+
+        <WorkspaceCommandPalette commands={commands} />
       </div>
     </WorkspaceProvider>
   );

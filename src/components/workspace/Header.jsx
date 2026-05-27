@@ -1,4 +1,4 @@
-import { Sun, Moon, Contrast, Monitor, ChevronDown, Search, Bell, LogOut } from 'lucide-react';
+import { Sun, Moon, Contrast, Monitor, ChevronDown, Search, LogOut } from 'lucide-react';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
@@ -7,19 +7,33 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { THEMES } from '@/lib/theme';
 import { useWorkspace } from './WorkspaceContext';
+import NotificationsPanel from './NotificationsPanel';
 
 const THEME_ICONS = { light: Sun, dark: Moon, 'high-contrast': Contrast, 'high-contrast-dark': Monitor };
 
 /**
- * @param {ReactNode} logo         - Custom logo element (optional)
- * @param {string}    appName      - Application name (optional)
- * @param {{ name?: string, email?: string }} user
- * @param {() => void} onLogout    - Logout handler (optional)
- * @param {() => void} onSearch    - Search button handler (optional — hides button if omitted)
- * @param {ReactNode}  actions     - Extra action buttons before the user menu (optional)
+ * @param {ReactNode} logo
+ * @param {string}    appName
+ * @param {{ name?, email? }} user
+ * @param {() => void} onLogout
+ * @param {ReactNode}  actions              - extra buttons before user menu
+ * @param {Array}      notifications        - [{ id, title, description?, time?, read?, type? }]
+ * @param {Function}   onNotificationRead   - (id) => void
+ * @param {Function}   onNotificationsReadAll
+ * @param {Function}   onNotificationClear  - (id?) => void
  */
-export default function Header({ logo, appName = 'Workspace', user, onLogout, onSearch, actions }) {
-  const { theme, changeTheme } = useWorkspace();
+export default function Header({
+  logo,
+  appName = 'Workspace',
+  user,
+  onLogout,
+  actions,
+  notifications,
+  onNotificationRead,
+  onNotificationsReadAll,
+  onNotificationClear,
+}) {
+  const { theme, changeTheme, openCommand } = useWorkspace();
   const ThemeIcon = THEME_ICONS[theme] ?? Sun;
 
   const initials = user?.name
@@ -38,36 +52,33 @@ export default function Header({ logo, appName = 'Workspace', user, onLogout, on
         <span className="text-sm font-semibold tracking-tight hidden sm:block">{appName}</span>
       </div>
 
-      {/* Center: Search */}
-      {onSearch && (
-        <div className="flex-1 max-w-md mx-4">
-          <button
-            onClick={onSearch}
-            className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md bg-sidebar-accent/50 text-sidebar-foreground/60 text-xs hover:bg-sidebar-accent transition-colors"
-          >
-            <Search className="w-3.5 h-3.5" />
-            <span>Pesquisar comandos e apps...</span>
-            <kbd className="ml-auto text-[10px] bg-sidebar-accent px-1.5 py-0.5 rounded font-mono hidden sm:inline">
-              Ctrl+K
-            </kbd>
-          </button>
-        </div>
-      )}
+      {/* Center: Search → opens command palette */}
+      <div className="flex-1 max-w-md mx-4">
+        <button
+          onClick={openCommand}
+          className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md bg-sidebar-accent/50 text-sidebar-foreground/60 text-xs hover:bg-sidebar-accent transition-colors"
+          aria-label="Abrir paleta de comandos"
+        >
+          <Search className="w-3.5 h-3.5" />
+          <span>Pesquisar apps e comandos...</span>
+          <kbd className="ml-auto text-[10px] bg-sidebar-accent px-1.5 py-0.5 rounded font-mono hidden sm:inline">
+            Ctrl+K
+          </kbd>
+        </button>
+      </div>
 
       {/* Right: Actions */}
-      <div className="flex items-center gap-1 ml-auto">
+      <div className="flex items-center gap-1">
         <TooltipProvider delayDuration={300}>
           {actions}
 
-          {/* Notifications slot */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-7 w-7 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent">
-                <Bell className="w-3.5 h-3.5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom"><p>Notificações</p></TooltipContent>
-          </Tooltip>
+          {/* Notifications */}
+          <NotificationsPanel
+            notifications={notifications}
+            onNotificationRead={onNotificationRead}
+            onNotificationsReadAll={onNotificationsReadAll}
+            onNotificationClear={onNotificationClear}
+          />
 
           {/* Theme selector — 4 temas WCAG */}
           <DropdownMenu>

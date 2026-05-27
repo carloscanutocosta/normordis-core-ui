@@ -3,13 +3,6 @@ import { applyTheme, getStoredTheme } from '@/lib/theme';
 
 const WorkspaceContext = createContext(null);
 
-/**
- * WorkspaceProvider
- *
- * @param {Array}  apps        - [{ id, label, icon: LucideComponent, category }]
- * @param {Array}  rightTools  - [{ id, label, icon: LucideComponent }]
- * @param {string} defaultApp  - id of the app to activate initially
- */
 export function WorkspaceProvider({ children, apps = [], rightTools = [], defaultApp }) {
   const firstApp = defaultApp ?? apps[0]?.id ?? null;
 
@@ -21,6 +14,7 @@ export function WorkspaceProvider({ children, apps = [], rightTools = [], defaul
   const [leftRailCollapsed, setLeftRailCollapsed] = useState(false);
   const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [theme, setThemeState] = useState(() => getStoredTheme());
+  const [commandOpen, setCommandOpen] = useState(false);
 
   const changeTheme = useCallback((id) => {
     setThemeState(id);
@@ -56,6 +50,9 @@ export function WorkspaceProvider({ children, apps = [], rightTools = [], defaul
     }
   }, [activeTool]);
 
+  const openCommand = useCallback(() => setCommandOpen(true), []);
+  const closeCommand = useCallback(() => setCommandOpen(false), []);
+
   return (
     <WorkspaceContext.Provider value={{
       apps,
@@ -66,12 +63,15 @@ export function WorkspaceProvider({ children, apps = [], rightTools = [], defaul
       leftRailCollapsed,
       rightPanelOpen,
       theme,
+      commandOpen,
       openApp,
       closeTab,
       setActiveApp,
       toggleTool,
       setLeftRailCollapsed,
       changeTheme,
+      openCommand,
+      closeCommand,
     }}>
       {children}
     </WorkspaceContext.Provider>
