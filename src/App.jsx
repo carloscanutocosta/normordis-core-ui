@@ -1,6 +1,6 @@
-import { Toaster } from "@/components/ui/toaster";
-import ComponentPlayground from "@/demo/ComponentPlayground";
-import WorkspaceDemo from "@/demo/WorkspaceDemo";
+import { Toaster } from '@/components/ui/toaster';
+import ComponentPlayground from '@/demo/ComponentPlayground';
+import WorkspaceDemo from '@/demo/WorkspaceDemo';
 
 const route = window.location.pathname;
 

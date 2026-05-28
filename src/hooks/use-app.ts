@@ -1,6 +1,9 @@
 import { useContext, useCallback } from 'react';
 import { useWorkspace, AppIdContext } from '@/components/workspace/WorkspaceContext';
-import type { WorkspaceNotification, WorkspaceCommand } from '@/components/workspace/WorkspaceContext';
+import type {
+  WorkspaceNotification,
+  WorkspaceCommand,
+} from '@/components/workspace/WorkspaceContext';
 
 // ─── Public interface ──────────────────────────────────────────────────────────
 
@@ -87,7 +90,7 @@ export function useApp(): AppAPI {
   if (!appId) {
     throw new Error(
       'useApp() must be called inside a component rendered by AppShell. ' +
-      'Make sure the component is returned from the AppShell children function.',
+        'Make sure the component is returned from the AppShell children function.',
     );
   }
 
@@ -101,10 +104,7 @@ export function useApp(): AppAPI {
     [ctxNotify],
   );
 
-  const setBadge = useCallback(
-    (count: number) => setAppBadge(appId, count),
-    [appId, setAppBadge],
-  );
+  const setBadge = useCallback((count: number) => setAppBadge(appId, count), [appId, setAppBadge]);
 
   const registerCommands = useCallback(
     (commands: WorkspaceCommand[]) => ctxRegisterCommands(appId, commands),

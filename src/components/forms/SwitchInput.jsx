@@ -1,7 +1,7 @@
-import React, { useId } from "react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import FormField from "./FormField";
+import React, { useId } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import FormField from './FormField';
 
 export default function SwitchInput({
   id: idProp,
@@ -20,7 +20,11 @@ export default function SwitchInput({
     <FormField error={error} className={className}>
       <div className="flex items-center justify-between gap-4">
         <div className="space-y-0.5">
-          {label && <Label htmlFor={id} className="font-medium text-sm cursor-pointer">{label}</Label>}
+          {label && (
+            <Label htmlFor={id} className="font-medium text-sm cursor-pointer">
+              {label}
+            </Label>
+          )}
           {description && <p className="text-xs text-muted-foreground">{description}</p>}
         </div>
         <Switch id={id} checked={checked} onCheckedChange={onChange} disabled={disabled} />

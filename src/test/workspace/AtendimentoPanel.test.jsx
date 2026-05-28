@@ -17,7 +17,9 @@ const APPS = [{ id: 'app1', label: 'App One', icon: null, category: 'core' }];
 // Seeds WorkspaceContext with a specific atendimento patch
 function Seeder({ patch }) {
   const { updateAtendimento } = useWorkspace();
-  useEffect(() => { updateAtendimento(patch); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    updateAtendimento(patch);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -31,9 +33,16 @@ function renderPanel(patch, panelProps = {}) {
 }
 
 const BASE_FORM = {
-  area: '', assunto: '', descricao: '', resposta: '',
-  canal: 'Telefone', prioridade: 'Normal', estado: 'Aberto',
-  utilizador_contacto: '', duracao_minutos: '', notas_internas: '',
+  area: '',
+  assunto: '',
+  descricao: '',
+  resposta: '',
+  canal: 'Telefone',
+  prioridade: 'Normal',
+  estado: 'Aberto',
+  utilizador_contacto: '',
+  duracao_minutos: '',
+  notas_internas: '',
 };
 
 const STARTED_PATCH = {
@@ -97,7 +106,8 @@ describe('AtendimentoPanel — step 1 (identificação)', () => {
 describe('AtendimentoPanel — step 2 (assunto)', () => {
   it('renders the subject step description', async () => {
     renderPanel({
-      ...STARTED_PATCH, step: 2,
+      ...STARTED_PATCH,
+      step: 2,
       form: { ...BASE_FORM, utilizador_contacto: 'Ana' },
     });
     await waitFor(() => {
@@ -109,7 +119,8 @@ describe('AtendimentoPanel — step 2 (assunto)', () => {
 describe('AtendimentoPanel — step 3 (resposta)', () => {
   it('renders the response step with the save button', async () => {
     renderPanel({
-      ...STARTED_PATCH, step: 3,
+      ...STARTED_PATCH,
+      step: 3,
       form: { ...BASE_FORM, utilizador_contacto: 'Ana', area: 'TI', assunto: 'Acesso' },
     });
     await waitFor(() => {

@@ -13,13 +13,19 @@ vi.mock('@/lib/theme', () => ({
 }));
 
 const APPS = [
-  { id: 'app1', label: 'Dashboard',  icon: LayoutDashboard, category: 'core'   },
-  { id: 'app2', label: 'Documentos', icon: FileText,         category: 'core'   },
-  { id: 'sys1', label: 'Definições', icon: null,             category: 'system' },
+  { id: 'app1', label: 'Dashboard', icon: LayoutDashboard, category: 'core' },
+  { id: 'app2', label: 'Documentos', icon: FileText, category: 'core' },
+  { id: 'sys1', label: 'Definições', icon: null, category: 'system' },
 ];
 
 const COMMANDS = [
-  { id: 'new', label: 'Novo Processo', icon: Plus, description: 'Abre formulário', onSelect: vi.fn() },
+  {
+    id: 'new',
+    label: 'Novo Processo',
+    icon: Plus,
+    description: 'Abre formulário',
+    onSelect: vi.fn(),
+  },
 ];
 
 function renderPalette(props = {}) {
@@ -33,7 +39,10 @@ function renderPalette(props = {}) {
 describe('WorkspaceCommandPalette — keyboard trigger', () => {
   it('opens with Ctrl+K', () => {
     let ws;
-    function Inspector() { ws = useWorkspace(); return null; }
+    function Inspector() {
+      ws = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS}>
         <WorkspaceCommandPalette />
@@ -47,7 +56,10 @@ describe('WorkspaceCommandPalette — keyboard trigger', () => {
 
   it('closes with Ctrl+K when already open', () => {
     let ws;
-    function Inspector() { ws = useWorkspace(); return null; }
+    function Inspector() {
+      ws = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS}>
         <WorkspaceCommandPalette />
@@ -62,7 +74,10 @@ describe('WorkspaceCommandPalette — keyboard trigger', () => {
 
   it('opens with Meta+K (macOS)', () => {
     let ws;
-    function Inspector() { ws = useWorkspace(); return null; }
+    function Inspector() {
+      ws = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS}>
         <WorkspaceCommandPalette />
@@ -75,7 +90,10 @@ describe('WorkspaceCommandPalette — keyboard trigger', () => {
 
   it('does not open on Ctrl+other keys', () => {
     let ws;
-    function Inspector() { ws = useWorkspace(); return null; }
+    function Inspector() {
+      ws = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS}>
         <WorkspaceCommandPalette />

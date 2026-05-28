@@ -1,11 +1,11 @@
-import React from "react";
-import { format, formatDistanceToNow } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import { format, formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { cn } from '@/lib/utils';
 
 export default function DateDisplay({
   value,
-  dateFormat = "dd/MM/yyyy",
+  dateFormat = 'dd/MM/yyyy',
   showRelative = false,
   className,
 }) {
@@ -13,10 +13,12 @@ export default function DateDisplay({
 
   const date = new Date(value);
   const formatted = format(date, dateFormat, { locale: ptBR });
-  const relative = showRelative ? formatDistanceToNow(date, { addSuffix: true, locale: ptBR }) : null;
+  const relative = showRelative
+    ? formatDistanceToNow(date, { addSuffix: true, locale: ptBR })
+    : null;
 
   return (
-    <span className={cn("text-sm text-foreground", className)}>
+    <span className={cn('text-sm text-foreground', className)}>
       {formatted}
       {relative && <span className="text-xs text-muted-foreground ml-2">({relative})</span>}
     </span>

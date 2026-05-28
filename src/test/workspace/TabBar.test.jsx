@@ -49,12 +49,18 @@ describe('TabBar — render', () => {
 
   it('marks inactive tabs with aria-selected="false"', () => {
     // Seed session with two open tabs so both render in the TabBar
-    sessionStorage.setItem('normordis-workspace-session', JSON.stringify({
-      activeApp: 'app1',
-      openTabs: [{ id: 'app1', label: 'Dashboard' }, { id: 'app2', label: 'Documentos' }],
-      leftRailCollapsed: false,
-      atendimento: { started: false, startTime: null, step: 0, form: null },
-    }));
+    sessionStorage.setItem(
+      'normordis-workspace-session',
+      JSON.stringify({
+        activeApp: 'app1',
+        openTabs: [
+          { id: 'app1', label: 'Dashboard' },
+          { id: 'app2', label: 'Documentos' },
+        ],
+        leftRailCollapsed: false,
+        atendimento: { started: false, startTime: null, step: 0, form: null },
+      }),
+    );
     renderTabBar();
     const tab2 = screen.getByRole('tab', { name: /documentos/i });
     expect(tab2).toHaveAttribute('aria-selected', 'false');
@@ -68,12 +74,18 @@ describe('TabBar — interactions', () => {
   });
 
   it('shows close buttons when two tabs are open', () => {
-    sessionStorage.setItem('normordis-workspace-session', JSON.stringify({
-      activeApp: 'app1',
-      openTabs: [{ id: 'app1', label: 'Dashboard' }, { id: 'app2', label: 'Documentos' }],
-      leftRailCollapsed: false,
-      atendimento: { started: false, startTime: null, step: 0, form: null },
-    }));
+    sessionStorage.setItem(
+      'normordis-workspace-session',
+      JSON.stringify({
+        activeApp: 'app1',
+        openTabs: [
+          { id: 'app1', label: 'Dashboard' },
+          { id: 'app2', label: 'Documentos' },
+        ],
+        leftRailCollapsed: false,
+        atendimento: { started: false, startTime: null, step: 0, form: null },
+      }),
+    );
     renderTabBar();
     // Close buttons appear on hover via CSS; they exist in the DOM even without hover
     const closeBtns = screen.getAllByRole('button', { name: /fechar/i });
@@ -81,14 +93,23 @@ describe('TabBar — interactions', () => {
   });
 
   it('closes a tab when its close button is clicked', () => {
-    sessionStorage.setItem('normordis-workspace-session', JSON.stringify({
-      activeApp: 'app1',
-      openTabs: [{ id: 'app1', label: 'Dashboard' }, { id: 'app2', label: 'Documentos' }],
-      leftRailCollapsed: false,
-      atendimento: { started: false, startTime: null, step: 0, form: null },
-    }));
+    sessionStorage.setItem(
+      'normordis-workspace-session',
+      JSON.stringify({
+        activeApp: 'app1',
+        openTabs: [
+          { id: 'app1', label: 'Dashboard' },
+          { id: 'app2', label: 'Documentos' },
+        ],
+        leftRailCollapsed: false,
+        atendimento: { started: false, startTime: null, step: 0, form: null },
+      }),
+    );
     let ws;
-    function Inspector() { ws = useWorkspace(); return null; }
+    function Inspector() {
+      ws = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS}>
         <TabBar />

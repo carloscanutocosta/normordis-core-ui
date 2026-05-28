@@ -59,7 +59,9 @@ describe('useIsMobile', () => {
     let capturedHandler;
     const mqlMock = {
       matches: false,
-      addEventListener: vi.fn((_, fn) => { capturedHandler = fn; }),
+      addEventListener: vi.fn((_, fn) => {
+        capturedHandler = fn;
+      }),
       removeEventListener: vi.fn(),
     };
     vi.spyOn(window, 'matchMedia').mockReturnValue(mqlMock);

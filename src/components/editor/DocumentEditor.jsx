@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { cn } from "@/lib/utils";
-import NormordisEditorLexical from "./NormordisEditorLexical";
-import { exportToNcrtf } from "./serializers";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { cn } from '@/lib/utils';
+import NormordisEditorLexical from './NormordisEditorLexical';
+import { exportToNcrtf } from './serializers';
 
 const EXPORTERS = {
   ncrtf: exportToNcrtf,
@@ -10,7 +10,7 @@ const EXPORTERS = {
 export default function DocumentEditor({
   className,
   exportOptions,
-  formats = ["ncrtf"],
+  formats = ['ncrtf'],
   onChange,
   onExport,
   placeholderDefinitions = [],
@@ -24,17 +24,14 @@ export default function DocumentEditor({
     setCurrentValue(value ?? null);
   }, [value]);
 
-  const availableFormats = useMemo(
-    () => formats.filter((format) => EXPORTERS[format]),
-    [formats]
-  );
+  const availableFormats = useMemo(() => formats.filter((format) => EXPORTERS[format]), [formats]);
 
   const handleChange = useCallback(
     (nextValue) => {
       setCurrentValue(nextValue);
       onChange?.(nextValue);
     },
-    [onChange]
+    [onChange],
   );
 
   const handleExport = useCallback(
@@ -50,11 +47,11 @@ export default function DocumentEditor({
 
       onExport?.(format, payload);
     },
-    [currentValue, exportOptions, onExport, placeholderDefinitions, semanticBlocks]
+    [currentValue, exportOptions, onExport, placeholderDefinitions, semanticBlocks],
   );
 
   return (
-    <div className={cn("space-y-3", className)}>
+    <div className={cn('space-y-3', className)}>
       <NormordisEditorLexical
         value={value}
         onChange={handleChange}
@@ -75,8 +72,8 @@ export default function DocumentEditor({
               type="button"
               onClick={() => handleExport(format)}
               className={cn(
-                "inline-flex h-9 items-center rounded-md border border-input bg-background px-3 text-sm font-medium uppercase text-foreground transition-colors",
-                "hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                'inline-flex h-9 items-center rounded-md border border-input bg-background px-3 text-sm font-medium uppercase text-foreground transition-colors',
+                'hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
               )}
             >
               Exportar .{format}

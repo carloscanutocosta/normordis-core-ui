@@ -13,10 +13,10 @@ export default {
   },
 };
 
-export const Default     = { args: { children: 'Activo' } };
-export const Secondary   = { args: { children: 'Pendente',   variant: 'secondary'   } };
-export const Destructive = { args: { children: 'Erro',       variant: 'destructive' } };
-export const Outline     = { args: { children: 'Rascunho',   variant: 'outline'     } };
+export const Default = { args: { children: 'Activo' } };
+export const Secondary = { args: { children: 'Pendente', variant: 'secondary' } };
+export const Destructive = { args: { children: 'Erro', variant: 'destructive' } };
+export const Outline = { args: { children: 'Rascunho', variant: 'outline' } };
 
 export const AllVariants = {
   name: 'All variants',

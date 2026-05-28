@@ -44,7 +44,9 @@ describe('ContentArea — render', () => {
 describe('ContentArea — error boundary', () => {
   it('shows error UI when a child component throws', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    function Broken() { throw new Error('Test crash'); }
+    function Broken() {
+      throw new Error('Test crash');
+    }
     renderContent(() => <Broken />);
     expect(screen.getByText(/erro ao carregar/i)).toBeInTheDocument();
     spy.mockRestore();
@@ -52,7 +54,9 @@ describe('ContentArea — error boundary', () => {
 
   it('shows the error message in the error UI', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    function Broken() { throw new Error('Problema específico'); }
+    function Broken() {
+      throw new Error('Problema específico');
+    }
     renderContent(() => <Broken />);
     expect(screen.getByText(/problema específico/i)).toBeInTheDocument();
     spy.mockRestore();
@@ -60,7 +64,9 @@ describe('ContentArea — error boundary', () => {
 
   it('shows a retry button in the error UI', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    function Broken() { throw new Error('crash'); }
+    function Broken() {
+      throw new Error('crash');
+    }
     renderContent(() => <Broken />);
     expect(screen.getByRole('button', { name: /tentar novamente/i })).toBeInTheDocument();
     spy.mockRestore();

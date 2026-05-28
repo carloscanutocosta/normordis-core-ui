@@ -15,8 +15,8 @@ export default function RightRail() {
         className="w-12 h-full bg-sidebar flex flex-col items-center py-2 border-l border-sidebar-border select-none shrink-0"
       >
         <div className="flex flex-col gap-1">
-          {rightTools.map(tool => {
-            const Icon     = tool.icon;
+          {rightTools.map((tool) => {
+            const Icon = tool.icon;
             const isActive = activeTool === tool.id;
             return (
               <Tooltip key={tool.id}>
@@ -42,7 +42,9 @@ export default function RightRail() {
                     {Icon && <Icon className="w-[18px] h-[18px]" aria-hidden="true" />}
                   </button>
                 </TooltipTrigger>
-                <TooltipContent side="left"><p>{tool.label}</p></TooltipContent>
+                <TooltipContent side="left">
+                  <p>{tool.label}</p>
+                </TooltipContent>
               </Tooltip>
             );
           })}

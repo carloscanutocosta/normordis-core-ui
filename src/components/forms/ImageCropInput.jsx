@@ -1,10 +1,20 @@
-import React, { useState, useRef } from "react";
-import FormField from "./FormField";
-import { Button } from "@/components/ui/button";
-import { Upload, X, ZoomIn, ZoomOut } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React, { useState, useRef } from 'react';
+import FormField from './FormField';
+import { Button } from '@/components/ui/button';
+import { Upload, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-export default function ImageCropInput({ label, description, error, required, disabled, value, onChange, aspectRatio = 1, className }) {
+export default function ImageCropInput({
+  label,
+  description,
+  error,
+  required,
+  disabled,
+  value,
+  onChange,
+  aspectRatio = 1,
+  className,
+}) {
   const [src, setSrc] = useState(null);
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -20,7 +30,7 @@ export default function ImageCropInput({ label, description, error, required, di
   const draw = (img, sc, off) => {
     const canvas = canvasRef.current;
     if (!canvas || !img) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
     const iw = img.naturalWidth * sc;
     const ih = img.naturalHeight * sc;
@@ -35,7 +45,10 @@ export default function ImageCropInput({ label, description, error, required, di
     setScale(1);
     setOffset({ x: 0, y: 0 });
     const img = new Image();
-    img.onload = () => { imgRef.current = img; draw(img, 1, { x: 0, y: 0 }); };
+    img.onload = () => {
+      imgRef.current = img;
+      draw(img, 1, { x: 0, y: 0 });
+    };
     img.src = url;
   };
 
@@ -59,26 +72,42 @@ export default function ImageCropInput({ label, description, error, required, di
 
   const crop = () => {
     const canvas = canvasRef.current;
-    onChange?.(canvas.toDataURL("image/jpeg", 0.9));
+    onChange?.(canvas.toDataURL('image/jpeg', 0.9));
   };
 
-  const clear = () => { setSrc(null); imgRef.current = null; onChange?.(""); };
+  const clear = () => {
+    setSrc(null);
+    imgRef.current = null;
+    onChange?.('');
+  };
 
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField
+      label={label}
+      description={description}
+      error={error}
+      required={required}
+      className={className}
+    >
       {!src ? (
         <button
           type="button"
           disabled={disabled}
           onClick={() => fileRef.current?.click()}
-          className={cn("w-full border-2 border-dashed border-input rounded-lg py-8 flex flex-col items-center gap-2 text-muted-foreground hover:border-primary hover:text-primary transition-colors", disabled && "opacity-50 cursor-not-allowed")}
+          className={cn(
+            'w-full border-2 border-dashed border-input rounded-lg py-8 flex flex-col items-center gap-2 text-muted-foreground hover:border-primary hover:text-primary transition-colors',
+            disabled && 'opacity-50 cursor-not-allowed',
+          )}
         >
           <Upload className="h-6 w-6" />
           <span className="text-sm">Clique para seleccionar imagem</span>
         </button>
       ) : (
         <div className="space-y-2">
-          <div className="relative rounded-lg overflow-hidden border border-border" style={{ width: CANVAS_W, height: CANVAS_H }}>
+          <div
+            className="relative rounded-lg overflow-hidden border border-border"
+            style={{ width: CANVAS_W, height: CANVAS_H }}
+          >
             <canvas
               ref={canvasRef}
               width={CANVAS_W}
@@ -91,11 +120,39 @@ export default function ImageCropInput({ label, description, error, required, di
             />
           </div>
           <div className="flex items-center gap-2">
-            <Button type="button" variant="outline" size="icon" className="h-7 w-7" onClick={() => zoom(-0.1)}><ZoomOut className="h-3.5 w-3.5" /></Button>
-            <span className="text-xs text-muted-foreground w-10 text-center">{Math.round(scale * 100)}%</span>
-            <Button type="button" variant="outline" size="icon" className="h-7 w-7" onClick={() => zoom(0.1)}><ZoomIn className="h-3.5 w-3.5" /></Button>
-            <Button type="button" size="sm" className="h-7 ml-2" onClick={crop}>Recortar</Button>
-            <Button type="button" variant="ghost" size="icon" className="h-7 w-7 ml-auto" onClick={clear}><X className="h-3.5 w-3.5" /></Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-7 w-7"
+              onClick={() => zoom(-0.1)}
+            >
+              <ZoomOut className="h-3.5 w-3.5" />
+            </Button>
+            <span className="text-xs text-muted-foreground w-10 text-center">
+              {Math.round(scale * 100)}%
+            </span>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-7 w-7"
+              onClick={() => zoom(0.1)}
+            >
+              <ZoomIn className="h-3.5 w-3.5" />
+            </Button>
+            <Button type="button" size="sm" className="h-7 ml-2" onClick={crop}>
+              Recortar
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 ml-auto"
+              onClick={clear}
+            >
+              <X className="h-3.5 w-3.5" />
+            </Button>
           </div>
         </div>
       )}

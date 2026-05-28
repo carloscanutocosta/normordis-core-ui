@@ -1,7 +1,7 @@
-import { useId } from "react";
-import { Minus, Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
-import FieldWrapper from "./FieldWrapper";
+import { useId } from 'react';
+import { Minus, Plus } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import FieldWrapper from './FieldWrapper';
 
 export default function NumberField({
   id: idProp,
@@ -26,32 +26,44 @@ export default function NumberField({
   const id = idProp ?? autoId;
   const handleChange = (e) => {
     const v = e.target.value;
-    if (v === "" || v === "-") { onChange?.(v); return; }
+    if (v === '' || v === '-') {
+      onChange?.(v);
+      return;
+    }
     const num = parseFloat(v);
     if (!isNaN(num)) onChange?.(num);
   };
 
   const increment = () => {
-    const current = typeof value === "number" ? value : 0;
+    const current = typeof value === 'number' ? value : 0;
     const next = current + step;
     if (max !== undefined && next > max) return;
     onChange?.(parseFloat(next.toFixed(10)));
   };
 
   const decrement = () => {
-    const current = typeof value === "number" ? value : 0;
+    const current = typeof value === 'number' ? value : 0;
     const next = current - step;
     if (min !== undefined && next < min) return;
     onChange?.(parseFloat(next.toFixed(10)));
   };
 
   return (
-    <FieldWrapper id={id} label={label} hint={hint} error={error} required={required} className={className}>
-      <div className={cn(
-        "flex items-center rounded-lg border border-input bg-background transition-all focus-within:ring-2 focus-within:ring-ring/40 focus-within:border-ring overflow-hidden",
-        error && "border-destructive focus-within:ring-destructive/30",
-        disabled && "opacity-50 cursor-not-allowed"
-      )}>
+    <FieldWrapper
+      id={id}
+      label={label}
+      hint={hint}
+      error={error}
+      required={required}
+      className={className}
+    >
+      <div
+        className={cn(
+          'flex items-center rounded-lg border border-input bg-background transition-all focus-within:ring-2 focus-within:ring-ring/40 focus-within:border-ring overflow-hidden',
+          error && 'border-destructive focus-within:ring-destructive/30',
+          disabled && 'opacity-50 cursor-not-allowed',
+        )}
+      >
         {prefix && (
           <span className="px-3 py-2 text-sm text-muted-foreground bg-muted border-r border-input shrink-0 select-none">
             {prefix}
@@ -70,13 +82,13 @@ export default function NumberField({
         <input
           id={id}
           type="number"
-          value={value ?? ""}
+          value={value ?? ''}
           onChange={handleChange}
           min={min}
           max={max}
           step={step}
           disabled={disabled}
-          placeholder={placeholder ?? "0"}
+          placeholder={placeholder ?? '0'}
           className="flex-1 bg-transparent text-sm px-3 py-2 text-foreground text-center placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           {...props}
         />

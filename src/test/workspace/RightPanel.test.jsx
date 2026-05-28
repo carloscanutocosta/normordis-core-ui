@@ -13,12 +13,12 @@ vi.mock('@/lib/theme', () => ({
 }));
 
 const TOOLS = [{ id: 'filters', label: 'Filtros', icon: Filter }];
-const APPS  = [{ id: 'app1', label: 'App One', icon: null, category: 'core' }];
+const APPS = [{ id: 'app1', label: 'App One', icon: null, category: 'core' }];
 
 const PANELS = {
   filters: {
-    title:   'Filtros',
-    icon:    Filter,
+    title: 'Filtros',
+    icon: Filter,
     content: <div>Conteúdo dos filtros</div>,
   },
 };
@@ -56,7 +56,10 @@ describe('RightPanel — open state', () => {
 
   it('has a close button that deactivates the tool', async () => {
     let ws;
-    function Inspector() { ws = useWorkspace(); return null; }
+    function Inspector() {
+      ws = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS} rightTools={TOOLS}>
         <Opener toolId="filters" />

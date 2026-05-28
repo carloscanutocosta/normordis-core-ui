@@ -8,9 +8,9 @@ vi.mock('@/lib/theme', () => ({
 }));
 
 const TEST_APPS = [
-  { id: 'app1', label: 'App One',  icon: null, category: 'core'   },
-  { id: 'app2', label: 'App Two',  icon: null, category: 'core'   },
-  { id: 'sys1', label: 'Sistema',  icon: null, category: 'system' },
+  { id: 'app1', label: 'App One', icon: null, category: 'core' },
+  { id: 'app2', label: 'App Two', icon: null, category: 'core' },
+  { id: 'sys1', label: 'Sistema', icon: null, category: 'system' },
 ];
 
 const wrapper = ({ children }) => (
@@ -69,8 +69,12 @@ describe('WorkspaceProvider — openApp', () => {
 
   it('does not duplicate a tab that is already open', () => {
     const { result } = renderHook(() => useWorkspace(), { wrapper });
-    act(() => { result.current.openApp('app1'); });
-    act(() => { result.current.openApp('app1'); });
+    act(() => {
+      result.current.openApp('app1');
+    });
+    act(() => {
+      result.current.openApp('app1');
+    });
     expect(result.current.openTabs).toHaveLength(1);
   });
 
@@ -117,8 +121,12 @@ describe('WorkspaceProvider — setAppBadge', () => {
 
   it('manages badge counts independently per app', () => {
     const { result } = renderHook(() => useWorkspace(), { wrapper });
-    act(() => { result.current.setAppBadge('app1', 3); });
-    act(() => { result.current.setAppBadge('app2', 9); });
+    act(() => {
+      result.current.setAppBadge('app1', 3);
+    });
+    act(() => {
+      result.current.setAppBadge('app2', 9);
+    });
     expect(result.current.appBadges['app1']).toBe(3);
     expect(result.current.appBadges['app2']).toBe(9);
   });
@@ -129,7 +137,7 @@ describe('WorkspaceProvider — setAppBadge', () => {
 describe('WorkspaceProvider — notifications', () => {
   it('prepends a new notification (most recent first)', () => {
     const { result } = renderHook(() => useWorkspace(), { wrapper });
-    act(() => result.current.notify({ title: 'First',  type: 'info'    }));
+    act(() => result.current.notify({ title: 'First', type: 'info' }));
     act(() => result.current.notify({ title: 'Second', type: 'success' }));
     expect(result.current.internalNotifications[0].title).toBe('Second');
     expect(result.current.internalNotifications[1].title).toBe('First');
@@ -153,10 +161,10 @@ describe('WorkspaceProvider — notifications', () => {
 
   it('marks all notifications as read', () => {
     const { result } = renderHook(() => useWorkspace(), { wrapper });
-    act(() => result.current.notify({ title: 'A', type: 'info'    }));
+    act(() => result.current.notify({ title: 'A', type: 'info' }));
     act(() => result.current.notify({ title: 'B', type: 'warning' }));
     act(() => result.current.readAllInternalNotifications());
-    expect(result.current.internalNotifications.every(n => n.read)).toBe(true);
+    expect(result.current.internalNotifications.every((n) => n.read)).toBe(true);
   });
 
   it('removes a single notification by id', () => {
@@ -216,7 +224,10 @@ describe('WorkspaceProvider — atendimento', () => {
     act(() => result.current.updateAtendimento({ started: true, step: 3 }));
     act(() => result.current.resetAtendimento());
     expect(result.current.atendimento).toEqual({
-      started: false, startTime: null, step: 0, form: null,
+      started: false,
+      startTime: null,
+      step: 0,
+      form: null,
     });
   });
 });
@@ -227,58 +238,81 @@ describe('WorkspaceProvider — session persistence', () => {
   const SESSION_KEY = 'normordis-workspace-session';
 
   it('restores activeApp and openTabs from sessionStorage', () => {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-      activeApp: 'app2',
-      openTabs: [
-        { id: 'app1', label: 'App One' },
-        { id: 'app2', label: 'App Two' },
-      ],
-      leftRailCollapsed: false,
-      atendimento: { started: false, startTime: null, step: 0, form: null },
-    }));
+    sessionStorage.setItem(
+      SESSION_KEY,
+      JSON.stringify({
+        activeApp: 'app2',
+        openTabs: [
+          { id: 'app1', label: 'App One' },
+          { id: 'app2', label: 'App Two' },
+        ],
+        leftRailCollapsed: false,
+        atendimento: { started: false, startTime: null, step: 0, form: null },
+      }),
+    );
     const { result } = renderHook(() => useWorkspace(), { wrapper });
     expect(result.current.activeApp).toBe('app2');
     expect(result.current.openTabs).toHaveLength(2);
   });
 
   it('ignores restored tabs for apps that no longer exist', () => {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-      activeApp: 'app1',
-      openTabs: [
-        { id: 'app1', label: 'App One' },
-        { id: 'ghost', label: 'Gone App' },
-      ],
-      leftRailCollapsed: false,
-      atendimento: { started: false, startTime: null, step: 0, form: null },
-    }));
+    sessionStorage.setItem(
+      SESSION_KEY,
+      JSON.stringify({
+        activeApp: 'app1',
+        openTabs: [
+          { id: 'app1', label: 'App One' },
+          { id: 'ghost', label: 'Gone App' },
+        ],
+        leftRailCollapsed: false,
+        atendimento: { started: false, startTime: null, step: 0, form: null },
+      }),
+    );
     const { result } = renderHook(() => useWorkspace(), { wrapper });
     expect(result.current.openTabs).toHaveLength(1);
     expect(result.current.openTabs[0].id).toBe('app1');
   });
 
   it('falls back to defaultApp when restored activeApp no longer exists', () => {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-      activeApp: 'ghost',
-      openTabs: [],
-      leftRailCollapsed: false,
-      atendimento: { started: false, startTime: null, step: 0, form: null },
-    }));
+    sessionStorage.setItem(
+      SESSION_KEY,
+      JSON.stringify({
+        activeApp: 'ghost',
+        openTabs: [],
+        leftRailCollapsed: false,
+        atendimento: { started: false, startTime: null, step: 0, form: null },
+      }),
+    );
     const { result } = renderHook(() => useWorkspace(), { wrapper });
     expect(result.current.activeApp).toBe('app1');
   });
 
   it('restores atendimento in-progress state', () => {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-      activeApp: 'app1',
-      openTabs: [{ id: 'app1', label: 'App One' }],
-      leftRailCollapsed: false,
-      atendimento: {
-        started: true,
-        startTime: '2026-05-28T10:00:00.000Z',
-        step: 2,
-        form: { area: 'TI', assunto: 'Teste', descricao: '', resposta: '', canal: 'Email', prioridade: 'Normal', estado: 'Aberto', utilizador_contacto: 'user@example.com', duracao_minutos: '', notas_internas: '' },
-      },
-    }));
+    sessionStorage.setItem(
+      SESSION_KEY,
+      JSON.stringify({
+        activeApp: 'app1',
+        openTabs: [{ id: 'app1', label: 'App One' }],
+        leftRailCollapsed: false,
+        atendimento: {
+          started: true,
+          startTime: '2026-05-28T10:00:00.000Z',
+          step: 2,
+          form: {
+            area: 'TI',
+            assunto: 'Teste',
+            descricao: '',
+            resposta: '',
+            canal: 'Email',
+            prioridade: 'Normal',
+            estado: 'Aberto',
+            utilizador_contacto: 'user@example.com',
+            duracao_minutos: '',
+            notas_internas: '',
+          },
+        },
+      }),
+    );
     const { result } = renderHook(() => useWorkspace(), { wrapper });
     expect(result.current.atendimento.started).toBe(true);
     expect(result.current.atendimento.step).toBe(2);
@@ -287,7 +321,9 @@ describe('WorkspaceProvider — session persistence', () => {
 
   it('writes session to sessionStorage when activeApp changes', () => {
     const { result } = renderHook(() => useWorkspace(), { wrapper });
-    act(() => { result.current.openApp('app2'); });
+    act(() => {
+      result.current.openApp('app2');
+    });
     const stored = JSON.parse(sessionStorage.getItem(SESSION_KEY) ?? '{}');
     expect(stored.activeApp).toBe('app2');
   });

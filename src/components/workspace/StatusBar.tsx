@@ -12,19 +12,30 @@ function useClock(locale: string) {
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
-  const timeStr = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  const dateStr = now.toLocaleDateString(locale, { weekday: 'short', day: '2-digit', month: 'short' });
+  const timeStr = now.toLocaleTimeString(locale, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+  const dateStr = now.toLocaleDateString(locale, {
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
+  });
   return { timeStr, dateStr };
 }
 
 function useOnline() {
   const [online, setOnline] = useState(navigator.onLine);
   useEffect(() => {
-    const on  = () => setOnline(true);
+    const on = () => setOnline(true);
     const off = () => setOnline(false);
-    window.addEventListener('online',  on);
+    window.addEventListener('online', on);
     window.addEventListener('offline', off);
-    return () => { window.removeEventListener('online', on); window.removeEventListener('offline', off); };
+    return () => {
+      window.removeEventListener('online', on);
+      window.removeEventListener('offline', off);
+    };
   }, []);
   return online;
 }
@@ -62,15 +73,19 @@ export default function StatusBar({
         {/* Left: connection + user */}
         <div className="flex items-center gap-2.5">
           <div className="flex items-center gap-1">
-            {online
-              ? <Wifi className="w-3 h-3" aria-hidden="true" />
-              : <WifiOff className="w-3 h-3 text-red-300" aria-hidden="true" />}
+            {online ? (
+              <Wifi className="w-3 h-3" aria-hidden="true" />
+            ) : (
+              <WifiOff className="w-3 h-3 text-red-300" aria-hidden="true" />
+            )}
             <span className={online ? '' : 'text-red-300'}>{online ? 'Online' : 'Offline'}</span>
           </div>
 
           {user && (
             <>
-              <span className="text-primary-foreground/30" aria-hidden="true">·</span>
+              <span className="text-primary-foreground/30" aria-hidden="true">
+                ·
+              </span>
               <div className="flex items-center gap-1">
                 <User className="w-3 h-3 opacity-70" aria-hidden="true" />
                 <span className="truncate max-w-[160px]">{user.name || user.email || '—'}</span>
@@ -80,7 +95,10 @@ export default function StatusBar({
         </div>
 
         {/* Center: clock */}
-        <div className="absolute left-1/2 -translate-x-1/2 hidden sm:flex items-center gap-2 pointer-events-none" aria-live="off">
+        <div
+          className="absolute left-1/2 -translate-x-1/2 hidden sm:flex items-center gap-2 pointer-events-none"
+          aria-live="off"
+        >
           <span className="font-mono font-medium tabular-nums">{timeStr}</span>
           <span className="opacity-60 capitalize hidden md:inline">{dateStr}</span>
         </div>
@@ -97,7 +115,10 @@ export default function StatusBar({
             )}
           >
             {sessionActive && (
-              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-amber-400 animate-pulse" aria-hidden="true" />
+              <span
+                className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-amber-400 animate-pulse"
+                aria-hidden="true"
+              />
             )}
             <ClipboardList className="w-3.5 h-3.5" aria-hidden="true" />
             <span className="hidden sm:inline">

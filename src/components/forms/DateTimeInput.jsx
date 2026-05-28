@@ -1,7 +1,7 @@
-import React from "react";
-import { Input } from "@/components/ui/input";
-import FormField from "./FormField";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import { Input } from '@/components/ui/input';
+import FormField from './FormField';
+import { cn } from '@/lib/utils';
 
 export default function DateTimeInput({
   label,
@@ -12,16 +12,22 @@ export default function DateTimeInput({
   onChange,
   disabled,
   className,
-  type = "datetime-local",
+  type = 'datetime-local',
 }) {
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
+    <FormField
+      label={label}
+      description={description}
+      error={error}
+      required={required}
+      className={className}
+    >
       <Input
         type={type}
-        value={value || ""}
+        value={value || ''}
         onChange={(e) => onChange?.(e.target.value)}
         disabled={disabled}
-        className={cn("h-10", error && "border-destructive")}
+        className={cn('h-10', error && 'border-destructive')}
       />
     </FormField>
   );

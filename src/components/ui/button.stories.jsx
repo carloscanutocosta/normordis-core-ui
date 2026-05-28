@@ -18,15 +18,15 @@ export default {
   },
 };
 
-export const Default     = { args: { children: 'Guardar' } };
+export const Default = { args: { children: 'Guardar' } };
 export const Destructive = { args: { children: 'Eliminar', variant: 'destructive' } };
-export const Outline     = { args: { children: 'Cancelar', variant: 'outline' } };
-export const Secondary   = { args: { children: 'Secundário', variant: 'secondary' } };
-export const Ghost       = { args: { children: 'Ghost', variant: 'ghost' } };
-export const Link        = { args: { children: 'Saber mais', variant: 'link' } };
-export const Small       = { args: { children: 'Pequeno', size: 'sm' } };
-export const Large       = { args: { children: 'Grande', size: 'lg' } };
-export const Disabled    = { args: { children: 'Indisponível', disabled: true } };
+export const Outline = { args: { children: 'Cancelar', variant: 'outline' } };
+export const Secondary = { args: { children: 'Secundário', variant: 'secondary' } };
+export const Ghost = { args: { children: 'Ghost', variant: 'ghost' } };
+export const Link = { args: { children: 'Saber mais', variant: 'link' } };
+export const Small = { args: { children: 'Pequeno', size: 'sm' } };
+export const Large = { args: { children: 'Grande', size: 'lg' } };
+export const Disabled = { args: { children: 'Indisponível', disabled: true } };
 
 export const AllVariants = {
   name: 'All variants',
@@ -49,7 +49,9 @@ export const AllSizes = {
       <Button size="lg">Large</Button>
       <Button size="default">Default</Button>
       <Button size="sm">Small</Button>
-      <Button size="icon" aria-label="Icon button">+</Button>
+      <Button size="icon" aria-label="Icon button">
+        +
+      </Button>
     </div>
   ),
 };

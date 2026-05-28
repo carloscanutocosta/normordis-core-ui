@@ -1,7 +1,7 @@
-import React, { useId } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import FormField from "./FormField";
+import React, { useId } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import FormField from './FormField';
 
 export default function CheckboxInput({
   id: idProp,
@@ -28,7 +28,10 @@ export default function CheckboxInput({
         />
         <div className="space-y-0.5">
           {label && (
-            <Label htmlFor={id} className="cursor-pointer font-medium text-sm hover:text-primary transition-colors">
+            <Label
+              htmlFor={id}
+              className="cursor-pointer font-medium text-sm hover:text-primary transition-colors"
+            >
               {label}
             </Label>
           )}

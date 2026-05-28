@@ -1,18 +1,29 @@
-import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, Home, BarChart2, Users, Settings, FileText, Bell, LogOut, Menu } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React, { useState } from 'react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  BarChart2,
+  Users,
+  Settings,
+  FileText,
+  Bell,
+  LogOut,
+  Menu,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const DEFAULT_NAV_ITEMS = [
-  { id: "dashboard", label: "Dashboard",    icon: Home },
-  { id: "analytics", label: "Análises",     icon: BarChart2 },
-  { id: "users",     label: "Utilizadores", icon: Users },
-  { id: "reports",   label: "Relatórios",   icon: FileText },
-  { id: "notifs",    label: "Notificações", icon: Bell },
-  { id: "settings",  label: "Definições",   icon: Settings },
+  { id: 'dashboard', label: 'Dashboard', icon: Home },
+  { id: 'analytics', label: 'Análises', icon: BarChart2 },
+  { id: 'users', label: 'Utilizadores', icon: Users },
+  { id: 'reports', label: 'Relatórios', icon: FileText },
+  { id: 'notifs', label: 'Notificações', icon: Bell },
+  { id: 'settings', label: 'Definições', icon: Settings },
 ];
 
-const DEFAULT_USER = { name: "João Costa", email: "joao@empresa.pt", initials: "JC" };
-const DEFAULT_LOGO = { initials: "A", name: "App" };
+const DEFAULT_USER = { name: 'João Costa', email: 'joao@empresa.pt', initials: 'JC' };
+const DEFAULT_LOGO = { initials: 'A', name: 'App' };
 
 /**
  * @param {{
@@ -37,7 +48,7 @@ export default function SidebarLayout({
   className,
 }) {
   const [collapsed, setCollapsed] = useState(false);
-  const [activeInternal, setActiveInternal] = useState(navItems[0]?.id ?? "");
+  const [activeInternal, setActiveInternal] = useState(navItems[0]?.id ?? '');
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Support both controlled (activeItemProp) and uncontrolled usage
@@ -52,10 +63,12 @@ export default function SidebarLayout({
   const activeNav = navItems.find((i) => i.id === activeId);
 
   const Sidebar = ({ mobile = false }) => (
-    <aside className={cn(
-      "bg-card border-r border-border flex flex-col transition-all duration-300",
-      mobile ? "w-64 fixed inset-y-0 left-0 z-50 shadow-2xl" : (collapsed ? "w-16" : "w-56")
-    )}>
+    <aside
+      className={cn(
+        'bg-card border-r border-border flex flex-col transition-all duration-300',
+        mobile ? 'w-64 fixed inset-y-0 left-0 z-50 shadow-2xl' : collapsed ? 'w-16' : 'w-56',
+      )}
+    >
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-4 border-b border-border">
         {logo.initials && (
@@ -75,8 +88,10 @@ export default function SidebarLayout({
             key={id}
             onClick={() => handleNavClick(id)}
             className={cn(
-              "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
-              activeId === id ? "bg-primary/10 text-primary font-medium" : "text-foreground hover:bg-muted"
+              'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors',
+              activeId === id
+                ? 'bg-primary/10 text-primary font-medium'
+                : 'text-foreground hover:bg-muted',
             )}
             title={collapsed && !mobile ? label : undefined}
           >
@@ -91,11 +106,15 @@ export default function SidebarLayout({
         {user && (!collapsed || mobile) && (
           <div className="flex items-center gap-2 px-3 py-2">
             <div className="h-7 w-7 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-              <span className="text-xs font-semibold text-primary">{user.initials ?? user.name?.slice(0, 2).toUpperCase()}</span>
+              <span className="text-xs font-semibold text-primary">
+                {user.initials ?? user.name?.slice(0, 2).toUpperCase()}
+              </span>
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium text-foreground truncate">{user.name}</p>
-              {user.email && <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>}
+              {user.email && (
+                <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
+              )}
             </div>
           </div>
         )}
@@ -114,14 +133,23 @@ export default function SidebarLayout({
           onClick={() => setCollapsed((c) => !c)}
           className="absolute top-4 -right-3 h-6 w-6 rounded-full bg-card border border-border flex items-center justify-center shadow-sm hover:bg-muted transition-colors"
         >
-          {collapsed ? <ChevronRight className="h-3.5 w-3.5" /> : <ChevronLeft className="h-3.5 w-3.5" />}
+          {collapsed ? (
+            <ChevronRight className="h-3.5 w-3.5" />
+          ) : (
+            <ChevronLeft className="h-3.5 w-3.5" />
+          )}
         </button>
       )}
     </aside>
   );
 
   return (
-    <div className={cn("flex h-[420px] rounded-xl overflow-hidden border border-border relative", className)}>
+    <div
+      className={cn(
+        'flex h-[420px] rounded-xl overflow-hidden border border-border relative',
+        className,
+      )}
+    >
       {/* Desktop sidebar */}
       <div className="hidden md:flex relative">
         <Sidebar />
@@ -130,7 +158,10 @@ export default function SidebarLayout({
       {/* Mobile overlay */}
       {mobileOpen && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/30 md:hidden" onClick={() => setMobileOpen(false)} />
+          <div
+            className="fixed inset-0 z-40 bg-black/30 md:hidden"
+            onClick={() => setMobileOpen(false)}
+          />
           <Sidebar mobile />
         </>
       )}
@@ -147,7 +178,11 @@ export default function SidebarLayout({
           {children ?? (
             <div className="h-full flex items-center justify-center">
               <p className="text-muted-foreground text-sm">
-                {activeNav ? <>Conteúdo de <strong>{activeNav.label}</strong></> : null}
+                {activeNav ? (
+                  <>
+                    Conteúdo de <strong>{activeNav.label}</strong>
+                  </>
+                ) : null}
               </p>
             </div>
           )}

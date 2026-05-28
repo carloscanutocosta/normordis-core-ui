@@ -1,10 +1,19 @@
-import React, { useRef, useEffect, useState } from "react";
-import FormField from "./FormField";
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React, { useRef, useEffect, useState } from 'react';
+import FormField from './FormField';
+import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-export default function SignaturePad({ label, description, error, required, disabled, value, onChange, className }) {
+export default function SignaturePad({
+  label,
+  description,
+  error,
+  required,
+  disabled,
+  value,
+  onChange,
+  className,
+}) {
   const canvasRef = useRef(null);
   const drawing = useRef(false);
   const [isEmpty, setIsEmpty] = useState(true);
@@ -12,11 +21,11 @@ export default function SignaturePad({ label, description, error, required, disa
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    ctx.strokeStyle = "#1e1e32";
+    const ctx = canvas.getContext('2d');
+    ctx.strokeStyle = '#1e1e32';
     ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
   }, []);
 
   const getPos = (e, canvas) => {
@@ -30,7 +39,7 @@ export default function SignaturePad({ label, description, error, required, disa
     e.preventDefault();
     drawing.current = true;
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     const { x, y } = getPos(e, canvas);
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -40,7 +49,7 @@ export default function SignaturePad({ label, description, error, required, disa
     if (!drawing.current || disabled) return;
     e.preventDefault();
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     const { x, y } = getPos(e, canvas);
     ctx.lineTo(x, y);
     ctx.stroke();
@@ -55,25 +64,51 @@ export default function SignaturePad({ label, description, error, required, disa
 
   const clear = () => {
     const canvas = canvasRef.current;
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     setIsEmpty(true);
-    onChange?.("");
+    onChange?.('');
   };
 
   return (
-    <FormField label={label} description={description} error={error} required={required} className={className}>
-      <div className={cn("rounded-md border border-input overflow-hidden", error && "border-destructive", disabled && "opacity-50")}>
+    <FormField
+      label={label}
+      description={description}
+      error={error}
+      required={required}
+      className={className}
+    >
+      <div
+        className={cn(
+          'rounded-md border border-input overflow-hidden',
+          error && 'border-destructive',
+          disabled && 'opacity-50',
+        )}
+      >
         <canvas
           ref={canvasRef}
           width={500}
           height={150}
           className="w-full bg-background cursor-crosshair touch-none"
-          onMouseDown={start} onMouseMove={move} onMouseUp={stop} onMouseLeave={stop}
-          onTouchStart={start} onTouchMove={move} onTouchEnd={stop}
+          onMouseDown={start}
+          onMouseMove={move}
+          onMouseUp={stop}
+          onMouseLeave={stop}
+          onTouchStart={start}
+          onTouchMove={move}
+          onTouchEnd={stop}
         />
         <div className="flex items-center justify-between px-3 py-1.5 border-t border-border bg-muted/30">
-          <span className="text-xs text-muted-foreground">{isEmpty ? "Assine acima" : "Assinatura capturada"}</span>
-          <Button type="button" variant="ghost" size="sm" onClick={clear} disabled={disabled || isEmpty} className="h-6 text-xs gap-1 text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
+            {isEmpty ? 'Assine acima' : 'Assinatura capturada'}
+          </span>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={clear}
+            disabled={disabled || isEmpty}
+            className="h-6 text-xs gap-1 text-muted-foreground"
+          >
             <Trash2 className="h-3 w-3" /> Limpar
           </Button>
         </div>

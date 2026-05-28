@@ -13,9 +13,9 @@ vi.mock('@/lib/theme', () => ({
 }));
 
 const APPS = [
-  { id: 'app1', label: 'Dashboard',  icon: LayoutDashboard, category: 'core'   },
-  { id: 'app2', label: 'Documentos', icon: FileText,         category: 'core'   },
-  { id: 'sys1', label: 'Definições', icon: Settings,         category: 'system' },
+  { id: 'app1', label: 'Dashboard', icon: LayoutDashboard, category: 'core' },
+  { id: 'app2', label: 'Documentos', icon: FileText, category: 'core' },
+  { id: 'sys1', label: 'Definições', icon: Settings, category: 'system' },
 ];
 
 function renderRail(apps = APPS, rightTools = []) {
@@ -58,7 +58,10 @@ describe('LeftRail — render', () => {
 describe('LeftRail — interactions', () => {
   it('clicking an app button opens that app', () => {
     let capturedWs;
-    function Inspector() { capturedWs = useWorkspace(); return null; }
+    function Inspector() {
+      capturedWs = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS}>
         <LeftRail />
@@ -72,7 +75,10 @@ describe('LeftRail — interactions', () => {
 
   it('clicking the collapse button toggles the rail', () => {
     let capturedWs;
-    function Inspector() { capturedWs = useWorkspace(); return null; }
+    function Inspector() {
+      capturedWs = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS}>
         <LeftRail />
@@ -88,7 +94,10 @@ describe('LeftRail — interactions', () => {
 describe('LeftRail — badges', () => {
   it('shows badge count when setAppBadge is called', () => {
     let ws;
-    function Setter() { ws = useWorkspace(); return null; }
+    function Setter() {
+      ws = useWorkspace();
+      return null;
+    }
     const { rerender } = render(
       <WorkspaceProvider apps={APPS}>
         <LeftRail />

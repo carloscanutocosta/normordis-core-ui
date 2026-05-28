@@ -25,7 +25,9 @@ export default function RightPanel({ panels = {} }: RightPanelProps) {
           <div className="w-[260px] h-full flex flex-col">
             <div className="flex items-center justify-between px-3 h-9 border-b border-border shrink-0">
               <div className="flex items-center gap-2">
-                {panel.icon && <panel.icon className="w-3.5 h-3.5 text-muted-foreground" aria-hidden="true" />}
+                {panel.icon && (
+                  <panel.icon className="w-3.5 h-3.5 text-muted-foreground" aria-hidden="true" />
+                )}
                 <span className="text-xs font-semibold">{panel.title}</span>
               </div>
               <Button
@@ -38,9 +40,7 @@ export default function RightPanel({ panels = {} }: RightPanelProps) {
                 <X className="w-3.5 h-3.5" />
               </Button>
             </div>
-            <div className="flex-1 overflow-y-auto workspace-scroll">
-              {panel.content}
-            </div>
+            <div className="flex-1 overflow-y-auto workspace-scroll">{panel.content}</div>
           </div>
         </motion.div>
       )}

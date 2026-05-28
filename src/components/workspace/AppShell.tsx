@@ -1,6 +1,11 @@
 import type { ReactNode } from 'react';
 import { WorkspaceProvider } from './WorkspaceContext';
-import type { AppDefinition, ToolDefinition, WorkspaceNotification, WorkspaceCommand } from './WorkspaceContext';
+import type {
+  AppDefinition,
+  ToolDefinition,
+  WorkspaceNotification,
+  WorkspaceCommand,
+} from './WorkspaceContext';
 import Header from './Header';
 import LeftRail from './LeftRail';
 import RightRail from './RightRail';
@@ -112,9 +117,7 @@ export default function AppShell({
         <div className="flex-1 flex overflow-hidden">
           <LeftRail />
 
-          <ContentArea>
-            {children}
-          </ContentArea>
+          <ContentArea>{children}</ContentArea>
 
           {rightTools.length > 0 && (
             <div className="hidden md:flex items-stretch">

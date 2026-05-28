@@ -1,5 +1,5 @@
-import { Switch } from "@/components/ui/switch";
-import FieldWrapper from "./FieldWrapper";
+import { Switch } from '@/components/ui/switch';
+import FieldWrapper from './FieldWrapper';
 
 export default function SwitchField({
   label,

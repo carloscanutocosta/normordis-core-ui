@@ -1,8 +1,8 @@
-import React from "react";
-import { X, SlidersHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import { X, SlidersHorizontal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
 /**
  * FilterPanel — painel lateral deslizante de filtros avançados.
@@ -19,29 +19,33 @@ import { cn } from "@/lib/utils";
  * onReset: () => void
  * open / onClose
  */
-export default function FilterPanel({ filterDefs = [], values = {}, onChange, onReset, open, onClose }) {
+export default function FilterPanel({
+  filterDefs = [],
+  values = {},
+  onChange,
+  onReset,
+  open,
+  onClose,
+}) {
   const activeCount = filterDefs.filter(({ key }) => {
     const v = values[key];
     if (!v) return false;
-    if (typeof v === "object") return v.from || v.to;
-    return v !== "";
+    if (typeof v === 'object') return v.from || v.to;
+    return v !== '';
   }).length;
 
   return (
     <>
       {/* Backdrop */}
       {open && (
-        <div
-          className="fixed inset-0 z-30 bg-black/20 backdrop-blur-[1px]"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 z-30 bg-black/20 backdrop-blur-[1px]" onClick={onClose} />
       )}
 
       {/* Panel */}
       <div
         className={cn(
-          "fixed top-0 right-0 z-40 h-full w-72 bg-card border-l border-border shadow-2xl flex flex-col transition-transform duration-300",
-          open ? "translate-x-0" : "translate-x-full"
+          'fixed top-0 right-0 z-40 h-full w-72 bg-card border-l border-border shadow-2xl flex flex-col transition-transform duration-300',
+          open ? 'translate-x-0' : 'translate-x-full',
         )}
       >
         {/* Header */}
@@ -66,51 +70,53 @@ export default function FilterPanel({ filterDefs = [], values = {}, onChange, on
 
         {/* Filters */}
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
-          {filterDefs.map(({ key, label, type = "text", options = [] }) => (
+          {filterDefs.map(({ key, label, type = 'text', options = [] }) => (
             <div key={key} className="space-y-1.5">
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 {label}
               </label>
 
-              {type === "text" && (
+              {type === 'text' && (
                 <Input
                   className="h-9 text-sm"
                   placeholder={`Filtrar por ${label.toLowerCase()}…`}
-                  value={values[key] ?? ""}
+                  value={values[key] ?? ''}
                   onChange={(e) => onChange(key, e.target.value)}
                 />
               )}
 
-              {type === "select" && (
+              {type === 'select' && (
                 <select
-                  value={values[key] ?? ""}
+                  value={values[key] ?? ''}
                   onChange={(e) => onChange(key, e.target.value)}
                   className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
                 >
                   <option value="">Todos</option>
                   {options.map((opt) => (
-                    <option key={opt} value={opt}>{opt}</option>
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
                   ))}
                 </select>
               )}
 
-              {type === "date" && (
+              {type === 'date' && (
                 <Input
                   type="date"
                   className="h-9 text-sm"
-                  value={values[key] ?? ""}
+                  value={values[key] ?? ''}
                   onChange={(e) => onChange(key, e.target.value)}
                 />
               )}
 
-              {type === "date-range" && (
+              {type === 'date-range' && (
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground w-6">De</span>
                     <Input
                       type="date"
                       className="h-9 text-sm flex-1"
-                      value={values[key]?.from ?? ""}
+                      value={values[key]?.from ?? ''}
                       onChange={(e) => onChange(key, { ...values[key], from: e.target.value })}
                     />
                   </div>
@@ -119,7 +125,7 @@ export default function FilterPanel({ filterDefs = [], values = {}, onChange, on
                     <Input
                       type="date"
                       className="h-9 text-sm flex-1"
-                      value={values[key]?.to ?? ""}
+                      value={values[key]?.to ?? ''}
                       onChange={(e) => onChange(key, { ...values[key], to: e.target.value })}
                     />
                   </div>
