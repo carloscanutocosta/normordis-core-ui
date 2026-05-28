@@ -9,6 +9,7 @@ const PEER_EXTERNALS = [
   'react',
   'react-dom',
   'react/jsx-runtime',
+  'cmdk',
   /^@hello-pangea\//,
   /^@hookform\//,
   /^@lexical\//,
