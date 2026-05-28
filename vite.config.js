@@ -50,7 +50,9 @@ export default defineConfig(({ command }) => ({
       tsconfigPath: './jsconfig.json',
       include: ['src'],
       exclude: ['src/App.jsx', 'src/main.jsx', 'src/demo', 'src/pages', 'src/showcase'],
-      rollupTypes: true,
+      // rollupTypes only applies to the main entry; sub-entries get their own .d.ts files
+      // from the preserveModules output structure.
+      rollupTypes: false,
       insertTypesEntry: true,
     })] : []),
   ],
@@ -62,7 +64,11 @@ export default defineConfig(({ command }) => ({
   ...(command === 'build' ? {
     build: {
       lib: {
-        entry: path.resolve(__dirname, 'src/index.ts'),
+        entry: {
+          index:     path.resolve(__dirname, 'src/index.ts'),
+          workspace: path.resolve(__dirname, 'src/workspace.ts'),
+          charts:    path.resolve(__dirname, 'src/charts.ts'),
+        },
         formats: ['es'],
         cssFileName: 'normordis-core-ui',
       },

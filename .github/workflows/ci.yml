@@ -60,6 +60,9 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      - name: Bundle size
+        run: pnpm run size
+
       - name: Audit Node
         continue-on-error: true
         run: pnpm audit --audit-level high

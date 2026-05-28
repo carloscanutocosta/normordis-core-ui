@@ -58,6 +58,9 @@ jobs:
       - name: Build (validar release)
         run: pnpm run build
 
+      - name: Bundle size
+        run: pnpm run size
+
       - name: Empacotar SDK
         run: |
           mkdir -p "$RELEASE_OUT_DIR"
