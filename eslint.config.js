@@ -6,7 +6,7 @@ import pluginUnusedImports from "eslint-plugin-unused-imports";
 
 export default [
   {
-    ignores: ["dist/**/*", "node_modules/**/*"],
+    ignores: ["dist/**/*", "node_modules/**/*", "storybook-static/**/*", "coverage/**/*"],
   },
   {
     files: [

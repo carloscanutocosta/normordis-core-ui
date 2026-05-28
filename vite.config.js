@@ -47,6 +47,7 @@ export default defineConfig(({ command }) => ({
   plugins: [
     react(),
     ...(command === 'build' ? [dts({
+      tsconfigPath: './jsconfig.json',
       include: ['src'],
       exclude: ['src/App.jsx', 'src/main.jsx', 'src/demo', 'src/pages', 'src/showcase'],
       rollupTypes: true,
@@ -61,7 +62,7 @@ export default defineConfig(({ command }) => ({
   ...(command === 'build' ? {
     build: {
       lib: {
-        entry: path.resolve(__dirname, 'src/index.js'),
+        entry: path.resolve(__dirname, 'src/index.ts'),
         formats: ['es'],
         cssFileName: 'normordis-core-ui',
       },

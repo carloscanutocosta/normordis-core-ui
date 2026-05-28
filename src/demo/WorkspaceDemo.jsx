@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import {
   LayoutDashboard, FileText, BarChart3, Users,
-  CheckSquare, Settings, Star, Calendar, Bell,
+  CheckSquare, Settings, Star, Calendar,
 } from 'lucide-react';
-import { AppShell } from '@/components/workspace/AppShell';
+import AppShell from '@/components/workspace/AppShell';
 
 /* ── Mock apps ───────────────────────────────────────────── */
 const APPS = [

@@ -62,3 +62,6 @@ DESIGN.md
 
 # Claude Code local state
 .claude/
+cov.txt
+coverage_out.txt
+coverage/

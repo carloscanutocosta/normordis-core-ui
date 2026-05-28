@@ -14,8 +14,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": []
+    "types": ["react", "react-dom", "node"]
   },
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts"],
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist", "src/vite-plugins", "src/api"]
 } 
