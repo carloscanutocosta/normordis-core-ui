@@ -1,22 +1,30 @@
 import {
-  LayoutDashboard, FileText, Users, Settings, BarChart2,
-  Wrench, Filter, SlidersHorizontal, Plus, Download,
+  LayoutDashboard,
+  FileText,
+  Users,
+  Settings,
+  BarChart2,
+  Wrench,
+  Filter,
+  SlidersHorizontal,
+  Plus,
+  Download,
 } from 'lucide-react';
 import AppShell from './AppShell';
 
 // ─── Shared fixtures ──────────────────────────────────────────────────────────
 
 const APPS = [
-  { id: 'dashboard',  label: 'Dashboard',     icon: LayoutDashboard, category: 'core'   },
-  { id: 'documents',  label: 'Documentos',    icon: FileText,        category: 'core'   },
-  { id: 'reports',    label: 'Relatórios',    icon: BarChart2,       category: 'core'   },
-  { id: 'users',      label: 'Utilizadores',  icon: Users,           category: 'core'   },
-  { id: 'settings',   label: 'Definições',    icon: Settings,        category: 'system' },
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, category: 'core' },
+  { id: 'documents', label: 'Documentos', icon: FileText, category: 'core' },
+  { id: 'reports', label: 'Relatórios', icon: BarChart2, category: 'core' },
+  { id: 'users', label: 'Utilizadores', icon: Users, category: 'core' },
+  { id: 'settings', label: 'Definições', icon: Settings, category: 'system' },
 ];
 
 const RIGHT_TOOLS = [
-  { id: 'filters',    label: 'Filtros',       icon: Filter           },
-  { id: 'properties', label: 'Propriedades',  icon: SlidersHorizontal },
+  { id: 'filters', label: 'Filtros', icon: Filter },
+  { id: 'properties', label: 'Propriedades', icon: SlidersHorizontal },
 ];
 
 const PANELS = {
@@ -25,14 +33,18 @@ const PANELS = {
     icon: Filter,
     content: (
       <div className="p-4 space-y-3">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Estado</p>
-        {['Aberto', 'Em progresso', 'Resolvido', 'Fechado'].map(s => (
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+          Estado
+        </p>
+        {['Aberto', 'Em progresso', 'Resolvido', 'Fechado'].map((s) => (
           <label key={s} className="flex items-center gap-2 text-sm cursor-pointer">
             <input type="checkbox" className="rounded" /> {s}
           </label>
         ))}
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-4">Prioridade</p>
-        {['Baixa', 'Normal', 'Alta', 'Urgente'].map(p => (
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-4">
+          Prioridade
+        </p>
+        {['Baixa', 'Normal', 'Alta', 'Urgente'].map((p) => (
           <label key={p} className="flex items-center gap-2 text-sm cursor-pointer">
             <input type="checkbox" className="rounded" /> {p}
           </label>
@@ -52,14 +64,40 @@ const PANELS = {
 };
 
 const COMMANDS = [
-  { id: 'new',    label: 'Novo processo',   icon: Plus,     description: 'Abre formulário',         onSelect: () => console.log('new')    },
-  { id: 'export', label: 'Exportar dados',  icon: Download, description: 'Exporta a vista actual',  onSelect: () => console.log('export') },
+  {
+    id: 'new',
+    label: 'Novo processo',
+    icon: Plus,
+    description: 'Abre formulário',
+    onSelect: () => console.log('new'),
+  },
+  {
+    id: 'export',
+    label: 'Exportar dados',
+    icon: Download,
+    description: 'Exporta a vista actual',
+    onSelect: () => console.log('export'),
+  },
 ];
 
 const EXTERNAL_NOTIFICATIONS = [
-  { id: 'n1', title: 'Aprovação pendente',     type: 'warning', read: false, description: 'O processo 2024/042 aguarda aprovação.', time: 'Há 5 min'  },
-  { id: 'n2', title: 'Exportação concluída',   type: 'success', read: false, time: 'Há 12 min'  },
-  { id: 'n3', title: 'Sistema actualizado',    type: 'info',    read: true,  description: 'v2.3.1 instalada com sucesso.',           time: 'Há 2h'     },
+  {
+    id: 'n1',
+    title: 'Aprovação pendente',
+    type: 'warning',
+    read: false,
+    description: 'O processo 2024/042 aguarda aprovação.',
+    time: 'Há 5 min',
+  },
+  { id: 'n2', title: 'Exportação concluída', type: 'success', read: false, time: 'Há 12 min' },
+  {
+    id: 'n3',
+    title: 'Sistema actualizado',
+    type: 'info',
+    read: true,
+    description: 'v2.3.1 instalada com sucesso.',
+    time: 'Há 2h',
+  },
 ];
 
 const USER = { name: 'Ana Ferreira', email: 'ana.ferreira@example.com' };
@@ -68,11 +106,11 @@ const USER = { name: 'Ana Ferreira', email: 'ana.ferreira@example.com' };
 
 function AppPlaceholder({ appId }) {
   const labels = {
-    dashboard:  'Dashboard',
-    documents:  'Documentos',
-    reports:    'Relatórios',
-    users:      'Utilizadores',
-    settings:   'Definições',
+    dashboard: 'Dashboard',
+    documents: 'Documentos',
+    reports: 'Relatórios',
+    users: 'Utilizadores',
+    settings: 'Definições',
   };
   return (
     <div className="flex-1 flex flex-col items-center justify-center gap-3 text-muted-foreground select-none">
@@ -95,7 +133,8 @@ export default {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Shell completo do workspace: Header, LeftRail, ContentArea (com tabs e error boundaries), RightRail, RightPanel, StatusBar e CommandPalette. Orquestra todos os componentes do workspace e gere a sessão no WorkspaceProvider.',
+        component:
+          'Shell completo do workspace: Header, LeftRail, ContentArea (com tabs e error boundaries), RightRail, RightPanel, StatusBar e CommandPalette. Orquestra todos os componentes do workspace e gere a sessão no WorkspaceProvider.',
       },
     },
   },
@@ -107,7 +146,9 @@ export const Minimal = {
   name: 'Mínimo',
   parameters: {
     docs: {
-      description: { story: 'Configuração mínima: só as apps, sem utilizador, sem atendimento, sem ferramentas.' },
+      description: {
+        story: 'Configuração mínima: só as apps, sem utilizador, sem atendimento, sem ferramentas.',
+      },
     },
   },
   render: () => (
@@ -121,7 +162,10 @@ export const WithUser = {
   name: 'Com utilizador autenticado',
   parameters: {
     docs: {
-      description: { story: 'Header com nome de utilizador, menu de logout e notificações externas. StatusBar mostra o utilizador em sessão.' },
+      description: {
+        story:
+          'Header com nome de utilizador, menu de logout e notificações externas. StatusBar mostra o utilizador em sessão.',
+      },
     },
   },
   render: () => (
@@ -145,7 +189,10 @@ export const WithRightTools = {
   name: 'Com ferramentas (RightRail + RightPanel)',
   parameters: {
     docs: {
-      description: { story: 'RightRail com "Filtros" e "Propriedades". Clica nos ícones da direita para abrir o painel deslizante.' },
+      description: {
+        story:
+          'RightRail com "Filtros" e "Propriedades". Clica nos ícones da direita para abrir o painel deslizante.',
+      },
     },
   },
   render: () => (
@@ -167,7 +214,10 @@ export const WithCommandPalette = {
   name: 'Com command palette (Ctrl+K)',
   parameters: {
     docs: {
-      description: { story: 'Usa Ctrl+K (ou ⌘K) para abrir a paleta de comandos. Inclui apps de navegação e comandos estáticos do consumidor.' },
+      description: {
+        story:
+          'Usa Ctrl+K (ou ⌘K) para abrir a paleta de comandos. Inclui apps de navegação e comandos estáticos do consumidor.',
+      },
     },
   },
   render: () => (
@@ -189,7 +239,8 @@ export const Full = {
   parameters: {
     docs: {
       description: {
-        story: 'Todas as funcionalidades activas: utilizador, notificações, RightRail com painéis, command palette (Ctrl+K) e botão de atendimento na StatusBar.',
+        story:
+          'Todas as funcionalidades activas: utilizador, notificações, RightRail com painéis, command palette (Ctrl+K) e botão de atendimento na StatusBar.',
       },
     },
   },
@@ -209,7 +260,7 @@ export const Full = {
       showAtendimento={true}
       onAtendimentoSave={async (data) => {
         console.log('[AppShell] atendimento guardado →', data);
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise((r) => setTimeout(r, 1000));
       }}
     >
       {(appId) => <AppPlaceholder appId={appId} />}
@@ -221,12 +272,15 @@ export const NoAtendimento = {
   name: 'Sem atendimento (SAAS genérico)',
   parameters: {
     docs: {
-      description: { story: 'Com `showAtendimento={false}`, a StatusBar não mostra o botão de registo. Adequado para produtos não-municipais.' },
+      description: {
+        story:
+          'Com `showAtendimento={false}`, a StatusBar não mostra o botão de registo. Adequado para produtos não-municipais.',
+      },
     },
   },
   render: () => (
     <AppShell
-      apps={APPS.filter(a => a.id !== 'settings')}
+      apps={APPS.filter((a) => a.id !== 'settings')}
       appName="Plataforma SaaS"
       user={{ name: 'Carlos Costa' }}
       showAtendimento={false}

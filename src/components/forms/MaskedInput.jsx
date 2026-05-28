@@ -1,14 +1,17 @@
-import React, { useId } from "react";
-import FormField from "./FormField";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import React, { useId } from 'react';
+import FormField from './FormField';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
 const MASKS = {
-  nif:   { pattern: "999 999 999",                         placeholder: "123 456 789" },
-  iban:  { pattern: "AAAA 9999 9999 9999 9999 9999 9",     placeholder: "PT50 0000 0000 0000 0000 000 0" },
-  date:  { pattern: "99/99/9999",                          placeholder: "DD/MM/AAAA" },
-  phone: { pattern: "999 999 999",                         placeholder: "912 345 678" },
-  cc:    { pattern: "9999 9999 9999 9999",                 placeholder: "0000 0000 0000 0000" },
+  nif: { pattern: '999 999 999', placeholder: '123 456 789' },
+  iban: {
+    pattern: 'AAAA 9999 9999 9999 9999 9999 9',
+    placeholder: 'PT50 0000 0000 0000 0000 000 0',
+  },
+  date: { pattern: '99/99/9999', placeholder: 'DD/MM/AAAA' },
+  phone: { pattern: '999 999 999', placeholder: '912 345 678' },
+  cc: { pattern: '9999 9999 9999 9999', placeholder: '0000 0000 0000 0000' },
 };
 
 /**
@@ -20,12 +23,12 @@ const MASKS = {
  */
 function applyMask(raw, pattern) {
   // Strip all formatting characters — keep only alphanumeric
-  const clean = raw.replace(/[^a-zA-Z0-9]/g, "");
-  let out = "";
+  const clean = raw.replace(/[^a-zA-Z0-9]/g, '');
+  let out = '';
   let ci = 0;
   for (let i = 0; i < pattern.length && ci < clean.length; i++) {
     const slot = pattern[i];
-    if (slot === "9") {
+    if (slot === '9') {
       if (/\d/.test(clean[ci])) {
         out += clean[ci++];
       } else {
@@ -33,7 +36,7 @@ function applyMask(raw, pattern) {
         ci++;
         i--; // retry same slot
       }
-    } else if (slot === "A") {
+    } else if (slot === 'A') {
       if (/[a-zA-Z]/.test(clean[ci])) {
         out += clean[ci++].toUpperCase();
       } else {
@@ -55,9 +58,9 @@ export default function MaskedInput({
   error,
   required,
   disabled,
-  value = "",
+  value = '',
   onChange,
-  mask = "nif",
+  mask = 'nif',
   className,
 }) {
   const autoId = useId();
@@ -70,14 +73,21 @@ export default function MaskedInput({
   };
 
   return (
-    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
+    <FormField
+      id={id}
+      label={label}
+      description={description}
+      error={error}
+      required={required}
+      className={className}
+    >
       <Input
         id={id}
         value={value}
         onChange={handleChange}
         placeholder={cfg.placeholder}
         disabled={disabled}
-        className={cn(error && "border-destructive")}
+        className={cn(error && 'border-destructive')}
       />
     </FormField>
   );

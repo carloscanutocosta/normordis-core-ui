@@ -1,17 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  $getSelectionStyleValueForProperty,
-  $patchStyleText,
-} from "@lexical/selection";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { $getSelectionStyleValueForProperty, $patchStyleText } from '@lexical/selection';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { mergeRegister } from "@lexical/utils";
+} from '@/components/ui/select';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { mergeRegister } from '@lexical/utils';
 import {
   $getSelection,
   $isRangeSelection,
@@ -24,12 +21,9 @@ import {
   REDO_COMMAND,
   SELECTION_CHANGE_COMMAND,
   UNDO_COMMAND,
-} from "lexical";
-import {
-  $isListNode,
-  insertList,
-} from "@lexical/list";
-import { $isHeadingNode, $isQuoteNode } from "@lexical/rich-text";
+} from 'lexical';
+import { $isListNode, insertList } from '@lexical/list';
+import { $isHeadingNode, $isQuoteNode } from '@lexical/rich-text';
 import {
   Bold,
   Braces,
@@ -45,9 +39,9 @@ import {
   Table2,
   Underline,
   Undo2,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -55,8 +49,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import {
   convertSelectionToPlaceholder,
   exitCurrentListItem,
@@ -64,23 +58,38 @@ import {
   insertSemanticBlock,
   insertTable,
   setBlockType,
-} from "./editorCommands";
+} from './editorCommands';
 
 // Font families defined in normordis-pdf (LiberationSans / LiberationSerif / LiberationMono).
 // `css`   — value stored in Lexical text node style and applied to the DOM.
 // `ncrtf` — canonical name used in NCRTF font_family mark / paragraph field.
 export const EDITOR_FONT_FAMILIES = [
-  { value: "sans-serif", label: "Sans Serif",  css: "LiberationSans, Arial, sans-serif",        ncrtf: "LiberationSans"  },
-  { value: "serif",      label: "Serif",        css: "LiberationSerif, Georgia, serif",          ncrtf: "LiberationSerif" },
-  { value: "monospace",  label: "Monospaced",   css: "LiberationMono, 'Courier New', monospace", ncrtf: "LiberationMono"  },
+  {
+    value: 'sans-serif',
+    label: 'Sans Serif',
+    css: 'LiberationSans, Arial, sans-serif',
+    ncrtf: 'LiberationSans',
+  },
+  {
+    value: 'serif',
+    label: 'Serif',
+    css: 'LiberationSerif, Georgia, serif',
+    ncrtf: 'LiberationSerif',
+  },
+  {
+    value: 'monospace',
+    label: 'Monospaced',
+    css: "LiberationMono, 'Courier New', monospace",
+    ncrtf: 'LiberationMono',
+  },
 ];
 
 const BLOCK_STYLE_OPTIONS = [
-  { value: "paragraph", label: "Normal" },
-  { value: "h1", label: "Título" },
-  { value: "h2", label: "Subtítulo" },
-  { value: "h3", label: "Secção" },
-  { value: "quote", label: "Bloco" },
+  { value: 'paragraph', label: 'Normal' },
+  { value: 'h1', label: 'Título' },
+  { value: 'h2', label: 'Subtítulo' },
+  { value: 'h3', label: 'Secção' },
+  { value: 'quote', label: 'Bloco' },
 ];
 
 const MAX_INDENT_LEVEL = 3;
@@ -104,7 +113,7 @@ function getNodeIndentLevel(node, topLevelElement) {
   const listDepth = getAncestorListDepth(node);
   if (listDepth > 0) return listDepth;
 
-  if (typeof topLevelElement.getIndent === "function") {
+  if (typeof topLevelElement.getIndent === 'function') {
     return topLevelElement.getIndent();
   }
 
@@ -120,8 +129,8 @@ function toggleList(editor, listType, isActive) {
   }
 }
 
-function getPromptText(message, defaultValue = "") {
-  if (typeof window === "undefined") return defaultValue;
+function getPromptText(message, defaultValue = '') {
+  if (typeof window === 'undefined') return defaultValue;
   const value = window.prompt(message, defaultValue);
   return value === null ? defaultValue : value.trim();
 }
@@ -129,8 +138,8 @@ function getPromptText(message, defaultValue = "") {
 function readImageFile(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.addEventListener("load", () => resolve(String(reader.result ?? "")));
-    reader.addEventListener("error", () => reject(reader.error));
+    reader.addEventListener('load', () => resolve(String(reader.result ?? '')));
+    reader.addEventListener('error', () => reject(reader.error));
     reader.readAsDataURL(file);
   });
 }
@@ -150,20 +159,14 @@ function TableInsertDialog({ disabled, editor }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <ToolbarButton
-        disabled={disabled}
-        label="Inserir tabela"
-        onClick={() => setOpen(true)}
-      >
+      <ToolbarButton disabled={disabled} label="Inserir tabela" onClick={() => setOpen(true)}>
         <Table2 className="h-4 w-4" aria-hidden="true" />
       </ToolbarButton>
       <DialogContent className="sm:max-w-md">
         <div className="space-y-4">
           <DialogHeader>
             <DialogTitle>Inserir tabela</DialogTitle>
-            <DialogDescription>
-              Define uma tabela simples para o documento.
-            </DialogDescription>
+            <DialogDescription>Define uma tabela simples para o documento.</DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -213,29 +216,22 @@ function TableInsertDialog({ disabled, editor }) {
   );
 }
 
-export function ToolbarButton({
-  children,
-  disabled,
-  label,
-  onClick,
-  pressed,
-  showLabel = false,
-}) {
+export function ToolbarButton({ children, disabled, label, onClick, pressed, showLabel = false }) {
   return (
     <button
       type="button"
       aria-label={label}
-      aria-pressed={typeof pressed === "boolean" ? pressed : undefined}
+      aria-pressed={typeof pressed === 'boolean' ? pressed : undefined}
       disabled={disabled}
       onMouseDown={(event) => {
         event.preventDefault();
         onClick?.();
       }}
       className={cn(
-        "inline-flex h-9 min-w-9 items-center justify-center gap-2 rounded-md border border-transparent px-2 text-sm font-medium text-muted-foreground transition-colors",
-        "hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "disabled:pointer-events-none disabled:opacity-50",
-        pressed && "border-border bg-muted text-foreground"
+        'inline-flex h-9 min-w-9 items-center justify-center gap-2 rounded-md border border-transparent px-2 text-sm font-medium text-muted-foreground transition-colors',
+        'hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+        'disabled:pointer-events-none disabled:opacity-50',
+        pressed && 'border-border bg-muted text-foreground',
       )}
     >
       {children}
@@ -259,7 +255,7 @@ export function useEditorToolbarState() {
   const [editor] = useLexicalComposerContext();
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
-  const [activeBlockType, setActiveBlockType] = useState("paragraph");
+  const [activeBlockType, setActiveBlockType] = useState('paragraph');
   const [activeIndentLevel, setActiveIndentLevel] = useState(0);
   const [activeFormats, setActiveFormats] = useState({
     bold: false,
@@ -268,7 +264,7 @@ export function useEditorToolbarState() {
     superscript: false,
     underline: false,
   });
-  const [activeFontFamily, setActiveFontFamily] = useState("");
+  const [activeFontFamily, setActiveFontFamily] = useState('');
 
   const updateToolbarState = useCallback(() => {
     const selection = $getSelection();
@@ -276,23 +272,21 @@ export function useEditorToolbarState() {
 
     const anchorNode = selection.anchor.getNode();
     const topLevelElement =
-      anchorNode.getKey() === "root"
-        ? anchorNode
-        : anchorNode.getTopLevelElementOrThrow();
+      anchorNode.getKey() === 'root' ? anchorNode : anchorNode.getTopLevelElementOrThrow();
 
     setActiveFormats({
-      bold: selection.hasFormat("bold"),
-      italic: selection.hasFormat("italic"),
-      subscript: selection.hasFormat("subscript"),
-      superscript: selection.hasFormat("superscript"),
-      underline: selection.hasFormat("underline"),
+      bold: selection.hasFormat('bold'),
+      italic: selection.hasFormat('italic'),
+      subscript: selection.hasFormat('subscript'),
+      superscript: selection.hasFormat('superscript'),
+      underline: selection.hasFormat('underline'),
     });
 
-    const rawFont = $getSelectionStyleValueForProperty(selection, "font-family", "");
+    const rawFont = $getSelectionStyleValueForProperty(selection, 'font-family', '');
     const fontEntry = EDITOR_FONT_FAMILIES.find((f) => f.css === rawFont);
-    setActiveFontFamily(fontEntry?.value ?? "");
+    setActiveFontFamily(fontEntry?.value ?? '');
     setActiveIndentLevel(
-      Math.min(MAX_INDENT_LEVEL, getNodeIndentLevel(anchorNode, topLevelElement))
+      Math.min(MAX_INDENT_LEVEL, getNodeIndentLevel(anchorNode, topLevelElement)),
     );
 
     if ($isHeadingNode(topLevelElement)) {
@@ -301,20 +295,16 @@ export function useEditorToolbarState() {
     }
 
     if ($isListNode(topLevelElement)) {
-      setActiveBlockType(
-        topLevelElement.getListType() === "number" ? "ol" : "ul"
-      );
+      setActiveBlockType(topLevelElement.getListType() === 'number' ? 'ol' : 'ul');
       return;
     }
 
     if ($isQuoteNode(topLevelElement)) {
-      setActiveBlockType("quote");
+      setActiveBlockType('quote');
       return;
     }
 
-    setActiveBlockType(
-      topLevelElement.getType() === "paragraph" ? "paragraph" : "unknown"
-    );
+    setActiveBlockType(topLevelElement.getType() === 'paragraph' ? 'paragraph' : 'unknown');
   }, []);
 
   useEffect(() => {
@@ -324,13 +314,19 @@ export function useEditorToolbarState() {
       }),
       editor.registerCommand(
         CAN_UNDO_COMMAND,
-        (payload) => { setCanUndo(payload); return false; },
-        COMMAND_PRIORITY_LOW
+        (payload) => {
+          setCanUndo(payload);
+          return false;
+        },
+        COMMAND_PRIORITY_LOW,
       ),
       editor.registerCommand(
         CAN_REDO_COMMAND,
-        (payload) => { setCanRedo(payload); return false; },
-        COMMAND_PRIORITY_LOW
+        (payload) => {
+          setCanRedo(payload);
+          return false;
+        },
+        COMMAND_PRIORITY_LOW,
       ),
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
@@ -338,8 +334,8 @@ export function useEditorToolbarState() {
           updateToolbarState();
           return false;
         },
-        COMMAND_PRIORITY_LOW
-      )
+        COMMAND_PRIORITY_LOW,
+      ),
     );
   }, [editor, updateToolbarState]);
 
@@ -360,7 +356,7 @@ export function NormordisEditorToolbar({
   onSemanticBlockInsert,
   placeholderDefinitions = [],
   semanticBlocks = [],
-  toolbarLabel = "Ferramentas do editor",
+  toolbarLabel = 'Ferramentas do editor',
 }) {
   const {
     editor,
@@ -380,13 +376,13 @@ export function NormordisEditorToolbar({
       editor.update(() => {
         const selection = $getSelection();
         if ($isRangeSelection(selection)) {
-          $patchStyleText(selection, { "font-family": option.css });
+          $patchStyleText(selection, { 'font-family': option.css });
         }
       });
       onFontFamilyChange?.(value);
       window.setTimeout(() => editor.focus(), 0);
     },
-    [editor, onFontFamilyChange]
+    [editor, onFontFamilyChange],
   );
 
   return (
@@ -415,7 +411,7 @@ export function NormordisEditorToolbar({
       <ToolbarButton
         disabled={disabled}
         label="Negrito"
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}
+        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
         pressed={activeFormats.bold}
       >
         <Bold className="h-4 w-4" aria-hidden="true" />
@@ -423,7 +419,7 @@ export function NormordisEditorToolbar({
       <ToolbarButton
         disabled={disabled}
         label="Italico"
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")}
+        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
         pressed={activeFormats.italic}
       >
         <Italic className="h-4 w-4" aria-hidden="true" />
@@ -431,7 +427,7 @@ export function NormordisEditorToolbar({
       <ToolbarButton
         disabled={disabled}
         label="Sublinhado"
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")}
+        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}
         pressed={activeFormats.underline}
       >
         <Underline className="h-4 w-4" aria-hidden="true" />
@@ -439,7 +435,7 @@ export function NormordisEditorToolbar({
       <ToolbarButton
         disabled={disabled}
         label="Subscrito"
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "subscript")}
+        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'subscript')}
         pressed={activeFormats.subscript}
       >
         <Subscript className="h-4 w-4" aria-hidden="true" />
@@ -447,7 +443,7 @@ export function NormordisEditorToolbar({
       <ToolbarButton
         disabled={disabled}
         label="Sobrescrito"
-        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "superscript")}
+        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'superscript')}
         pressed={activeFormats.superscript}
       >
         <Superscript className="h-4 w-4" aria-hidden="true" />
@@ -457,7 +453,7 @@ export function NormordisEditorToolbar({
 
       <Select
         disabled={disabled}
-        value={activeFontFamily || "sans-serif"}
+        value={activeFontFamily || 'sans-serif'}
         onValueChange={handleFontFamilyChange}
       >
         <SelectTrigger
@@ -485,16 +481,16 @@ export function NormordisEditorToolbar({
         value={
           BLOCK_STYLE_OPTIONS.some((option) => option.value === activeBlockType)
             ? activeBlockType
-            : "paragraph"
+            : 'paragraph'
         }
         onChange={(event) => {
           setBlockType(editor, event.target.value);
           editor.focus();
         }}
         className={cn(
-          "h-9 min-w-36 rounded-md border border-input bg-background px-2 text-sm font-medium text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-          "disabled:cursor-not-allowed disabled:opacity-50"
+          'h-9 min-w-36 rounded-md border border-input bg-background px-2 text-sm font-medium text-foreground',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+          'disabled:cursor-not-allowed disabled:opacity-50',
         )}
       >
         {BLOCK_STYLE_OPTIONS.map((option) => (
@@ -530,16 +526,16 @@ export function NormordisEditorToolbar({
       <ToolbarButton
         disabled={disabled}
         label="Lista"
-        onClick={() => toggleList(editor, "bullet", activeBlockType === "ul")}
-        pressed={activeBlockType === "ul"}
+        onClick={() => toggleList(editor, 'bullet', activeBlockType === 'ul')}
+        pressed={activeBlockType === 'ul'}
       >
         <List className="h-4 w-4" aria-hidden="true" />
       </ToolbarButton>
       <ToolbarButton
         disabled={disabled}
         label="Lista numerada"
-        onClick={() => toggleList(editor, "number", activeBlockType === "ol")}
-        pressed={activeBlockType === "ol"}
+        onClick={() => toggleList(editor, 'number', activeBlockType === 'ol')}
+        pressed={activeBlockType === 'ol'}
       >
         <ListOrdered className="h-4 w-4" aria-hidden="true" />
       </ToolbarButton>
@@ -561,7 +557,7 @@ export function NormordisEditorToolbar({
         tabIndex={-1}
         onChange={async (event) => {
           const file = event.target.files?.[0];
-          event.target.value = "";
+          event.target.value = '';
           if (!file) return;
 
           const src = await readImageFile(file);
@@ -569,7 +565,7 @@ export function NormordisEditorToolbar({
 
           insertImage(editor, {
             altText: file.name,
-            caption: getPromptText("Legenda da imagem", file.name),
+            caption: getPromptText('Legenda da imagem', file.name),
             src,
           });
         }}
@@ -597,19 +593,17 @@ export function NormordisEditorToolbar({
             disabled={disabled}
             defaultValue=""
             onChange={(event) => {
-              const block = semanticBlocks.find(
-                (item) => item.id === event.target.value
-              );
+              const block = semanticBlocks.find((item) => item.id === event.target.value);
               if (!block) return;
 
               insertSemanticBlock(editor, block);
               onSemanticBlockInsert?.(block);
-              event.target.value = "";
+              event.target.value = '';
             }}
             className={cn(
-              "h-9 rounded-md border border-input bg-background px-2 text-sm text-foreground",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-              "disabled:cursor-not-allowed disabled:opacity-50"
+              'h-9 rounded-md border border-input bg-background px-2 text-sm text-foreground',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+              'disabled:cursor-not-allowed disabled:opacity-50',
             )}
           >
             <option value="">Inserir bloco</option>

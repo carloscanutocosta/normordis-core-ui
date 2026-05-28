@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
-import { Slider } from "@/components/ui/slider";
-import FieldWrapper from "./FieldWrapper";
+import { cn } from '@/lib/utils';
+import { Slider } from '@/components/ui/slider';
+import FieldWrapper from './FieldWrapper';
 
 export default function SliderField({
   label,
@@ -30,7 +30,7 @@ export default function SliderField({
             max={max}
             step={step}
             disabled={disabled}
-            className={cn(error && "[&>span]:border-destructive")}
+            className={cn(error && '[&>span]:border-destructive')}
           />
         </div>
         {showValue && (

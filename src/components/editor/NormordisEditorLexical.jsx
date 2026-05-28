@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useId, useMemo, useRef } from "react";
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { ListItemNode, ListNode } from "@lexical/list";
-import { LinkNode } from "@lexical/link";
-import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { HeadingNode, QuoteNode } from '@lexical/rich-text';
+import { ListItemNode, ListNode } from '@lexical/list';
+import { LinkNode } from '@lexical/link';
+import { cn } from '@/lib/utils';
 import {
   createDocumentPayload,
   createInitialEditorState,
@@ -19,10 +19,10 @@ import {
   EDITOR_SCHEMA_VERSION,
   getLexicalPayload,
   lexicalTheme,
-} from "./editorState";
-import NormordisEditorToolbar from "./NormordisEditorToolbar";
-import { ImageNode } from "./nodes/ImageNode";
-import { SimpleTableNode } from "./nodes/SimpleTableNode";
+} from './editorState';
+import NormordisEditorToolbar from './NormordisEditorToolbar';
+import { ImageNode } from './nodes/ImageNode';
+import { SimpleTableNode } from './nodes/SimpleTableNode';
 
 function SyncExternalValuePlugin({ value }) {
   const [editor] = useLexicalComposerContext();
@@ -50,7 +50,7 @@ function SyncExternalValuePlugin({ value }) {
 }
 
 export default function NormordisEditorLexical({
-  "aria-label": ariaLabel,
+  'aria-label': ariaLabel,
   className,
   defaultValue,
   description,
@@ -60,12 +60,12 @@ export default function NormordisEditorLexical({
   invalid,
   label,
   minHeight = 220,
-  namespace = "NormordisEditorLexical",
+  namespace = 'NormordisEditorLexical',
   onChange,
   onError,
   onPlaceholderInsert,
   onSemanticBlockInsert,
-  placeholder = "Escrever documento...",
+  placeholder = 'Escrever documento...',
   placeholderDefinitions = [],
   readOnly = false,
   required = false,
@@ -87,15 +87,7 @@ export default function NormordisEditorLexical({
       editable: !isReadOnly,
       editorState: createInitialEditorState(value, defaultValue),
       namespace,
-      nodes: [
-        HeadingNode,
-        QuoteNode,
-        ListNode,
-        ListItemNode,
-        LinkNode,
-        ImageNode,
-        SimpleTableNode,
-      ],
+      nodes: [HeadingNode, QuoteNode, ListNode, ListItemNode, LinkNode, ImageNode, SimpleTableNode],
       onError: (err) => {
         onError?.(err);
         if (!onError) {
@@ -104,18 +96,18 @@ export default function NormordisEditorLexical({
       },
       theme: lexicalTheme,
     }),
-    [defaultValue, isReadOnly, namespace, onError, value]
+    [defaultValue, isReadOnly, namespace, onError, value],
   );
 
   const handleChange = useCallback(
     (editorState) => {
       onChange?.(createDocumentPayload(editorState));
     },
-    [onChange]
+    [onChange],
   );
 
   return (
-    <div className={cn("space-y-2", className)}>
+    <div className={cn('space-y-2', className)}>
       {label && (
         <label className="text-sm font-medium text-foreground" htmlFor={editorId}>
           {label}
@@ -131,10 +123,10 @@ export default function NormordisEditorLexical({
 
       <div
         className={cn(
-          "overflow-hidden rounded-md border border-input bg-background shadow-sm transition-colors",
-          "focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30",
-          isInvalid && "border-destructive focus-within:ring-destructive/30",
-          disabled && "opacity-60"
+          'overflow-hidden rounded-md border border-input bg-background shadow-sm transition-colors',
+          'focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30',
+          isInvalid && 'border-destructive focus-within:ring-destructive/30',
+          disabled && 'opacity-60',
         )}
       >
         <LexicalComposer initialConfig={initialConfig}>
@@ -156,21 +148,18 @@ export default function NormordisEditorLexical({
               contentEditable={
                 <ContentEditable
                   id={editorId}
-                  aria-describedby={
-                    [descriptionId, errorId].filter(Boolean).join(" ") ||
-                    undefined
-                  }
+                  aria-describedby={[descriptionId, errorId].filter(Boolean).join(' ') || undefined}
                   aria-invalid={isInvalid || undefined}
-                  aria-label={ariaLabel ?? (label ? undefined : "Editor")}
+                  aria-label={ariaLabel ?? (label ? undefined : 'Editor')}
                   aria-required={required || undefined}
                   className={cn(
-                    "prose prose-sm max-w-none px-4 py-3 text-sm text-foreground outline-none",
-                    "[&_h3]:mt-4 [&_h3]:text-base [&_h3]:font-bold [&_h3]:leading-tight [&_h3]:text-foreground",
-                    "[&_li]:my-1 [&_ol]:!list-decimal [&_ol]:list-outside [&_ol]:space-y-1 [&_ol]:pl-6 [&_ul]:!list-disc [&_ul]:list-outside [&_ul]:space-y-1 [&_ul]:pl-6",
-                    "[&_table]:my-3 [&_table]:w-full [&_table]:border-collapse [&_table]:border [&_table]:border-border [&_table]:text-sm",
-                    "[&_td]:border [&_td]:border-border [&_td]:p-2 [&_th]:border [&_th]:border-border [&_th]:bg-muted/15 [&_th]:p-2 [&_th]:font-semibold",
-                    "focus:outline-none disabled:cursor-not-allowed",
-                    isReadOnly && "cursor-default"
+                    'prose prose-sm max-w-none px-4 py-3 text-sm text-foreground outline-none',
+                    '[&_h3]:mt-4 [&_h3]:text-base [&_h3]:font-bold [&_h3]:leading-tight [&_h3]:text-foreground',
+                    '[&_li]:my-1 [&_ol]:!list-decimal [&_ol]:list-outside [&_ol]:space-y-1 [&_ol]:pl-6 [&_ul]:!list-disc [&_ul]:list-outside [&_ul]:space-y-1 [&_ul]:pl-6',
+                    '[&_table]:my-3 [&_table]:w-full [&_table]:border-collapse [&_table]:border [&_table]:border-border [&_table]:text-sm',
+                    '[&_td]:border [&_td]:border-border [&_td]:p-2 [&_th]:border [&_th]:border-border [&_th]:bg-muted/15 [&_th]:p-2 [&_th]:font-semibold',
+                    'focus:outline-none disabled:cursor-not-allowed',
+                    isReadOnly && 'cursor-default',
                   )}
                   style={{ minHeight }}
                 />

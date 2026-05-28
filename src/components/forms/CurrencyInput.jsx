@@ -1,12 +1,12 @@
-import React, { useId } from "react";
-import FormField from "./FormField";
-import { cn } from "@/lib/utils";
+import React, { useId } from 'react';
+import FormField from './FormField';
+import { cn } from '@/lib/utils';
 
 const CURRENCIES = [
-  { code: "EUR", symbol: "€" },
-  { code: "BRL", symbol: "R$" },
-  { code: "USD", symbol: "$" },
-  { code: "GBP", symbol: "£" },
+  { code: 'EUR', symbol: '€' },
+  { code: 'BRL', symbol: 'R$' },
+  { code: 'USD', symbol: '$' },
+  { code: 'GBP', symbol: '£' },
 ];
 
 /**
@@ -21,33 +21,42 @@ export default function CurrencyInput({
   description,
   error,
   required,
-  value = { currency: "EUR", amount: "" },
+  value = { currency: 'EUR', amount: '' },
   onChange,
   disabled,
-  placeholder = "0,00",
+  placeholder = '0,00',
   className,
 }) {
   const autoId = useId();
   const id = idProp ?? autoId;
 
-  const currency = value?.currency ?? "EUR";
-  const amount = value?.amount ?? "";
+  const currency = value?.currency ?? 'EUR';
+  const amount = value?.amount ?? '';
 
   const update = (patch) => onChange?.({ currency, amount, ...patch });
 
   const handleAmountChange = (e) => {
-    const raw = e.target.value.replace(/[^0-9.,]/g, "");
+    const raw = e.target.value.replace(/[^0-9.,]/g, '');
     update({ amount: raw });
   };
 
   return (
-    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
-      <div className={cn(
-        "flex h-9 rounded-md border border-input bg-background overflow-hidden",
-        "focus-within:ring-1 focus-within:ring-ring",
-        error && "border-destructive",
-        disabled && "opacity-50"
-      )}>
+    <FormField
+      id={id}
+      label={label}
+      description={description}
+      error={error}
+      required={required}
+      className={className}
+    >
+      <div
+        className={cn(
+          'flex h-9 rounded-md border border-input bg-background overflow-hidden',
+          'focus-within:ring-1 focus-within:ring-ring',
+          error && 'border-destructive',
+          disabled && 'opacity-50',
+        )}
+      >
         {/* Currency selector */}
         <select
           value={currency}

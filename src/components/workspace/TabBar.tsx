@@ -14,7 +14,7 @@ export default function TabBar() {
       aria-label="Apps abertas"
       className="h-9 bg-muted flex items-end border-b border-border select-none shrink-0 overflow-x-auto workspace-scroll"
     >
-      {openTabs.map(tab => {
+      {openTabs.map((tab) => {
         const isActive = activeApp === tab.id;
         return (
           <div
@@ -39,7 +39,10 @@ export default function TabBar() {
             <span className="text-xs font-medium whitespace-nowrap">{tab.label}</span>
             {openTabs.length > 1 && (
               <button
-                onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeTab(tab.id);
+                }}
                 aria-label={`Fechar ${tab.label}`}
                 className="opacity-0 group-hover:opacity-100 p-0.5 rounded hover:bg-muted transition-all"
               >

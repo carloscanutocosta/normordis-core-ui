@@ -1,16 +1,16 @@
-import React, { useId, useState } from "react";
-import FormField from "./FormField";
-import { cn } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
+import React, { useId, useState } from 'react';
+import FormField from './FormField';
+import { cn } from '@/lib/utils';
+import { ChevronDown } from 'lucide-react';
 
 const COUNTRIES = [
-  { code: "PT", dial: "+351", flag: "🇵🇹" },
-  { code: "BR", dial: "+55",  flag: "🇧🇷" },
-  { code: "US", dial: "+1",   flag: "🇺🇸" },
-  { code: "GB", dial: "+44",  flag: "🇬🇧" },
-  { code: "ES", dial: "+34",  flag: "🇪🇸" },
-  { code: "FR", dial: "+33",  flag: "🇫🇷" },
-  { code: "DE", dial: "+49",  flag: "🇩🇪" },
+  { code: 'PT', dial: '+351', flag: '🇵🇹' },
+  { code: 'BR', dial: '+55', flag: '🇧🇷' },
+  { code: 'US', dial: '+1', flag: '🇺🇸' },
+  { code: 'GB', dial: '+44', flag: '🇬🇧' },
+  { code: 'ES', dial: '+34', flag: '🇪🇸' },
+  { code: 'FR', dial: '+33', flag: '🇫🇷' },
+  { code: 'DE', dial: '+49', flag: '🇩🇪' },
 ];
 
 /**
@@ -25,30 +25,39 @@ export default function PhoneInput({
   description,
   error,
   required,
-  value = { countryCode: "+351", number: "" },
+  value = { countryCode: '+351', number: '' },
   onChange,
   disabled,
-  placeholder = "912 345 678",
+  placeholder = '912 345 678',
   className,
 }) {
   const autoId = useId();
   const id = idProp ?? autoId;
   const [open, setOpen] = useState(false);
 
-  const countryCode = value?.countryCode ?? "+351";
-  const number = value?.number ?? "";
+  const countryCode = value?.countryCode ?? '+351';
+  const number = value?.number ?? '';
   const selected = COUNTRIES.find((c) => c.dial === countryCode) ?? COUNTRIES[0];
 
   const update = (patch) => onChange?.({ countryCode, number, ...patch });
 
   return (
-    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
-      <div className={cn(
-        "flex h-9 rounded-md border border-input bg-background overflow-hidden",
-        "focus-within:ring-1 focus-within:ring-ring",
-        error && "border-destructive",
-        disabled && "opacity-50"
-      )}>
+    <FormField
+      id={id}
+      label={label}
+      description={description}
+      error={error}
+      required={required}
+      className={className}
+    >
+      <div
+        className={cn(
+          'flex h-9 rounded-md border border-input bg-background overflow-hidden',
+          'focus-within:ring-1 focus-within:ring-ring',
+          error && 'border-destructive',
+          disabled && 'opacity-50',
+        )}
+      >
         {/* Country selector */}
         <div className="relative">
           <button
@@ -67,10 +76,13 @@ export default function PhoneInput({
                 <button
                   key={c.code}
                   type="button"
-                  onClick={() => { update({ countryCode: c.dial }); setOpen(false); }}
+                  onClick={() => {
+                    update({ countryCode: c.dial });
+                    setOpen(false);
+                  }}
                   className={cn(
-                    "flex items-center gap-2 w-full px-3 py-1.5 text-sm hover:bg-muted text-foreground",
-                    c.dial === countryCode && "bg-accent"
+                    'flex items-center gap-2 w-full px-3 py-1.5 text-sm hover:bg-muted text-foreground',
+                    c.dial === countryCode && 'bg-accent',
                   )}
                 >
                   <span>{c.flag}</span>

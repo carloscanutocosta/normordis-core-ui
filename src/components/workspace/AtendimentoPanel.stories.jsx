@@ -5,23 +5,37 @@ import AtendimentoPanel from './AtendimentoPanel';
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const FORM_DEFAULTS = {
-  area: '', assunto: '', descricao: '', resposta: '',
-  canal: 'Telefone', prioridade: 'Normal', estado: 'Aberto',
-  utilizador_contacto: '', duracao_minutos: '', notas_internas: '',
+  area: '',
+  assunto: '',
+  descricao: '',
+  resposta: '',
+  canal: 'Telefone',
+  prioridade: 'Normal',
+  estado: 'Aberto',
+  utilizador_contacto: '',
+  duracao_minutos: '',
+  notas_internas: '',
 };
 
 const FORM_FILLED = {
-  area: 'Tecnologia', assunto: 'Problema de acesso ao sistema',
+  area: 'Tecnologia',
+  assunto: 'Problema de acesso ao sistema',
   descricao: 'O utilizador não consegue aceder à aplicação após a actualização.',
   resposta: 'Credenciais repostas e acesso verificado com sucesso.',
-  canal: 'Telefone', prioridade: 'Alta', estado: 'Resolvido',
-  utilizador_contacto: 'João Silva', duracao_minutos: '', notas_internas: 'Caso recorrente — verificar permissões no AD.',
+  canal: 'Telefone',
+  prioridade: 'Alta',
+  estado: 'Resolvido',
+  utilizador_contacto: 'João Silva',
+  duracao_minutos: '',
+  notas_internas: 'Caso recorrente — verificar permissões no AD.',
 };
 
 // Seeds the WorkspaceContext with an atendimento state patch
 function AtendimentoSeeder({ patch }) {
   const { updateAtendimento } = useWorkspace();
-  useEffect(() => { updateAtendimento(patch); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    updateAtendimento(patch);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -67,7 +81,8 @@ export default {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Painel de registo de atendimentos em 4 passos: Hora → Identificação → Assunto → Resposta. Abre como bottom-sheet e persiste o estado no WorkspaceContext (sobrevive a recarregamentos de página).',
+        component:
+          'Painel de registo de atendimentos em 4 passos: Hora → Identificação → Assunto → Resposta. Abre como bottom-sheet e persiste o estado no WorkspaceContext (sobrevive a recarregamentos de página).',
       },
     },
   },
@@ -85,48 +100,61 @@ export const ReadyToStart = {
 export const InProgress = {
   name: 'Passo 1 — em atendimento (relógio a correr)',
   render: () => (
-    <PanelShell patch={{
-      started: true,
-      startTime: new Date(Date.now() - 7 * 60 * 1000).toISOString(),
-      step: 0,
-      form: { ...FORM_DEFAULTS, canal: 'Presencial' },
-    }} />
+    <PanelShell
+      patch={{
+        started: true,
+        startTime: new Date(Date.now() - 7 * 60 * 1000).toISOString(),
+        step: 0,
+        form: { ...FORM_DEFAULTS, canal: 'Presencial' },
+      }}
+    />
   ),
 };
 
 export const StepIdentification = {
   name: 'Passo 2 — identificação',
   render: () => (
-    <PanelShell patch={{
-      started: true,
-      startTime: new Date(Date.now() - 4 * 60 * 1000).toISOString(),
-      step: 1,
-      form: { ...FORM_DEFAULTS, canal: 'Email' },
-    }} />
+    <PanelShell
+      patch={{
+        started: true,
+        startTime: new Date(Date.now() - 4 * 60 * 1000).toISOString(),
+        step: 1,
+        form: { ...FORM_DEFAULTS, canal: 'Email' },
+      }}
+    />
   ),
 };
 
 export const StepSubject = {
   name: 'Passo 3 — assunto',
   render: () => (
-    <PanelShell patch={{
-      started: true,
-      startTime: new Date(Date.now() - 6 * 60 * 1000).toISOString(),
-      step: 2,
-      form: { ...FORM_DEFAULTS, utilizador_contacto: 'Ana Costa', area: 'Recursos Humanos', canal: 'Presencial' },
-    }} />
+    <PanelShell
+      patch={{
+        started: true,
+        startTime: new Date(Date.now() - 6 * 60 * 1000).toISOString(),
+        step: 2,
+        form: {
+          ...FORM_DEFAULTS,
+          utilizador_contacto: 'Ana Costa',
+          area: 'Recursos Humanos',
+          canal: 'Presencial',
+        },
+      }}
+    />
   ),
 };
 
 export const StepResponse = {
   name: 'Passo 4 — resposta e resumo',
   render: () => (
-    <PanelShell patch={{
-      started: true,
-      startTime: new Date(Date.now() - 12 * 60 * 1000).toISOString(),
-      step: 3,
-      form: FORM_FILLED,
-    }} />
+    <PanelShell
+      patch={{
+        started: true,
+        startTime: new Date(Date.now() - 12 * 60 * 1000).toISOString(),
+        step: 3,
+        form: FORM_FILLED,
+      }}
+    />
   ),
 };
 
@@ -135,22 +163,28 @@ export const CustomOptions = {
   parameters: {
     docs: {
       description: {
-        story: 'As áreas, canais, prioridades e estados podem ser substituídos pelo consumidor do SDK.',
+        story:
+          'As áreas, canais, prioridades e estados podem ser substituídos pelo consumidor do SDK.',
       },
     },
   },
   render: () => (
     <PanelShell
-      patch={{ started: true, startTime: new Date(Date.now() - 2 * 60 * 1000).toISOString(), step: 0, form: { ...FORM_DEFAULTS, canal: 'Balcão' } }}
+      patch={{
+        started: true,
+        startTime: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
+        step: 0,
+        form: { ...FORM_DEFAULTS, canal: 'Balcão' },
+      }}
       areas={['Atendimento ao Público', 'Licenciamento', 'Urbanismo', 'Ambiente', 'Fiscalização']}
       canais={[
-        { label: 'Balcão',    icon: () => null },
-        { label: 'Telefone',  icon: () => null },
-        { label: 'Email',     icon: () => null },
+        { label: 'Balcão', icon: () => null },
+        { label: 'Telefone', icon: () => null },
+        { label: 'Email', icon: () => null },
       ]}
       prioridades={[
-        { label: 'Rotina',   color: 'bg-slate-500/15 text-slate-600 border-slate-500/30' },
-        { label: 'Urgente',  color: 'bg-red-500/15 text-red-600 border-red-500/30'       },
+        { label: 'Rotina', color: 'bg-slate-500/15 text-slate-600 border-slate-500/30' },
+        { label: 'Urgente', color: 'bg-red-500/15 text-red-600 border-red-500/30' },
       ]}
       estados={['Recebido', 'Em análise', 'Deferido', 'Indeferido']}
     />
@@ -162,7 +196,8 @@ export const WithSaveCallback = {
   parameters: {
     docs: {
       description: {
-        story: 'No passo 4, ao clicar "Registar Atendimento", o `onSave` é invocado com todos os dados preenchidos. Abre a consola do browser para ver o output.',
+        story:
+          'No passo 4, ao clicar "Registar Atendimento", o `onSave` é invocado com todos os dados preenchidos. Abre a consola do browser para ver o output.',
       },
     },
   },
@@ -176,7 +211,7 @@ export const WithSaveCallback = {
       }}
       onSave={async (data) => {
         console.log('[AtendimentoPanel] onSave →', data);
-        await new Promise(r => setTimeout(r, 800));
+        await new Promise((r) => setTimeout(r, 800));
       }}
     />
   ),

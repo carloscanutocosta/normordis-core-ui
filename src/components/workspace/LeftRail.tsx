@@ -9,16 +9,20 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function LeftRail() {
   const {
-    apps, activeApp, openApp,
-    leftRailCollapsed, setLeftRailCollapsed,
-    mobileRailOpen, closeMobileRail,
+    apps,
+    activeApp,
+    openApp,
+    leftRailCollapsed,
+    setLeftRailCollapsed,
+    mobileRailOpen,
+    closeMobileRail,
     appBadges,
   } = useWorkspace();
   const isMobile = useIsMobile();
 
-  const coreApps   = apps.filter(a => a.category !== 'system');
-  const systemApps = apps.filter(a => a.category === 'system');
-  const hasSystem  = systemApps.length > 0;
+  const coreApps = apps.filter((a) => a.category !== 'system');
+  const systemApps = apps.filter((a) => a.category === 'system');
+  const hasSystem = systemApps.length > 0;
 
   const handleAppOpen = (appId: string) => {
     openApp(appId);
@@ -57,17 +61,28 @@ export default function LeftRail() {
                   <X className="w-4 h-4" />
                 </button>
               </div>
-              <nav aria-label="Navegação principal" className="flex-1 overflow-y-auto workspace-scroll py-1">
+              <nav
+                aria-label="Navegação principal"
+                className="flex-1 overflow-y-auto workspace-scroll py-1"
+              >
                 <NavItems
-                  apps={coreApps} activeApp={activeApp}
-                  onOpen={handleAppOpen} collapsed={false} badges={appBadges}
+                  apps={coreApps}
+                  activeApp={activeApp}
+                  onOpen={handleAppOpen}
+                  collapsed={false}
+                  badges={appBadges}
                 />
                 {hasSystem && (
                   <>
-                    <div className="px-3 my-2"><Separator className="bg-sidebar-border" /></div>
+                    <div className="px-3 my-2">
+                      <Separator className="bg-sidebar-border" />
+                    </div>
                     <NavItems
-                      apps={systemApps} activeApp={activeApp}
-                      onOpen={handleAppOpen} collapsed={false} badges={appBadges}
+                      apps={systemApps}
+                      activeApp={activeApp}
+                      onOpen={handleAppOpen}
+                      collapsed={false}
+                      badges={appBadges}
                     />
                   </>
                 )}
@@ -87,27 +102,47 @@ export default function LeftRail() {
         transition={{ duration: 0.2, ease: 'easeInOut' }}
         className="h-full bg-sidebar flex flex-col border-r border-sidebar-border select-none shrink-0 overflow-hidden"
       >
-        <div className={cn('flex items-center h-9 shrink-0', leftRailCollapsed ? 'justify-center' : 'justify-end px-2')}>
+        <div
+          className={cn(
+            'flex items-center h-9 shrink-0',
+            leftRailCollapsed ? 'justify-center' : 'justify-end px-2',
+          )}
+        >
           <button
             onClick={() => setLeftRailCollapsed(!leftRailCollapsed)}
             aria-label={leftRailCollapsed ? 'Expandir navegação' : 'Colapsar navegação'}
             className="p-1 rounded text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
           >
-            {leftRailCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+            {leftRailCollapsed ? (
+              <PanelLeftOpen className="w-4 h-4" />
+            ) : (
+              <PanelLeftClose className="w-4 h-4" />
+            )}
           </button>
         </div>
 
-        <nav aria-label="Navegação principal" className="flex-1 overflow-y-auto workspace-scroll py-1">
+        <nav
+          aria-label="Navegação principal"
+          className="flex-1 overflow-y-auto workspace-scroll py-1"
+        >
           <NavItems
-            apps={coreApps} activeApp={activeApp}
-            onOpen={openApp} collapsed={leftRailCollapsed} badges={appBadges}
+            apps={coreApps}
+            activeApp={activeApp}
+            onOpen={openApp}
+            collapsed={leftRailCollapsed}
+            badges={appBadges}
           />
           {hasSystem && (
             <>
-              <div className="px-3 my-2"><Separator className="bg-sidebar-border" /></div>
+              <div className="px-3 my-2">
+                <Separator className="bg-sidebar-border" />
+              </div>
               <NavItems
-                apps={systemApps} activeApp={activeApp}
-                onOpen={openApp} collapsed={leftRailCollapsed} badges={appBadges}
+                apps={systemApps}
+                activeApp={activeApp}
+                onOpen={openApp}
+                collapsed={leftRailCollapsed}
+                badges={appBadges}
               />
             </>
           )}
@@ -128,10 +163,10 @@ interface NavItemsProps {
 function NavItems({ apps, activeApp, onOpen, collapsed, badges }: NavItemsProps) {
   return (
     <div className="space-y-0.5">
-      {apps.map(app => {
-        const Icon     = app.icon;
+      {apps.map((app) => {
+        const Icon = app.icon;
         const isActive = activeApp === app.id;
-        const badge    = badges[app.id] ?? 0;
+        const badge = badges[app.id] ?? 0;
 
         return (
           <Tooltip key={app.id}>
@@ -157,10 +192,7 @@ function NavItems({ apps, activeApp, onOpen, collapsed, badges }: NavItemsProps)
 
                 <span className="relative shrink-0">
                   {Icon && (
-                    <Icon
-                      className={cn(collapsed ? 'w-5 h-5' : 'w-4 h-4')}
-                      aria-hidden="true"
-                    />
+                    <Icon className={cn(collapsed ? 'w-5 h-5' : 'w-4 h-4')} aria-hidden="true" />
                   )}
                   {badge > 0 && collapsed && (
                     <span className="absolute -top-1.5 -right-1.5 min-w-[14px] h-[14px] rounded-full bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center px-0.5 leading-none">
@@ -191,7 +223,10 @@ function NavItems({ apps, activeApp, onOpen, collapsed, badges }: NavItemsProps)
             </TooltipTrigger>
             {collapsed && (
               <TooltipContent side="right">
-                <p>{app.label}{badge > 0 ? ` (${badge})` : ''}</p>
+                <p>
+                  {app.label}
+                  {badge > 0 ? ` (${badge})` : ''}
+                </p>
               </TooltipContent>
             )}
           </Tooltip>

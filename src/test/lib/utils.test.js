@@ -35,7 +35,9 @@ describe('cn — class name merger', () => {
   it('merges conditional classes correctly', () => {
     const isActive = true;
     const isDisabled = false;
-    expect(cn('btn', isActive && 'btn-active', isDisabled && 'btn-disabled')).toBe('btn btn-active');
+    expect(cn('btn', isActive && 'btn-active', isDisabled && 'btn-disabled')).toBe(
+      'btn btn-active',
+    );
   });
 });
 

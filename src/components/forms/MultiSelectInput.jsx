@@ -1,11 +1,11 @@
-import React, { useId } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ChevronDown, X } from "lucide-react";
-import FormField from "./FormField";
-import { cn } from "@/lib/utils";
+import React, { useId } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ChevronDown, X } from 'lucide-react';
+import FormField from './FormField';
+import { cn } from '@/lib/utils';
 
 export default function MultiSelectInput({
   id: idProp,
@@ -16,7 +16,7 @@ export default function MultiSelectInput({
   value = [],
   onChange,
   options = [],
-  placeholder = "Selecionar...",
+  placeholder = 'Selecionar...',
   disabled,
   className,
 }) {
@@ -37,20 +37,27 @@ export default function MultiSelectInput({
   };
 
   const getLabel = (val) => {
-    const opt = options.find((o) => (typeof o === "string" ? o : o.value) === val);
-    return opt ? (typeof opt === "string" ? opt : opt.label) : val;
+    const opt = options.find((o) => (typeof o === 'string' ? o : o.value) === val);
+    return opt ? (typeof opt === 'string' ? opt : opt.label) : val;
   };
 
   return (
-    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
+    <FormField
+      id={id}
+      label={label}
+      description={description}
+      error={error}
+      required={required}
+      className={className}
+    >
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             disabled={disabled}
             className={cn(
-              "w-full h-auto min-h-[40px] justify-between font-normal px-3 py-2",
-              error && "border-destructive"
+              'w-full h-auto min-h-[40px] justify-between font-normal px-3 py-2',
+              error && 'border-destructive',
             )}
           >
             <div className="flex flex-wrap gap-1 flex-1">
@@ -68,11 +75,17 @@ export default function MultiSelectInput({
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-2" align="start">
           <div className="space-y-1 max-h-60 overflow-y-auto">
             {options.map((opt) => {
-              const val = typeof opt === "string" ? opt : opt.value;
-              const lab = typeof opt === "string" ? opt : opt.label;
+              const val = typeof opt === 'string' ? opt : opt.value;
+              const lab = typeof opt === 'string' ? opt : opt.label;
               return (
-                <label key={val} className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-muted cursor-pointer text-sm">
-                  <Checkbox checked={value.includes(val)} onCheckedChange={() => toggleOption(val)} />
+                <label
+                  key={val}
+                  className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-muted cursor-pointer text-sm"
+                >
+                  <Checkbox
+                    checked={value.includes(val)}
+                    onCheckedChange={() => toggleOption(val)}
+                  />
                   {lab}
                 </label>
               );

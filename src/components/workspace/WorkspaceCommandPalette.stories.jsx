@@ -4,22 +4,42 @@ import { WorkspaceProvider, useWorkspace } from './WorkspaceContext';
 import WorkspaceCommandPalette from './WorkspaceCommandPalette';
 
 const APPS = [
-  { id: 'dashboard', label: 'Dashboard',     icon: LayoutDashboard, category: 'core'   },
-  { id: 'documents', label: 'Documentos',    icon: FileText,        category: 'core'   },
-  { id: 'users',     label: 'Utilizadores',  icon: Users,           category: 'core'   },
-  { id: 'settings',  label: 'Definições',    icon: Settings,        category: 'system' },
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, category: 'core' },
+  { id: 'documents', label: 'Documentos', icon: FileText, category: 'core' },
+  { id: 'users', label: 'Utilizadores', icon: Users, category: 'core' },
+  { id: 'settings', label: 'Definições', icon: Settings, category: 'system' },
 ];
 
 const STATIC_COMMANDS = [
-  { id: 'new-process',  label: 'Novo processo',    icon: Plus,     description: 'Abre formulário de criação', onSelect: () => {} },
-  { id: 'export',       label: 'Exportar dados',   icon: Download, description: 'Exporta a vista actual',     onSelect: () => {} },
-  { id: 'filter',       label: 'Filtrar resultados', icon: Filter,  description: 'Abre painel de filtros',    onSelect: () => {} },
+  {
+    id: 'new-process',
+    label: 'Novo processo',
+    icon: Plus,
+    description: 'Abre formulário de criação',
+    onSelect: () => {},
+  },
+  {
+    id: 'export',
+    label: 'Exportar dados',
+    icon: Download,
+    description: 'Exporta a vista actual',
+    onSelect: () => {},
+  },
+  {
+    id: 'filter',
+    label: 'Filtrar resultados',
+    icon: Filter,
+    description: 'Abre painel de filtros',
+    onSelect: () => {},
+  },
 ];
 
 // Opens the command palette right after mounting
 function PaletteOpener() {
   const { openCommand } = useWorkspace();
-  useEffect(() => { openCommand(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    openCommand();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -66,10 +86,24 @@ export const WithDynamicAppCommands = {
   name: 'With dynamic app commands',
   render: () => (
     <WorkspaceProvider apps={APPS}>
-      <AppCommandRegistrar commands={[
-        { id: 'new-doc',    label: 'Novo documento',    icon: Plus,     onSelect: () => {}, description: 'Cria um documento em branco' },
-        { id: 'export-pdf', label: 'Exportar PDF',      icon: Download, onSelect: () => {}, description: 'Exporta a selecção para PDF'  },
-      ]} />
+      <AppCommandRegistrar
+        commands={[
+          {
+            id: 'new-doc',
+            label: 'Novo documento',
+            icon: Plus,
+            onSelect: () => {},
+            description: 'Cria um documento em branco',
+          },
+          {
+            id: 'export-pdf',
+            label: 'Exportar PDF',
+            icon: Download,
+            onSelect: () => {},
+            description: 'Exporta a selecção para PDF',
+          },
+        ]}
+      />
       <PaletteOpener />
       <WorkspaceCommandPalette commands={STATIC_COMMANDS} />
     </WorkspaceProvider>

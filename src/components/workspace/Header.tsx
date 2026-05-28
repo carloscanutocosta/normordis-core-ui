@@ -1,7 +1,10 @@
 import type { ReactNode, ComponentType } from 'react';
 import { Sun, Moon, Contrast, Monitor, ChevronDown, Search, LogOut, Menu } from 'lucide-react';
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -46,7 +49,12 @@ export default function Header({
   const ThemeIcon = THEME_ICONS[theme] ?? Sun;
 
   const initials = user?.name
-    ? user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+    ? user.name
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase()
     : 'U';
 
   return (
@@ -102,12 +110,19 @@ export default function Header({
             <Tooltip>
               <TooltipTrigger asChild>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" aria-label="Selecionar tema" className="h-7 w-7 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Selecionar tema"
+                    className="h-7 w-7 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+                  >
                     <ThemeIcon className="w-3.5 h-3.5" />
                   </Button>
                 </DropdownMenuTrigger>
               </TooltipTrigger>
-              <TooltipContent side="bottom"><p>Tema</p></TooltipContent>
+              <TooltipContent side="bottom">
+                <p>Tema</p>
+              </TooltipContent>
             </Tooltip>
             <DropdownMenuContent align="end" className="min-w-[190px]">
               {THEMES.map(({ id, label }) => {
@@ -130,7 +145,10 @@ export default function Header({
           {(user || onLogout) && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-7 gap-1.5 px-1.5 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent">
+                <Button
+                  variant="ghost"
+                  className="h-7 gap-1.5 px-1.5 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+                >
                   <Avatar className="h-5 w-5">
                     <AvatarFallback className="text-[10px] bg-primary text-primary-foreground">
                       {initials}

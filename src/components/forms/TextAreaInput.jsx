@@ -1,7 +1,7 @@
-import React, { useId } from "react";
-import { Textarea } from "@/components/ui/textarea";
-import FormField from "./FormField";
-import { cn } from "@/lib/utils";
+import React, { useId } from 'react';
+import { Textarea } from '@/components/ui/textarea';
+import FormField from './FormField';
+import { cn } from '@/lib/utils';
 
 export default function TextAreaInput({
   id: idProp,
@@ -21,7 +21,14 @@ export default function TextAreaInput({
   const id = idProp ?? autoId;
 
   return (
-    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
+    <FormField
+      id={id}
+      label={label}
+      description={description}
+      error={error}
+      required={required}
+      className={className}
+    >
       <Textarea
         id={id}
         placeholder={placeholder}
@@ -31,13 +38,13 @@ export default function TextAreaInput({
         maxLength={maxLength}
         disabled={disabled}
         className={cn(
-          "transition-colors resize-y min-h-[80px]",
-          error && "border-destructive focus-visible:ring-destructive"
+          'transition-colors resize-y min-h-[80px]',
+          error && 'border-destructive focus-visible:ring-destructive',
         )}
       />
       {maxLength && (
         <div className="text-xs text-muted-foreground text-right">
-          {(value || "").length}/{maxLength}
+          {(value || '').length}/{maxLength}
         </div>
       )}
     </FormField>

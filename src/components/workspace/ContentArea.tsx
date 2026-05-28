@@ -71,7 +71,7 @@ export default function ContentArea({ children }: ContentAreaProps) {
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
       <TabBar />
       <div className="flex-1 relative bg-background overflow-hidden">
-        {openTabs.map(tab => (
+        {openTabs.map((tab) => (
           <AppIdContext.Provider key={tab.id} value={tab.id}>
             <div
               className="absolute inset-0 overflow-auto workspace-scroll"

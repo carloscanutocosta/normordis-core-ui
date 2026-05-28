@@ -18,4 +18,4 @@
   },
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist", "src/vite-plugins", "src/api"]
-} 
+}

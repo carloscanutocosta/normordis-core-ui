@@ -1,12 +1,20 @@
-import { useId } from "react";
-import { cn } from "@/lib/utils";
+import { useId } from 'react';
+import { cn } from '@/lib/utils';
 
-export default function FieldWrapper({ id: idProp, label, hint, error, required, children, className }) {
+export default function FieldWrapper({
+  id: idProp,
+  label,
+  hint,
+  error,
+  required,
+  children,
+  className,
+}) {
   const autoId = useId();
   const id = idProp ?? autoId;
 
   return (
-    <div className={cn("flex flex-col gap-1.5", className)}>
+    <div className={cn('flex flex-col gap-1.5', className)}>
       {label && (
         <label htmlFor={id} className="text-sm font-medium text-foreground leading-none">
           {label}
@@ -14,12 +22,8 @@ export default function FieldWrapper({ id: idProp, label, hint, error, required,
         </label>
       )}
       {children}
-      {hint && !error && (
-        <p className="text-xs text-muted-foreground">{hint}</p>
-      )}
-      {error && (
-        <p className="text-xs text-destructive font-medium">{error}</p>
-      )}
+      {hint && !error && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {error && <p className="text-xs text-destructive font-medium">{error}</p>}
     </div>
   );
 }

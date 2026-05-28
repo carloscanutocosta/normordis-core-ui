@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
-import { Checkbox } from "@/components/ui/checkbox";
-import FieldWrapper from "./FieldWrapper";
+import { cn } from '@/lib/utils';
+import { Checkbox } from '@/components/ui/checkbox';
+import FieldWrapper from './FieldWrapper';
 
 export default function CheckboxField({
   label,
@@ -21,15 +21,17 @@ export default function CheckboxField({
           {required && <span className="ml-1 text-destructive">*</span>}
         </p>
       )}
-      <label className={cn(
-        "flex items-center gap-3 cursor-pointer group",
-        disabled && "cursor-not-allowed opacity-50"
-      )}>
+      <label
+        className={cn(
+          'flex items-center gap-3 cursor-pointer group',
+          disabled && 'cursor-not-allowed opacity-50',
+        )}
+      >
         <Checkbox
           checked={!!value}
           onCheckedChange={onChange}
           disabled={disabled}
-          className={cn(error && "border-destructive")}
+          className={cn(error && 'border-destructive')}
         />
         {checkLabel && (
           <span className="text-sm text-foreground group-hover:text-foreground/80 transition-colors">

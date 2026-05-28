@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import {
-  CommandDialog, CommandEmpty, CommandGroup,
-  CommandInput, CommandItem, CommandList, CommandSeparator,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
 } from '@/components/ui/command';
 import { useWorkspace } from './WorkspaceContext';
 import type { WorkspaceCommand } from './WorkspaceContext';
@@ -11,10 +16,8 @@ interface WorkspaceCommandPaletteProps {
 }
 
 export default function WorkspaceCommandPalette({ commands = [] }: WorkspaceCommandPaletteProps) {
-  const {
-    apps, commandOpen, openCommand, closeCommand, openApp,
-    activeApp, dynamicCommandsByApp,
-  } = useWorkspace();
+  const { apps, commandOpen, openCommand, closeCommand, openApp, activeApp, dynamicCommandsByApp } =
+    useWorkspace();
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -27,29 +30,42 @@ export default function WorkspaceCommandPalette({ commands = [] }: WorkspaceComm
     return () => window.removeEventListener('keydown', handler);
   }, [commandOpen, openCommand, closeCommand]);
 
-  const handleAppSelect = (appId: string) => { openApp(appId); closeCommand(); };
-  const handleCmdSelect = (cmd: WorkspaceCommand) => { cmd.onSelect(); closeCommand(); };
+  const handleAppSelect = (appId: string) => {
+    openApp(appId);
+    closeCommand();
+  };
+  const handleCmdSelect = (cmd: WorkspaceCommand) => {
+    cmd.onSelect();
+    closeCommand();
+  };
 
-  const coreApps   = apps.filter(a => a.category !== 'system');
-  const systemApps = apps.filter(a => a.category === 'system');
+  const coreApps = apps.filter((a) => a.category !== 'system');
+  const systemApps = apps.filter((a) => a.category === 'system');
 
-  const activeAppLabel    = apps.find(a => a.id === activeApp)?.label;
+  const activeAppLabel = apps.find((a) => a.id === activeApp)?.label;
   const activeAppCommands = (activeApp && dynamicCommandsByApp[activeApp]) ?? [];
-  const hasAppCommands    = activeAppCommands.length > 0;
+  const hasAppCommands = activeAppCommands.length > 0;
   const hasStaticCommands = commands.length > 0;
 
   return (
-    <CommandDialog open={commandOpen} onOpenChange={(open) => open ? openCommand() : closeCommand()}>
+    <CommandDialog
+      open={commandOpen}
+      onOpenChange={(open) => (open ? openCommand() : closeCommand())}
+    >
       <CommandInput placeholder="Pesquisar apps e comandos..." />
       <CommandList>
         <CommandEmpty>Nenhum resultado encontrado.</CommandEmpty>
 
         {coreApps.length > 0 && (
           <CommandGroup heading="Apps">
-            {coreApps.map(app => {
+            {coreApps.map((app) => {
               const Icon = app.icon;
               return (
-                <CommandItem key={app.id} value={app.label} onSelect={() => handleAppSelect(app.id)}>
+                <CommandItem
+                  key={app.id}
+                  value={app.label}
+                  onSelect={() => handleAppSelect(app.id)}
+                >
                   {Icon && <Icon className="w-4 h-4 mr-2 shrink-0 text-muted-foreground" />}
                   {app.label}
                 </CommandItem>
@@ -62,10 +78,14 @@ export default function WorkspaceCommandPalette({ commands = [] }: WorkspaceComm
           <>
             {coreApps.length > 0 && <CommandSeparator />}
             <CommandGroup heading="Sistema">
-              {systemApps.map(app => {
+              {systemApps.map((app) => {
                 const Icon = app.icon;
                 return (
-                  <CommandItem key={app.id} value={app.label} onSelect={() => handleAppSelect(app.id)}>
+                  <CommandItem
+                    key={app.id}
+                    value={app.label}
+                    onSelect={() => handleAppSelect(app.id)}
+                  >
                     {Icon && <Icon className="w-4 h-4 mr-2 shrink-0 text-muted-foreground" />}
                     {app.label}
                   </CommandItem>
@@ -79,7 +99,7 @@ export default function WorkspaceCommandPalette({ commands = [] }: WorkspaceComm
           <>
             <CommandSeparator />
             <CommandGroup heading={activeAppLabel ? `${activeAppLabel} — Ações` : 'App atual'}>
-              {activeAppCommands.map(cmd => {
+              {activeAppCommands.map((cmd) => {
                 const Icon = cmd.icon;
                 return (
                   <CommandItem key={cmd.id} value={cmd.label} onSelect={() => handleCmdSelect(cmd)}>
@@ -101,7 +121,7 @@ export default function WorkspaceCommandPalette({ commands = [] }: WorkspaceComm
           <>
             <CommandSeparator />
             <CommandGroup heading="Comandos">
-              {commands.map(cmd => {
+              {commands.map((cmd) => {
                 const Icon = cmd.icon;
                 return (
                   <CommandItem key={cmd.id} value={cmd.label} onSelect={() => handleCmdSelect(cmd)}>

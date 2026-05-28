@@ -13,7 +13,7 @@ describe('THEMES', () => {
   });
 
   it('each theme has id, label and icon', () => {
-    THEMES.forEach(t => {
+    THEMES.forEach((t) => {
       expect(t).toHaveProperty('id');
       expect(t).toHaveProperty('label');
       expect(t).toHaveProperty('icon');
@@ -21,7 +21,7 @@ describe('THEMES', () => {
   });
 
   it('includes light and dark themes', () => {
-    const ids = THEMES.map(t => t.id);
+    const ids = THEMES.map((t) => t.id);
     expect(ids).toContain('light');
     expect(ids).toContain('dark');
   });

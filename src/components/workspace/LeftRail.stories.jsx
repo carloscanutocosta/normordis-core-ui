@@ -5,11 +5,11 @@ import { WorkspaceProvider, useWorkspace } from './WorkspaceContext';
 import LeftRail from './LeftRail';
 
 const APPS = [
-  { id: 'dashboard', label: 'Dashboard',     icon: LayoutDashboard, category: 'core'   },
-  { id: 'documents', label: 'Documentos',    icon: FileText,        category: 'core'   },
-  { id: 'users',     label: 'Utilizadores',  icon: Users,           category: 'core'   },
-  { id: 'notifs',    label: 'Notificações',  icon: Bell,            category: 'core'   },
-  { id: 'settings',  label: 'Definições',    icon: Settings,        category: 'system' },
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, category: 'core' },
+  { id: 'documents', label: 'Documentos', icon: FileText, category: 'core' },
+  { id: 'users', label: 'Utilizadores', icon: Users, category: 'core' },
+  { id: 'notifs', label: 'Notificações', icon: Bell, category: 'core' },
+  { id: 'settings', label: 'Definições', icon: Settings, category: 'system' },
 ];
 
 // Sets badges inside a WorkspaceProvider via context

@@ -11,7 +11,7 @@ vi.mock('@/lib/theme', () => ({
   getStoredTheme: vi.fn(() => 'light'),
   THEMES: [
     { id: 'light', label: 'Light', icon: 'Sun' },
-    { id: 'dark',  label: 'Dark',  icon: 'Moon' },
+    { id: 'dark', label: 'Dark', icon: 'Moon' },
   ],
 }));
 

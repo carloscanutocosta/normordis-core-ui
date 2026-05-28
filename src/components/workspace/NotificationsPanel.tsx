@@ -1,4 +1,14 @@
-import { Bell, BellOff, Check, CheckCheck, Trash2, Info, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react';
+import {
+  Bell,
+  BellOff,
+  Check,
+  CheckCheck,
+  Trash2,
+  Info,
+  AlertTriangle,
+  CheckCircle2,
+  XCircle,
+} from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -15,10 +25,10 @@ export interface NotificationsPanelProps {
 }
 
 const TYPE_ICONS = {
-  info:    { icon: Info,          className: 'text-blue-500' },
-  success: { icon: CheckCircle2,  className: 'text-emerald-500' },
+  info: { icon: Info, className: 'text-blue-500' },
+  success: { icon: CheckCircle2, className: 'text-emerald-500' },
   warning: { icon: AlertTriangle, className: 'text-amber-500' },
-  error:   { icon: XCircle,       className: 'text-destructive' },
+  error: { icon: XCircle, className: 'text-destructive' },
 } as const;
 
 export default function NotificationsPanel({
@@ -34,9 +44,9 @@ export default function NotificationsPanel({
     readAllInternalNotifications,
   } = useWorkspace();
 
-  const all          = [...internalNotifications, ...notifications];
-  const unreadCount  = all.filter(n => !n.read).length;
-  const isInternal   = (id: string) => internalNotifications.some(n => n.id === id);
+  const all = [...internalNotifications, ...notifications];
+  const unreadCount = all.filter((n) => !n.read).length;
+  const isInternal = (id: string) => internalNotifications.some((n) => n.id === id);
 
   const handleRead = (id: string) => {
     if (isInternal(id)) readInternalNotification(id);
@@ -79,7 +89,9 @@ export default function NotificationsPanel({
             </Button>
           </PopoverTrigger>
         </TooltipTrigger>
-        <TooltipContent side="bottom"><p>Notificações</p></TooltipContent>
+        <TooltipContent side="bottom">
+          <p>Notificações</p>
+        </TooltipContent>
       </Tooltip>
 
       <PopoverContent align="end" className="w-80 p-0" sideOffset={8}>
@@ -95,21 +107,37 @@ export default function NotificationsPanel({
             {unreadCount > 0 && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handleReadAll} aria-label="Marcar todas como lidas">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={handleReadAll}
+                    aria-label="Marcar todas como lidas"
+                  >
                     <CheckCheck className="w-3.5 h-3.5" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom"><p>Marcar todas como lidas</p></TooltipContent>
+                <TooltipContent side="bottom">
+                  <p>Marcar todas como lidas</p>
+                </TooltipContent>
               </Tooltip>
             )}
             {all.length > 0 && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-destructive" onClick={() => handleClear(undefined)} aria-label="Limpar todas">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                    onClick={() => handleClear(undefined)}
+                    aria-label="Limpar todas"
+                  >
                     <Trash2 className="w-3.5 h-3.5" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom"><p>Limpar todas</p></TooltipContent>
+                <TooltipContent side="bottom">
+                  <p>Limpar todas</p>
+                </TooltipContent>
               </Tooltip>
             )}
           </div>
@@ -125,26 +153,36 @@ export default function NotificationsPanel({
             <div className="divide-y divide-border">
               {all.map((n) => {
                 const typeConfig = TYPE_ICONS[n.type as keyof typeof TYPE_ICONS] ?? TYPE_ICONS.info;
-                const TypeIcon   = typeConfig.icon;
+                const TypeIcon = typeConfig.icon;
                 return (
                   <div
                     key={n.id}
                     className={cn(
                       'flex items-start gap-3 px-3 py-3 transition-colors',
-                      !n.read ? 'bg-muted/40' : 'hover:bg-muted/20'
+                      !n.read ? 'bg-muted/40' : 'hover:bg-muted/20',
                     )}
                   >
-                    <TypeIcon className={cn('w-4 h-4 mt-0.5 shrink-0', typeConfig.className)} aria-hidden="true" />
+                    <TypeIcon
+                      className={cn('w-4 h-4 mt-0.5 shrink-0', typeConfig.className)}
+                      aria-hidden="true"
+                    />
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <p className={cn('text-xs leading-snug', !n.read && 'font-semibold')}>{n.title}</p>
+                        <p className={cn('text-xs leading-snug', !n.read && 'font-semibold')}>
+                          {n.title}
+                        </p>
                         {!n.read && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1" aria-label="Não lida" />
+                          <span
+                            className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1"
+                            aria-label="Não lida"
+                          />
                         )}
                       </div>
                       {n.description && (
-                        <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{n.description}</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
+                          {n.description}
+                        </p>
                       )}
                       {n.time && (
                         <p className="text-[10px] text-muted-foreground/70 mt-1">{n.time}</p>
@@ -155,20 +193,36 @@ export default function NotificationsPanel({
                       {!n.read && (
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => handleRead(n.id)} aria-label="Marcar como lida">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-5 w-5"
+                              onClick={() => handleRead(n.id)}
+                              aria-label="Marcar como lida"
+                            >
                               <Check className="w-3 h-3" />
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent side="left"><p>Marcar como lida</p></TooltipContent>
+                          <TooltipContent side="left">
+                            <p>Marcar como lida</p>
+                          </TooltipContent>
                         </Tooltip>
                       )}
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-5 w-5 text-muted-foreground hover:text-destructive" onClick={() => handleClear(n.id)} aria-label="Remover">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-5 w-5 text-muted-foreground hover:text-destructive"
+                            onClick={() => handleClear(n.id)}
+                            aria-label="Remover"
+                          >
                             <Trash2 className="w-3 h-3" />
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent side="left"><p>Remover</p></TooltipContent>
+                        <TooltipContent side="left">
+                          <p>Remover</p>
+                        </TooltipContent>
                       </Tooltip>
                     </div>
                   </div>

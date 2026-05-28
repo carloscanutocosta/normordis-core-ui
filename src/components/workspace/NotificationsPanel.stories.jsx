@@ -5,7 +5,7 @@ import NotificationsPanel from './NotificationsPanel';
 
 const APPS = [
   { id: 'dashboard', label: 'Dashboard', icon: null, category: 'core' },
-  { id: 'reports',   label: 'Relatórios', icon: null, category: 'core' },
+  { id: 'reports', label: 'Relatórios', icon: null, category: 'core' },
 ];
 
 // Pre-populates internal notifications via context so the panel isn't empty
@@ -70,9 +70,16 @@ export const Mixed = {
   name: 'Mixed read/unread',
   args: {
     notifications: [
-      { id: 'e1', title: 'Exportação concluída',    type: 'success', read: true,  time: 'Há 1h'    },
-      { id: 'e2', title: 'Erro de sincronização',   type: 'error',   read: false, description: 'Falha ao sincronizar dados com o servidor.', time: 'Há 5 min' },
-      { id: 'e3', title: 'Actualização disponível', type: 'info',    read: false, time: 'Há 30 min' },
+      { id: 'e1', title: 'Exportação concluída', type: 'success', read: true, time: 'Há 1h' },
+      {
+        id: 'e2',
+        title: 'Erro de sincronização',
+        type: 'error',
+        read: false,
+        description: 'Falha ao sincronizar dados com o servidor.',
+        time: 'Há 5 min',
+      },
+      { id: 'e3', title: 'Actualização disponível', type: 'info', read: false, time: 'Há 30 min' },
     ],
   },
 };
@@ -83,11 +90,21 @@ export const WithInternalNotifications = {
     (Story) => (
       <WorkspaceProvider apps={APPS}>
         <TooltipProvider>
-          <InternalNotifSeeder items={[
-            { title: 'Processo arquivado',  type: 'success', description: 'O processo foi arquivado com sucesso.' },
-            { title: 'Permissão negada',    type: 'error',   description: 'Não tem permissão para esta acção.'    },
-            { title: 'Sincronização activa', type: 'info' },
-          ]} />
+          <InternalNotifSeeder
+            items={[
+              {
+                title: 'Processo arquivado',
+                type: 'success',
+                description: 'O processo foi arquivado com sucesso.',
+              },
+              {
+                title: 'Permissão negada',
+                type: 'error',
+                description: 'Não tem permissão para esta acção.',
+              },
+              { title: 'Sincronização activa', type: 'info' },
+            ]}
+          />
           <Story />
         </TooltipProvider>
       </WorkspaceProvider>

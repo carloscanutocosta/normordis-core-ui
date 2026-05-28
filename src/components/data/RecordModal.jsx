@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { X, Edit2, Save, Trash2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import React, { useState } from 'react';
+import { X, Edit2, Save, Trash2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 // ── Modal shell ────────────────────────────────────────────────────────────
 function ModalShell({ title, subtitle, onClose, actions, children }) {
@@ -30,9 +30,7 @@ function ModalShell({ title, subtitle, onClose, actions, children }) {
         </div>
 
         {/* Body */}
-        <div className="flex-1 overflow-y-auto px-6 py-5">
-          {children}
-        </div>
+        <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
 
         {/* Footer */}
         {actions && (
@@ -53,7 +51,9 @@ function ViewFields({ record, fields }) {
         <div key={key} className="grid grid-cols-3 gap-2">
           <dt className="text-sm font-medium text-muted-foreground col-span-1">{label}</dt>
           <dd className="text-sm text-foreground col-span-2 break-words">
-            {render ? render(record[key], record) : (record[key] ?? <span className="text-muted-foreground">—</span>)}
+            {render
+              ? render(record[key], record)
+              : (record[key] ?? <span className="text-muted-foreground">—</span>)}
           </dd>
         </div>
       ))}
@@ -65,18 +65,20 @@ function ViewFields({ record, fields }) {
 function EditFields({ draft, fields, onChange }) {
   return (
     <div className="space-y-4">
-      {fields.map(({ key, label, editable = true, type = "text" }) => (
+      {fields.map(({ key, label, editable = true, type = 'text' }) => (
         <div key={key} className="space-y-1.5">
           <label className="text-sm font-medium text-foreground">{label}</label>
           {editable ? (
             <Input
               type={type}
-              value={draft[key] ?? ""}
+              value={draft[key] ?? ''}
               onChange={(e) => onChange(key, e.target.value)}
               className="h-9"
             />
           ) : (
-            <p className="text-sm text-muted-foreground px-3 py-2 rounded-md bg-muted/40">{draft[key] ?? "—"}</p>
+            <p className="text-sm text-muted-foreground px-3 py-2 rounded-md bg-muted/40">
+              {draft[key] ?? '—'}
+            </p>
           )}
         </div>
       ))}
@@ -101,8 +103,8 @@ function EditFields({ draft, fields, onChange }) {
 export default function RecordModal({
   record,
   fields = [],
-  mode: initialMode = "view",
-  title = "Detalhes",
+  mode: initialMode = 'view',
+  title = 'Detalhes',
   subtitle,
   onClose,
   onSave,
@@ -117,14 +119,21 @@ export default function RecordModal({
 
   const handleSave = () => {
     onSave?.(draft);
-    toast({ title: "Guardado com sucesso", description: `"${title}" foi actualizado.` });
+    toast({ title: 'Guardado com sucesso', description: `"${title}" foi actualizado.` });
     onClose();
   };
 
   const handleDelete = () => {
-    if (!confirmDelete) { setConfirmDelete(true); return; }
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      return;
+    }
     onDelete?.(record);
-    toast({ title: "Registo eliminado", description: `"${title}" foi removido.`, variant: "destructive" });
+    toast({
+      title: 'Registo eliminado',
+      description: `"${title}" foi removido.`,
+      variant: 'destructive',
+    });
     onClose();
   };
 
@@ -135,23 +144,34 @@ export default function RecordModal({
         <Button
           variant="outline"
           size="sm"
-          className={cn("mr-auto gap-1.5", confirmDelete && "border-destructive text-destructive hover:bg-destructive/10")}
+          className={cn(
+            'mr-auto gap-1.5',
+            confirmDelete && 'border-destructive text-destructive hover:bg-destructive/10',
+          )}
           onClick={handleDelete}
         >
           <Trash2 className="h-3.5 w-3.5" />
-          {confirmDelete ? "Confirmar eliminação" : "Eliminar"}
+          {confirmDelete ? 'Confirmar eliminação' : 'Eliminar'}
         </Button>
       )}
 
-      {mode === "view" && onSave && (
-        <Button variant="outline" size="sm" className="gap-1.5" onClick={() => setMode("edit")}>
+      {mode === 'view' && onSave && (
+        <Button variant="outline" size="sm" className="gap-1.5" onClick={() => setMode('edit')}>
           <Edit2 className="h-3.5 w-3.5" /> Editar
         </Button>
       )}
 
-      {mode === "edit" && (
+      {mode === 'edit' && (
         <>
-          <Button variant="outline" size="sm" onClick={() => { setMode("view"); setDraft({ ...record }); setConfirmDelete(false); }}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setMode('view');
+              setDraft({ ...record });
+              setConfirmDelete(false);
+            }}
+          >
             Cancelar
           </Button>
           <Button size="sm" className="gap-1.5" onClick={handleSave}>
@@ -160,23 +180,26 @@ export default function RecordModal({
         </>
       )}
 
-      {mode === "view" && !onSave && (
-        <Button variant="outline" size="sm" onClick={onClose}>Fechar</Button>
+      {mode === 'view' && !onSave && (
+        <Button variant="outline" size="sm" onClick={onClose}>
+          Fechar
+        </Button>
       )}
     </>
   );
 
   return (
     <ModalShell
-      title={mode === "edit" ? `Editar — ${title}` : title}
+      title={mode === 'edit' ? `Editar — ${title}` : title}
       subtitle={subtitle}
       onClose={onClose}
       actions={actions}
     >
-      {mode === "view"
-        ? <ViewFields record={record} fields={fields} />
-        : <EditFields draft={draft} fields={fields} onChange={handleChange} />
-      }
+      {mode === 'view' ? (
+        <ViewFields record={record} fields={fields} />
+      ) : (
+        <EditFields draft={draft} fields={fields} onChange={handleChange} />
+      )}
     </ModalShell>
   );
 }

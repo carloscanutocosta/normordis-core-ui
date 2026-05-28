@@ -1,6 +1,6 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { Trash2 } from "lucide-react";
-import { $applyNodeReplacement, $getNodeByKey, DecoratorNode } from "lexical";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { Trash2 } from 'lucide-react';
+import { $applyNodeReplacement, $getNodeByKey, DecoratorNode } from 'lexical';
 
 function ImageComponent({ altText, caption, nodeKey, src, width }) {
   const [editor] = useLexicalComposerContext();
@@ -75,17 +75,11 @@ export class ImageNode extends DecoratorNode {
   __width;
 
   static getType() {
-    return "image";
+    return 'image';
   }
 
   static clone(node) {
-    return new ImageNode(
-      node.__src,
-      node.__altText,
-      node.__caption,
-      node.__width,
-      node.__key
-    );
+    return new ImageNode(node.__src, node.__altText, node.__caption, node.__width, node.__key);
   }
 
   static importJSON(serializedNode) {
@@ -97,7 +91,7 @@ export class ImageNode extends DecoratorNode {
     });
   }
 
-  constructor(src, altText = "", caption = "", width = 100, key) {
+  constructor(src, altText = '', caption = '', width = 100, key) {
     super(key);
     this.__src = src;
     this.__altText = altText;
@@ -106,8 +100,8 @@ export class ImageNode extends DecoratorNode {
   }
 
   createDOM() {
-    const element = document.createElement("div");
-    element.className = "normordis-editor-image";
+    const element = document.createElement('div');
+    element.className = 'normordis-editor-image';
     return element;
   }
 
@@ -128,15 +122,15 @@ export class ImageNode extends DecoratorNode {
   }
 
   exportDOM() {
-    const figure = document.createElement("figure");
-    const image = document.createElement("img");
-    image.setAttribute("src", this.__src);
-    image.setAttribute("alt", this.__altText);
-    image.setAttribute("width", `${this.__width}%`);
+    const figure = document.createElement('figure');
+    const image = document.createElement('img');
+    image.setAttribute('src', this.__src);
+    image.setAttribute('alt', this.__altText);
+    image.setAttribute('width', `${this.__width}%`);
     figure.append(image);
 
     if (this.__caption) {
-      const caption = document.createElement("figcaption");
+      const caption = document.createElement('figcaption');
       caption.textContent = this.__caption;
       figure.append(caption);
     }
@@ -149,7 +143,7 @@ export class ImageNode extends DecoratorNode {
       altText: this.__altText,
       caption: this.__caption,
       src: this.__src,
-      type: "image",
+      type: 'image',
       version: 1,
       width: this.__width,
     };
@@ -165,12 +159,7 @@ export class ImageNode extends DecoratorNode {
   }
 }
 
-export function $createImageNode({
-  altText = "",
-  caption = "",
-  src,
-  width = 100,
-}) {
+export function $createImageNode({ altText = '', caption = '', src, width = 100 }) {
   return $applyNodeReplacement(new ImageNode(src, altText, caption, width));
 }
 

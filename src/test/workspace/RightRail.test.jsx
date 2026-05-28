@@ -13,8 +13,8 @@ vi.mock('@/lib/theme', () => ({
 }));
 
 const TOOLS = [
-  { id: 'filters',    label: 'Filtros',       icon: Filter           },
-  { id: 'properties', label: 'Propriedades',  icon: SlidersHorizontal },
+  { id: 'filters', label: 'Filtros', icon: Filter },
+  { id: 'properties', label: 'Propriedades', icon: SlidersHorizontal },
 ];
 
 const APPS = [{ id: 'app1', label: 'App One', icon: null, category: 'core' }];
@@ -46,14 +46,20 @@ describe('RightRail — render', () => {
 
   it('tool buttons start with aria-pressed="false"', () => {
     renderRail();
-    expect(screen.getByRole('button', { name: 'Filtros' })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: 'Filtros' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
   });
 });
 
 describe('RightRail — interactions', () => {
   it('toggles a tool open when its button is clicked', () => {
     let ws;
-    function Inspector() { ws = useWorkspace(); return null; }
+    function Inspector() {
+      ws = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS} rightTools={TOOLS}>
         <RightRail />
@@ -68,7 +74,10 @@ describe('RightRail — interactions', () => {
 
   it('closes the tool when its button is clicked again', () => {
     let ws;
-    function Inspector() { ws = useWorkspace(); return null; }
+    function Inspector() {
+      ws = useWorkspace();
+      return null;
+    }
     render(
       <WorkspaceProvider apps={APPS} rightTools={TOOLS}>
         <RightRail />

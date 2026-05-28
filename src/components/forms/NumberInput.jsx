@@ -1,9 +1,9 @@
-import React, { useId } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Minus, Plus } from "lucide-react";
-import FormField from "./FormField";
-import { cn } from "@/lib/utils";
+import React, { useId } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Minus, Plus } from 'lucide-react';
+import FormField from './FormField';
+import { cn } from '@/lib/utils';
 
 export default function NumberInput({
   id: idProp,
@@ -28,7 +28,10 @@ export default function NumberInput({
 
   const handleChange = (newVal) => {
     const num = parseFloat(newVal);
-    if (isNaN(num)) { onChange?.(""); return; }
+    if (isNaN(num)) {
+      onChange?.('');
+      return;
+    }
     if (min !== undefined && num < min) return;
     if (max !== undefined && num > max) return;
     onChange?.(num);
@@ -38,19 +41,37 @@ export default function NumberInput({
   const decrement = () => handleChange((parseFloat(value) || 0) - step);
 
   return (
-    <FormField id={id} label={label} description={description} error={error} required={required} className={className}>
+    <FormField
+      id={id}
+      label={label}
+      description={description}
+      error={error}
+      required={required}
+      className={className}
+    >
       <div className="flex items-center gap-2">
         {showStepper && (
-          <Button type="button" variant="outline" size="icon" className="h-10 w-10 shrink-0" onClick={decrement} disabled={disabled || (min !== undefined && (parseFloat(value) || 0) <= min)}>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 shrink-0"
+            onClick={decrement}
+            disabled={disabled || (min !== undefined && (parseFloat(value) || 0) <= min)}
+          >
             <Minus className="h-4 w-4" />
           </Button>
         )}
         <div className="relative flex-1">
-          {prefix && <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{prefix}</span>}
+          {prefix && (
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+              {prefix}
+            </span>
+          )}
           <Input
             id={id}
             type="number"
-            value={value ?? ""}
+            value={value ?? ''}
             onChange={(e) => handleChange(e.target.value)}
             min={min}
             max={max}
@@ -58,16 +79,27 @@ export default function NumberInput({
             disabled={disabled}
             placeholder={placeholder}
             className={cn(
-              "h-10 transition-colors [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
-              prefix && "pl-8",
-              suffix && "pr-10",
-              error && "border-destructive"
+              'h-10 transition-colors [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none',
+              prefix && 'pl-8',
+              suffix && 'pr-10',
+              error && 'border-destructive',
             )}
           />
-          {suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{suffix}</span>}
+          {suffix && (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+              {suffix}
+            </span>
+          )}
         </div>
         {showStepper && (
-          <Button type="button" variant="outline" size="icon" className="h-10 w-10 shrink-0" onClick={increment} disabled={disabled || (max !== undefined && (parseFloat(value) || 0) >= max)}>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 shrink-0"
+            onClick={increment}
+            disabled={disabled || (max !== undefined && (parseFloat(value) || 0) >= max)}
+          >
             <Plus className="h-4 w-4" />
           </Button>
         )}

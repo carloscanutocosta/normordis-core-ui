@@ -181,13 +181,15 @@ export function WorkspaceProvider({
   // ── Core navigation (restored from sessionStorage when available)
   const [activeApp, setActiveApp] = useState<string | null>(() => {
     const s = readSession();
-    return s.activeApp && apps.some(a => a.id === s.activeApp) ? s.activeApp : firstApp;
+    return s.activeApp && apps.some((a) => a.id === s.activeApp) ? s.activeApp : firstApp;
   });
   const [openTabs, setOpenTabs] = useState<Tab[]>(() => {
     const s = readSession();
-    const restored = s.openTabs?.filter(t => apps.some(a => a.id === t.id));
+    const restored = s.openTabs?.filter((t) => apps.some((a) => a.id === t.id));
     if (restored && restored.length > 0) return restored;
-    return firstApp ? [{ id: firstApp, label: apps.find(a => a.id === firstApp)?.label ?? firstApp }] : [];
+    return firstApp
+      ? [{ id: firstApp, label: apps.find((a) => a.id === firstApp)?.label ?? firstApp }]
+      : [];
   });
 
   // ── Right rail
@@ -210,7 +212,9 @@ export function WorkspaceProvider({
   // ── Per-app state
   const [appBadges, setAppBadges] = useState<Record<string, number>>({});
   const [appParams, setAppParams] = useState<Record<string, unknown>>({});
-  const [dynamicCommandsByApp, setDynamicCommandsByApp] = useState<Record<string, WorkspaceCommand[]>>({});
+  const [dynamicCommandsByApp, setDynamicCommandsByApp] = useState<
+    Record<string, WorkspaceCommand[]>
+  >({});
 
   // ── Internal notifications
   const [internalNotifications, setInternalNotifications] = useState<WorkspaceNotification[]>([]);
@@ -224,7 +228,9 @@ export function WorkspaceProvider({
   // Auto-close mobile rail on resize to desktop
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
-    const handler = (e: MediaQueryListEvent) => { if (!e.matches) setMobileRailOpen(false); };
+    const handler = (e: MediaQueryListEvent) => {
+      if (!e.matches) setMobileRailOpen(false);
+    };
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
   }, []);
@@ -241,50 +247,59 @@ export function WorkspaceProvider({
     applyTheme(id);
   }, []);
 
-  const openApp = useCallback((appId: string, params?: unknown) => {
-    const app = apps.find(a => a.id === appId);
-    if (!app) return;
-    setActiveApp(appId);
-    setOpenTabs(prev =>
-      prev.find(t => t.id === appId) ? prev : [...prev, { id: appId, label: app.label }],
-    );
-    if (params !== undefined) {
-      setAppParams(prev => ({ ...prev, [appId]: params }));
-    }
-  }, [apps]);
+  const openApp = useCallback(
+    (appId: string, params?: unknown) => {
+      const app = apps.find((a) => a.id === appId);
+      if (!app) return;
+      setActiveApp(appId);
+      setOpenTabs((prev) =>
+        prev.find((t) => t.id === appId) ? prev : [...prev, { id: appId, label: app.label }],
+      );
+      if (params !== undefined) {
+        setAppParams((prev) => ({ ...prev, [appId]: params }));
+      }
+    },
+    [apps],
+  );
 
-  const closeTab = useCallback((tabId: string) => {
-    setOpenTabs(prev => {
-      const next = prev.filter(t => t.id !== tabId);
-      if (next.length === 0) return prev;
-      if (activeApp === tabId) setActiveApp(next[next.length - 1].id);
-      return next;
-    });
-  }, [activeApp]);
+  const closeTab = useCallback(
+    (tabId: string) => {
+      setOpenTabs((prev) => {
+        const next = prev.filter((t) => t.id !== tabId);
+        if (next.length === 0) return prev;
+        if (activeApp === tabId) setActiveApp(next[next.length - 1].id);
+        return next;
+      });
+    },
+    [activeApp],
+  );
 
-  const toggleTool = useCallback((toolId: string) => {
-    if (activeTool === toolId) {
-      setActiveTool(null);
-      setRightPanelOpen(false);
-    } else {
-      setActiveTool(toolId);
-      setRightPanelOpen(true);
-    }
-  }, [activeTool]);
+  const toggleTool = useCallback(
+    (toolId: string) => {
+      if (activeTool === toolId) {
+        setActiveTool(null);
+        setRightPanelOpen(false);
+      } else {
+        setActiveTool(toolId);
+        setRightPanelOpen(true);
+      }
+    },
+    [activeTool],
+  );
 
-  const openCommand  = useCallback(() => setCommandOpen(true),  []);
+  const openCommand = useCallback(() => setCommandOpen(true), []);
   const closeCommand = useCallback(() => setCommandOpen(false), []);
-  const openMobileRail  = useCallback(() => setMobileRailOpen(true),  []);
+  const openMobileRail = useCallback(() => setMobileRailOpen(true), []);
   const closeMobileRail = useCallback(() => setMobileRailOpen(false), []);
 
   const setAppBadge = useCallback((appId: string, count: number) => {
-    setAppBadges(prev => ({ ...prev, [appId]: count }));
+    setAppBadges((prev) => ({ ...prev, [appId]: count }));
   }, []);
 
   const registerCommands = useCallback((appId: string, commands: WorkspaceCommand[]) => {
-    setDynamicCommandsByApp(prev => ({ ...prev, [appId]: commands }));
+    setDynamicCommandsByApp((prev) => ({ ...prev, [appId]: commands }));
     return () => {
-      setDynamicCommandsByApp(prev => {
+      setDynamicCommandsByApp((prev) => {
         const next = { ...prev };
         delete next[appId];
         return next;
@@ -293,26 +308,23 @@ export function WorkspaceProvider({
   }, []);
 
   const notify = useCallback((notification: Omit<WorkspaceNotification, 'id'>) => {
-    setInternalNotifications(prev => [
-      { ...notification, id: genId(), read: false },
-      ...prev,
-    ]);
+    setInternalNotifications((prev) => [{ ...notification, id: genId(), read: false }, ...prev]);
   }, []);
 
   const readInternalNotification = useCallback((id: string) => {
-    setInternalNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+    setInternalNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
   }, []);
 
   const clearInternalNotification = useCallback((id?: string) => {
-    setInternalNotifications(prev => id ? prev.filter(n => n.id !== id) : []);
+    setInternalNotifications((prev) => (id ? prev.filter((n) => n.id !== id) : []));
   }, []);
 
   const readAllInternalNotifications = useCallback(() => {
-    setInternalNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setInternalNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   }, []);
 
   const updateAtendimento = useCallback((patch: Partial<AtendimentoState>) => {
-    setAtendimento(prev => ({ ...prev, ...patch }));
+    setAtendimento((prev) => ({ ...prev, ...patch }));
   }, []);
 
   const resetAtendimento = useCallback(() => {
@@ -320,31 +332,43 @@ export function WorkspaceProvider({
   }, []);
 
   return (
-    <WorkspaceContext.Provider value={{
-      apps, rightTools,
-      activeApp, openTabs,
-      activeTool, rightPanelOpen,
-      leftRailCollapsed, mobileRailOpen,
-      theme, commandOpen,
-      appBadges, appParams,
-      dynamicCommandsByApp,
-      internalNotifications,
-      atendimento,
-      openApp, closeTab, setActiveApp,
-      toggleTool,
-      setLeftRailCollapsed,
-      changeTheme,
-      openCommand, closeCommand,
-      openMobileRail, closeMobileRail,
-      setAppBadge,
-      registerCommands,
-      notify,
-      readInternalNotification,
-      clearInternalNotification,
-      readAllInternalNotifications,
-      updateAtendimento,
-      resetAtendimento,
-    }}>
+    <WorkspaceContext.Provider
+      value={{
+        apps,
+        rightTools,
+        activeApp,
+        openTabs,
+        activeTool,
+        rightPanelOpen,
+        leftRailCollapsed,
+        mobileRailOpen,
+        theme,
+        commandOpen,
+        appBadges,
+        appParams,
+        dynamicCommandsByApp,
+        internalNotifications,
+        atendimento,
+        openApp,
+        closeTab,
+        setActiveApp,
+        toggleTool,
+        setLeftRailCollapsed,
+        changeTheme,
+        openCommand,
+        closeCommand,
+        openMobileRail,
+        closeMobileRail,
+        setAppBadge,
+        registerCommands,
+        notify,
+        readInternalNotification,
+        clearInternalNotification,
+        readAllInternalNotifications,
+        updateAtendimento,
+        resetAtendimento,
+      }}
+    >
       {children}
     </WorkspaceContext.Provider>
   );

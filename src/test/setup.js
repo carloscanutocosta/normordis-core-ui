@@ -2,7 +2,9 @@ import '@testing-library/jest-dom';
 import { vi, beforeEach } from 'vitest';
 
 // Reset sessionStorage before each test so persistence state doesn't bleed between tests
-beforeEach(() => { sessionStorage.clear(); });
+beforeEach(() => {
+  sessionStorage.clear();
+});
 
 // jsdom does not implement matchMedia — required by WorkspaceContext resize logic
 Object.defineProperty(window, 'matchMedia', {

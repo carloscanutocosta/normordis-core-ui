@@ -40,7 +40,7 @@ describe('NotificationsPanel — trigger button', () => {
   it('includes unread count in aria-label when external unread notifications exist', () => {
     const notifications = [
       { id: 'n1', title: 'Aviso', type: 'warning', read: false },
-      { id: 'n2', title: 'Info',  type: 'info',    read: true  },
+      { id: 'n2', title: 'Info', type: 'info', read: true },
     ];
     renderPanel({ notifications });
     // 1 unread (n1); n2 is already read
@@ -49,9 +49,9 @@ describe('NotificationsPanel — trigger button', () => {
 
   it('aggregates multiple external unread notifications in aria-label', () => {
     const notifications = [
-      { id: 'n1', title: 'A', type: 'error',   read: false },
-      { id: 'n2', title: 'B', type: 'success',  read: false },
-      { id: 'n3', title: 'C', type: 'info',     read: true  },
+      { id: 'n1', title: 'A', type: 'error', read: false },
+      { id: 'n2', title: 'B', type: 'success', read: false },
+      { id: 'n3', title: 'C', type: 'info', read: true },
     ];
     renderPanel({ notifications });
     expect(screen.getByRole('button', { name: /2 não lidas/i })).toBeInTheDocument();
@@ -77,7 +77,13 @@ describe('NotificationsPanel — panel interactions', () => {
 
   it('shows notification list when open with notifications', () => {
     const notifications = [
-      { id: 'n1', title: 'Aprovação pendente', type: 'warning', read: false, description: 'Processo 2024/042.' },
+      {
+        id: 'n1',
+        title: 'Aprovação pendente',
+        type: 'warning',
+        read: false,
+        description: 'Processo 2024/042.',
+      },
     ];
     renderPanel({ notifications });
     fireEvent.click(screen.getByRole('button', { name: /notificações/i }));
@@ -135,7 +141,7 @@ describe('NotificationsPanel — accessibility', () => {
   it('has no axe violations with mixed read/unread notifications in aria-label', async () => {
     const notifications = [
       { id: 'n1', title: 'Processo guardado', type: 'success', read: false },
-      { id: 'n2', title: 'Erro de rede',      type: 'error',   read: true  },
+      { id: 'n2', title: 'Erro de rede', type: 'error', read: true },
     ];
     const { container } = renderPanel({ notifications });
     const results = await axe(container);
