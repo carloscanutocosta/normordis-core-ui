@@ -4,7 +4,6 @@ import {
   Users,
   Settings,
   BarChart2,
-  Wrench,
   Filter,
   SlidersHorizontal,
   Plus,
