@@ -59,9 +59,18 @@ export default [
     },
   },
   // Stories use hooks inside CSF3 `render` functions — this is valid Storybook usage
-  // but triggers false-positives from react-hooks/rules-of-hooks
+  // but triggers false-positives from react-hooks/rules-of-hooks.
+  // Also provides JSX parser for ui/ stories that are excluded from the main block.
   {
     files: ['src/**/*.stories.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+      },
+    },
     rules: {
       'react-hooks/rules-of-hooks': 'off',
     },
