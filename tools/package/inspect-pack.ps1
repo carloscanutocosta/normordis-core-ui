@@ -1,5 +1,5 @@
 param(
-    [string]$PackDestination = "C:\tmp"
+    [string]$PackDestination = ".\package"
 )
 
 $ErrorActionPreference = "Stop"
