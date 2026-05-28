@@ -17,7 +17,10 @@ export const Default = {
     const [value, setValue] = useState('');
     return <OTPInput {...args} value={value} onChange={setValue} />;
   },
-  args: { label: 'Código de verificação', description: 'Introduza o código enviado para o seu email.' },
+  args: {
+    label: 'Código de verificação',
+    description: 'Introduza o código enviado para o seu email.',
+  },
 };
 
 export const FourDigit = {

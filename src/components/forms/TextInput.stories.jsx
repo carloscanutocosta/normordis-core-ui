@@ -30,7 +30,11 @@ export const WithDescription = {
     const [value, setValue] = useState('');
     return <TextInput {...args} value={value} onChange={setValue} />;
   },
-  args: { label: 'Email', description: 'Será usado para notificações.', placeholder: 'nome@exemplo.pt' },
+  args: {
+    label: 'Email',
+    description: 'Será usado para notificações.',
+    placeholder: 'nome@exemplo.pt',
+  },
 };
 
 export const WithIcon = {

@@ -32,7 +32,12 @@ export const WithDescription = {
 };
 
 export const Disabled = {
-  args: { label: 'Funcionalidade beta', description: 'Disponível em breve.', checked: false, disabled: true },
+  args: {
+    label: 'Funcionalidade beta',
+    description: 'Disponível em breve.',
+    checked: false,
+    disabled: true,
+  },
 };
 
 export const SettingsPanel = {
@@ -43,9 +48,19 @@ export const SettingsPanel = {
     const [beta, setBeta] = useState(false);
     return (
       <div className="space-y-4 max-w-sm">
-        <SwitchInput label="Notificações por email" description="Receba actualizações no seu email." checked={notifs} onChange={setNotifs} />
+        <SwitchInput
+          label="Notificações por email"
+          description="Receba actualizações no seu email."
+          checked={notifs}
+          onChange={setNotifs}
+        />
         <SwitchInput label="Modo escuro" checked={dark} onChange={setDark} />
-        <SwitchInput label="Funcionalidades beta" description="Acesso antecipado a novas funcionalidades." checked={beta} onChange={setBeta} />
+        <SwitchInput
+          label="Funcionalidades beta"
+          description="Acesso antecipado a novas funcionalidades."
+          checked={beta}
+          onChange={setBeta}
+        />
       </div>
     );
   },

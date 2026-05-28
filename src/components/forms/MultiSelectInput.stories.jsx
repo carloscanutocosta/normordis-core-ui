@@ -21,7 +21,14 @@ const PERMISSIONS = [
   { value: 'export', label: 'Exportação' },
 ];
 
-const CATEGORIES = ['Financeiro', 'Recursos Humanos', 'Operações', 'Tecnologia', 'Marketing', 'Jurídico'];
+const CATEGORIES = [
+  'Financeiro',
+  'Recursos Humanos',
+  'Operações',
+  'Tecnologia',
+  'Marketing',
+  'Jurídico',
+];
 
 export const Default = {
   render: (args) => {
@@ -52,7 +59,12 @@ export const WithError = {
     const [value, setValue] = useState([]);
     return <MultiSelectInput {...args} value={value} onChange={setValue} />;
   },
-  args: { label: 'Categorias', options: CATEGORIES, error: 'Seleccione pelo menos uma categoria.', required: true },
+  args: {
+    label: 'Categorias',
+    options: CATEGORIES,
+    error: 'Seleccione pelo menos uma categoria.',
+    required: true,
+  },
 };
 
 export const Disabled = {

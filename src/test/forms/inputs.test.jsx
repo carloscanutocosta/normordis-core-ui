@@ -56,12 +56,16 @@ describe('TextInput — render', () => {
 
 describe('TextInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<TextInput label="Nome completo" value="" onChange={vi.fn()} required />);
+    const { container } = render(
+      <TextInput label="Nome completo" value="" onChange={vi.fn()} required />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 
   it('has no axe violations in error state', async () => {
-    const { container } = render(<TextInput label="Email" value="x" error="Inválido" onChange={vi.fn()} />);
+    const { container } = render(
+      <TextInput label="Email" value="x" error="Inválido" onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -94,7 +98,9 @@ describe('NumberInput — render', () => {
   });
 
   it('renders prefix and suffix', () => {
-    const { container } = render(<NumberInput label="Valor" value={10} prefix="€" suffix="EUR" onChange={vi.fn()} />);
+    const { container } = render(
+      <NumberInput label="Valor" value={10} prefix="€" suffix="EUR" onChange={vi.fn()} />,
+    );
     expect(container.textContent).toContain('€');
     expect(container.textContent).toContain('EUR');
   });
@@ -116,19 +122,31 @@ describe('SelectInput — render', () => {
   });
 
   it('shows error message', () => {
-    render(<SelectInput label="Tipo" options={OPTIONS} value="" error="Obrigatório" onChange={vi.fn()} />);
+    render(
+      <SelectInput
+        label="Tipo"
+        options={OPTIONS}
+        value=""
+        error="Obrigatório"
+        onChange={vi.fn()}
+      />,
+    );
     expect(screen.getByText('Obrigatório')).toBeInTheDocument();
   });
 
   it('renders string options', () => {
-    render(<SelectInput label="País" options={['Portugal', 'Brasil']} value="" onChange={vi.fn()} />);
+    render(
+      <SelectInput label="País" options={['Portugal', 'Brasil']} value="" onChange={vi.fn()} />,
+    );
     expect(screen.getByText('País')).toBeInTheDocument();
   });
 });
 
 describe('SelectInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<SelectInput label="Função" options={OPTIONS} value="" onChange={vi.fn()} />);
+    const { container } = render(
+      <SelectInput label="Função" options={OPTIONS} value="" onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -184,14 +202,18 @@ describe('SwitchInput — render', () => {
   });
 
   it('shows description when provided', () => {
-    render(<SwitchInput label="Tema" description="Modo escuro" checked={false} onChange={vi.fn()} />);
+    render(
+      <SwitchInput label="Tema" description="Modo escuro" checked={false} onChange={vi.fn()} />,
+    );
     expect(screen.getByText('Modo escuro')).toBeInTheDocument();
   });
 });
 
 describe('SwitchInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<SwitchInput label="Notificações activas" checked={false} onChange={vi.fn()} />);
+    const { container } = render(
+      <SwitchInput label="Notificações activas" checked={false} onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -222,7 +244,9 @@ describe('CheckboxInput — render', () => {
 
 describe('CheckboxInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<CheckboxInput label="Aceito os termos e condições" checked={false} onChange={vi.fn()} />);
+    const { container } = render(
+      <CheckboxInput label="Aceito os termos e condições" checked={false} onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -255,7 +279,9 @@ describe('RatingInput — render', () => {
 
 describe('RatingInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<RatingInput label="Avaliação do serviço" value={3} onChange={vi.fn()} />);
+    const { container } = render(
+      <RatingInput label="Avaliação do serviço" value={3} onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -295,7 +321,9 @@ describe('TagsInput — render', () => {
 
 describe('TagsInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<TagsInput label="Etiquetas do processo" value={['draft']} onChange={vi.fn()} />);
+    const { container } = render(
+      <TagsInput label="Etiquetas do processo" value={['draft']} onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -328,7 +356,9 @@ describe('PasswordInput — render', () => {
 
 describe('PasswordInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<PasswordInput label="Palavra-passe" value="" onChange={vi.fn()} required />);
+    const { container } = render(
+      <PasswordInput label="Palavra-passe" value="" onChange={vi.fn()} required />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -342,20 +372,32 @@ describe('MultiSelectInput — render', () => {
   });
 
   it('renders selected values as badges', () => {
-    render(<MultiSelectInput label="Tags" options={OPTIONS} value={['a', 'b']} onChange={vi.fn()} />);
+    render(
+      <MultiSelectInput label="Tags" options={OPTIONS} value={['a', 'b']} onChange={vi.fn()} />,
+    );
     expect(screen.getByText('Opção A')).toBeInTheDocument();
     expect(screen.getByText('Opção B')).toBeInTheDocument();
   });
 
   it('shows error message', () => {
-    render(<MultiSelectInput label="Cats" options={OPTIONS} value={[]} error="Obrigatório" onChange={vi.fn()} />);
+    render(
+      <MultiSelectInput
+        label="Cats"
+        options={OPTIONS}
+        value={[]}
+        error="Obrigatório"
+        onChange={vi.fn()}
+      />,
+    );
     expect(screen.getByText('Obrigatório')).toBeInTheDocument();
   });
 });
 
 describe('MultiSelectInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<MultiSelectInput label="Categorias" options={OPTIONS} value={[]} onChange={vi.fn()} />);
+    const { container } = render(
+      <MultiSelectInput label="Categorias" options={OPTIONS} value={[]} onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -388,7 +430,9 @@ describe('SearchInput — render', () => {
 
 describe('SearchInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<SearchInput value="" onChange={vi.fn()} placeholder="Pesquisar..." />);
+    const { container } = render(
+      <SearchInput value="" onChange={vi.fn()} placeholder="Pesquisar..." />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -415,7 +459,9 @@ describe('OTPInput — render', () => {
 
 describe('OTPInput — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<OTPInput label="Código de verificação" value="" onChange={vi.fn()} length={6} />);
+    const { container } = render(
+      <OTPInput label="Código de verificação" value="" onChange={vi.fn()} length={6} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

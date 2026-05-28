@@ -49,9 +49,21 @@ export const FormGroup = {
     const [sel, setSel] = useState({ email: true, sms: false, push: true });
     return (
       <div className="space-y-3">
-        <CheckboxInput label="Notificações por email" checked={sel.email} onChange={(v) => setSel((s) => ({ ...s, email: v }))} />
-        <CheckboxInput label="Notificações por SMS" checked={sel.sms} onChange={(v) => setSel((s) => ({ ...s, sms: v }))} />
-        <CheckboxInput label="Notificações push" checked={sel.push} onChange={(v) => setSel((s) => ({ ...s, push: v }))} />
+        <CheckboxInput
+          label="Notificações por email"
+          checked={sel.email}
+          onChange={(v) => setSel((s) => ({ ...s, email: v }))}
+        />
+        <CheckboxInput
+          label="Notificações por SMS"
+          checked={sel.sms}
+          onChange={(v) => setSel((s) => ({ ...s, sms: v }))}
+        />
+        <CheckboxInput
+          label="Notificações push"
+          checked={sel.push}
+          onChange={(v) => setSel((s) => ({ ...s, push: v }))}
+        />
       </div>
     );
   },

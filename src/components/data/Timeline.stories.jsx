@@ -10,9 +10,27 @@ export default {
 };
 
 const PROCESS_STEPS = [
-  { id: 1, label: 'Submissão', description: 'Processo submetido pelo requerente.', timestamp: '10 Jan 09:12', status: 'completed' },
-  { id: 2, label: 'Análise', description: 'Em análise pelo departamento técnico.', timestamp: '12 Jan 14:30', status: 'completed' },
-  { id: 3, label: 'Aprovação', description: 'Aguarda aprovação de chefia.', timestamp: '15 Jan', status: 'active' },
+  {
+    id: 1,
+    label: 'Submissão',
+    description: 'Processo submetido pelo requerente.',
+    timestamp: '10 Jan 09:12',
+    status: 'completed',
+  },
+  {
+    id: 2,
+    label: 'Análise',
+    description: 'Em análise pelo departamento técnico.',
+    timestamp: '12 Jan 14:30',
+    status: 'completed',
+  },
+  {
+    id: 3,
+    label: 'Aprovação',
+    description: 'Aguarda aprovação de chefia.',
+    timestamp: '15 Jan',
+    status: 'active',
+  },
   { id: 4, label: 'Despacho', description: 'Publicação do despacho final.', status: 'pending' },
 ];
 
