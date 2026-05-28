@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Button (componente isolado)",
+    "import": "{ Button }",
+    "path": "dist/components/ui/button.js",
+    "limit": "11 kB"
+  },
+  {
+    "name": "WorkspaceContext (provider + hook)",
+    "import": "{ WorkspaceProvider, useWorkspace }",
+    "path": "dist/workspace.js",
+    "limit": "3 kB"
+  },
+  {
+    "name": "AppShell (workspace completo, sem peer deps)",
+    "import": "{ AppShell }",
+    "path": "dist/workspace.js",
+    "limit": "30 kB"
+  },
+  {
+    "name": "BarChart (sem recharts)",
+    "import": "{ BarChart }",
+    "path": "dist/charts.js",
+    "limit": "11 kB"
+  }
+]

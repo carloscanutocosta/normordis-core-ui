@@ -94,13 +94,16 @@ documentado e publicado com rigor profissional.
 - Stories para os restantes componentes exportados: data, charts, layout.
 - Publicar Storybook estático em GitHub Pages ou Chromatic.
 
-### Bundle e tree-shaking
-- Configurar **size-limit** para bloquear CI quando o bundle ultrapassar um
-  limite definido (ex: < 120 kB gzip para o core sem workspace).
-- Validar tree-shaking: importar um único componente e verificar que apenas os
-  seus módulos transitivos entram no bundle do consumidor.
-- Separar entrypoints no `vite.config.js` (ex: `core-ui/workspace`,
-  `core-ui/charts`) para permitir imports granulares sem carregar o SDK inteiro.
+### Bundle e tree-shaking ✅ Concluído
+- ✅ Separar entrypoints: `/workspace` e `/charts` em `vite.config.js` com
+  `preserveModules`; `package.json` exporta `./workspace` e `./charts`.
+- ✅ Configurar **size-limit** (`@size-limit/preset-small-lib`) com limites
+  reais medidos por esbuild+brotli: Button 11 kB, AppShell 30 kB, BarChart 11 kB.
+- ✅ Pipeline CI bloqueia se algum entrypoint exceder o limite (`pnpm run size`
+  após build em ci.yml e release.yml).
+- ✅ Tree-shaking validado: Button isolado = 8.4 kB (inclui CVA/clsx/tw-merge);
+  WorkspaceContext isolado = 1.29 kB; peer deps (react, framer-motion, recharts)
+  excluídos correctamente do bundle medido.
 
 ## MapView (v2)
 - Requer que o consumidor importe manualmente o CSS do Leaflet:
