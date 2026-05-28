@@ -53,6 +53,7 @@ export default function SliderInput({
           max={max}
           step={step}
           disabled={disabled}
+          aria-label={label}
         />
       </div>
     </FormField>
