@@ -12,15 +12,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
-      include: [
-        'src/components/workspace/**',
-        'src/components/forms/**',
-        'src/components/data/**',
-        'src/components/charts/**',
-        'src/components/display/**',
-        'src/hooks/**',
-        'src/lib/**',
-      ],
+      include: ['src/components/workspace/**', 'src/hooks/**', 'src/lib/**'],
       exclude: [
         'src/test/**',
         'src/demo/**',
