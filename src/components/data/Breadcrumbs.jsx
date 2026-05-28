@@ -15,9 +15,14 @@ export default function Breadcrumbs({ items = [], className }) {
             ) : (
               <button
                 type="button"
+                aria-label={i === 0 && item.icon !== false ? (item.label ?? 'Início') : undefined}
                 className="text-muted-foreground hover:text-foreground transition-colors truncate"
               >
-                {i === 0 && item.icon !== false ? <Home className="h-3.5 w-3.5" /> : item.label}
+                {i === 0 && item.icon !== false ? (
+                  <Home className="h-3.5 w-3.5" aria-hidden />
+                ) : (
+                  item.label
+                )}
               </button>
             )}
           </React.Fragment>

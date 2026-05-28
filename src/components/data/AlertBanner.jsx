@@ -58,13 +58,14 @@ export default function AlertBanner({
       {dismissible && (
         <button
           type="button"
+          aria-label="Dispensar alerta"
           onClick={() => setDismissed(true)}
           className={cn(
             'h-5 w-5 shrink-0 opacity-60 hover:opacity-100 transition-opacity',
             cfg.text,
           )}
         >
-          <X className="h-4 w-4" />
+          <X className="h-4 w-4" aria-hidden />
         </button>
       )}
     </div>

@@ -65,6 +65,7 @@ export default function TagsInput({
           </Badge>
         ))}
         <Input
+          aria-label={label ?? placeholder}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}

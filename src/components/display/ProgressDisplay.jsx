@@ -19,7 +19,7 @@ export default function ProgressDisplay({
           {showPercentage && <span className="font-medium">{Math.round(pct)}%</span>}
         </div>
       )}
-      <Progress value={pct} className="h-2" />
+      <Progress value={pct} className="h-2" aria-label={label ?? 'Progresso'} />
     </div>
   );
 }

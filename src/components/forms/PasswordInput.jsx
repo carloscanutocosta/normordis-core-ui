@@ -44,6 +44,7 @@ export default function PasswordInput({
           type="button"
           variant="ghost"
           size="icon"
+          aria-label={show ? 'Ocultar palavra-passe' : 'Mostrar palavra-passe'}
           className="absolute right-0 top-0 h-10 w-10 text-muted-foreground hover:text-foreground"
           onClick={() => setShow(!show)}
         >

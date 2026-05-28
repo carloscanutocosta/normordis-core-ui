@@ -182,6 +182,7 @@ export default function DataTable({
         </div>
         <select
           value={pageSize}
+          aria-label="Resultados por página"
           onChange={(e) => {
             setPageSize(Number(e.target.value));
             setPage(1);
@@ -332,11 +333,12 @@ export default function DataTable({
           <Button
             variant="outline"
             size="icon"
+            aria-label="Página anterior"
             className="h-7 w-7"
             disabled={currentPage === 1}
             onClick={() => setPage((p) => p - 1)}
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-4 w-4" aria-hidden />
           </Button>
           {Array.from({ length: totalPages }, (_, i) => i + 1)
             .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
@@ -365,11 +367,12 @@ export default function DataTable({
           <Button
             variant="outline"
             size="icon"
+            aria-label="Página seguinte"
             className="h-7 w-7"
             disabled={currentPage === totalPages}
             onClick={() => setPage((p) => p + 1)}
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4" aria-hidden />
           </Button>
         </div>
       </div>
