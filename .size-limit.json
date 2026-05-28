@@ -9,13 +9,15 @@
     "name": "WorkspaceContext (provider + hook)",
     "import": "{ WorkspaceProvider, useWorkspace }",
     "path": "dist/workspace.js",
-    "limit": "3 kB"
+    "limit": "3 kB",
+    "ignore": ["cmdk"]
   },
   {
     "name": "AppShell (workspace completo, sem peer deps)",
     "import": "{ AppShell }",
     "path": "dist/workspace.js",
-    "limit": "30 kB"
+    "limit": "30 kB",
+    "ignore": ["cmdk"]
   },
   {
     "name": "BarChart (sem recharts)",

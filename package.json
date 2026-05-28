@@ -71,7 +71,6 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cmdk": "^1.0.0",
     "dompurify": "^3.4.5",
     "embla-carousel-react": "^8.5.2",
     "input-otp": "^1.4.2",
@@ -81,6 +80,7 @@
     "vaul": "^1.1.2"
   },
   "peerDependencies": {
+    "cmdk": ">=1.0.0",
     "@hello-pangea/dnd": ">=17.0.0",
     "@hookform/resolvers": ">=4.0.0",
     "@lexical/react": ">=0.21.0",
@@ -139,6 +139,9 @@
     "zod": ">=3.24.0"
   },
   "peerDependenciesMeta": {
+    "cmdk": {
+      "optional": true
+    },
     "@hello-pangea/dnd": {
       "optional": true
     },
