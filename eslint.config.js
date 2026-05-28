@@ -58,6 +58,14 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
     },
   },
+  // Stories use hooks inside CSF3 `render` functions — this is valid Storybook usage
+  // but triggers false-positives from react-hooks/rules-of-hooks
+  {
+    files: ['src/**/*.stories.{js,jsx,ts,tsx}'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
   // Disable ESLint rules that conflict with Prettier — must be last
   configPrettier,
 ];
