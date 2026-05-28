@@ -52,6 +52,9 @@ jobs:
       - name: Typecheck
         run: pnpm run typecheck
 
+      - name: Testes
+        run: pnpm run test:coverage
+
       - name: Build (validar release)
         run: pnpm run build
 

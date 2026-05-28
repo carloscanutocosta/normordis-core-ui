@@ -46,6 +46,17 @@ jobs:
       - name: Typecheck
         run: pnpm run typecheck
 
+      - name: Testes
+        run: pnpm run test:coverage
+
+      - name: Upload cobertura
+        if: always()
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: coverage-${{ github.run_id }}
+          path: coverage/
+          if-no-files-found: ignore
+
       - name: Build
         run: pnpm run build
 
