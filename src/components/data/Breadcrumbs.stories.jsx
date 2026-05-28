@@ -8,20 +8,13 @@ export default {
 
 export const Default = {
   args: {
-    items: [
-      { label: 'Início' },
-      { label: 'Processos' },
-      { label: 'Processo #1042' },
-    ],
+    items: [{ label: 'Início' }, { label: 'Processos' }, { label: 'Processo #1042' }],
   },
 };
 
 export const TwoLevels = {
   args: {
-    items: [
-      { label: 'Início' },
-      { label: 'Relatórios' },
-    ],
+    items: [{ label: 'Início' }, { label: 'Relatórios' }],
   },
 };
 
@@ -47,9 +40,7 @@ export const InPageHeader = {
   name: 'Em cabeçalho de página',
   render: () => (
     <div className="space-y-1">
-      <Breadcrumbs
-        items={[{ label: 'Início' }, { label: 'Clientes' }, { label: 'Empresa XYZ' }]}
-      />
+      <Breadcrumbs items={[{ label: 'Início' }, { label: 'Clientes' }, { label: 'Empresa XYZ' }]} />
       <h1 className="text-xl font-bold text-foreground">Empresa XYZ</h1>
     </div>
   ),

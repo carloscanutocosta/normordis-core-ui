@@ -36,12 +36,16 @@ describe('TextField — render', () => {
   });
 
   it('renders prefix', () => {
-    const { container } = render(<TextField label="Site" prefix="https://" value="" onChange={vi.fn()} />);
+    const { container } = render(
+      <TextField label="Site" prefix="https://" value="" onChange={vi.fn()} />,
+    );
     expect(container.textContent).toContain('https://');
   });
 
   it('renders suffix', () => {
-    const { container } = render(<TextField label="Email" suffix="@empresa.pt" value="" onChange={vi.fn()} />);
+    const { container } = render(
+      <TextField label="Email" suffix="@empresa.pt" value="" onChange={vi.fn()} />,
+    );
     expect(container.textContent).toContain('@empresa.pt');
   });
 
@@ -71,17 +75,23 @@ describe('TextField — accessibility', () => {
   });
 
   it('has no axe violations (multiline)', async () => {
-    const { container } = render(<TextField label="Observações" multiline value="" onChange={vi.fn()} />);
+    const { container } = render(
+      <TextField label="Observações" multiline value="" onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 
   it('has no axe violations (error state)', async () => {
-    const { container } = render(<TextField label="NIF" value="abc" error="NIF inválido" onChange={vi.fn()} />);
+    const { container } = render(
+      <TextField label="NIF" value="abc" error="NIF inválido" onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 
   it('has no axe violations (with prefix)', async () => {
-    const { container } = render(<TextField label="Website" prefix="https://" value="" onChange={vi.fn()} />);
+    const { container } = render(
+      <TextField label="Website" prefix="https://" value="" onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -100,7 +110,15 @@ describe('SelectInput field — render', () => {
   });
 
   it('shows description', () => {
-    render(<SelectInput label="Função" description="Define permissões" options={ROLES} value="" onChange={vi.fn()} />);
+    render(
+      <SelectInput
+        label="Função"
+        description="Define permissões"
+        options={ROLES}
+        value=""
+        onChange={vi.fn()}
+      />,
+    );
     expect(screen.getByText('Define permissões')).toBeInTheDocument();
   });
 
@@ -112,7 +130,9 @@ describe('SelectInput field — render', () => {
 
 describe('SelectInput field — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<SelectInput label="Função do utilizador" options={ROLES} value="" onChange={vi.fn()} />);
+    const { container } = render(
+      <SelectInput label="Função do utilizador" options={ROLES} value="" onChange={vi.fn()} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

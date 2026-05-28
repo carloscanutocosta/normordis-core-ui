@@ -18,9 +18,15 @@ export default {
 
 export const Empty = { args: { preset: 'empty' } };
 export const Search = { args: { preset: 'search' } };
-export const Error = { args: { preset: 'error', actionLabel: 'Tentar novamente', onAction: () => {} } };
-export const NoFiles = { args: { preset: 'noFiles', actionLabel: 'Carregar ficheiro', onAction: () => {} } };
-export const NoUsers = { args: { preset: 'noUsers', actionLabel: 'Convidar utilizador', onAction: () => {} } };
+export const Error = {
+  args: { preset: 'error', actionLabel: 'Tentar novamente', onAction: () => {} },
+};
+export const NoFiles = {
+  args: { preset: 'noFiles', actionLabel: 'Carregar ficheiro', onAction: () => {} },
+};
+export const NoUsers = {
+  args: { preset: 'noUsers', actionLabel: 'Convidar utilizador', onAction: () => {} },
+};
 export const Small = { args: { preset: 'empty', size: 'sm' } };
 export const Large = { args: { preset: 'empty', size: 'lg' } };
 export const Custom = {
@@ -36,10 +42,18 @@ export const AllPresets = {
   name: 'Todos os presets',
   render: () => (
     <div className="grid grid-cols-2 gap-4">
-      <div className="border border-border rounded-lg"><EmptyState preset="empty" size="sm" /></div>
-      <div className="border border-border rounded-lg"><EmptyState preset="search" size="sm" /></div>
-      <div className="border border-border rounded-lg"><EmptyState preset="error" size="sm" /></div>
-      <div className="border border-border rounded-lg"><EmptyState preset="noFiles" size="sm" /></div>
+      <div className="border border-border rounded-lg">
+        <EmptyState preset="empty" size="sm" />
+      </div>
+      <div className="border border-border rounded-lg">
+        <EmptyState preset="search" size="sm" />
+      </div>
+      <div className="border border-border rounded-lg">
+        <EmptyState preset="error" size="sm" />
+      </div>
+      <div className="border border-border rounded-lg">
+        <EmptyState preset="noFiles" size="sm" />
+      </div>
     </div>
   ),
 };

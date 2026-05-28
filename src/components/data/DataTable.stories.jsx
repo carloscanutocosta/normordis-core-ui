@@ -11,11 +11,15 @@ export default {
 const COLUMNS = [
   { key: 'name', label: 'Nome' },
   { key: 'role', label: 'Função' },
-  { key: 'status', label: 'Estado', render: (v) => (
-    <Badge variant={v === 'Activo' ? 'default' : v === 'Pendente' ? 'secondary' : 'outline'}>
-      {v}
-    </Badge>
-  )},
+  {
+    key: 'status',
+    label: 'Estado',
+    render: (v) => (
+      <Badge variant={v === 'Activo' ? 'default' : v === 'Pendente' ? 'secondary' : 'outline'}>
+        {v}
+      </Badge>
+    ),
+  },
   { key: 'date', label: 'Data de entrada' },
 ];
 

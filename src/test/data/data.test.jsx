@@ -34,7 +34,9 @@ describe('StatCard — render', () => {
   });
 
   it('renders prefix and suffix', () => {
-    const { container } = render(<StatCard label="Receita" value={500} prefix="€ " suffix=" EUR" />);
+    const { container } = render(
+      <StatCard label="Receita" value={500} prefix="€ " suffix=" EUR" />,
+    );
     expect(container.textContent).toContain('€');
     expect(container.textContent).toContain('EUR');
   });
@@ -52,7 +54,14 @@ describe('StatCard — render', () => {
 
 describe('StatCard — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<StatCard label="Utilizadores activos" value={1842} trend={5.2} trendLabel="vs mês anterior" />);
+    const { container } = render(
+      <StatCard
+        label="Utilizadores activos"
+        value={1842}
+        trend={5.2}
+        trendLabel="vs mês anterior"
+      />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -91,7 +100,14 @@ describe('AlertBanner — render', () => {
 
 describe('AlertBanner — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<AlertBanner variant="warning" title="Sessão a expirar" description="Guarde o trabalho." dismissible />);
+    const { container } = render(
+      <AlertBanner
+        variant="warning"
+        title="Sessão a expirar"
+        description="Guarde o trabalho."
+        dismissible
+      />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -99,11 +115,7 @@ describe('AlertBanner — accessibility', () => {
 // ── Breadcrumbs ────────────────────────────────────────────────────────────────
 
 describe('Breadcrumbs — render', () => {
-  const ITEMS = [
-    { label: 'Início' },
-    { label: 'Processos' },
-    { label: 'Processo #1042' },
-  ];
+  const ITEMS = [{ label: 'Início' }, { label: 'Processos' }, { label: 'Processo #1042' }];
 
   it('renders a nav element', () => {
     render(<Breadcrumbs items={ITEMS} />);
@@ -130,7 +142,9 @@ describe('Breadcrumbs — render', () => {
 describe('Breadcrumbs — accessibility', () => {
   it('has no axe violations', async () => {
     const { container } = render(
-      <Breadcrumbs items={[{ label: 'Início' }, { label: 'Clientes' }, { label: 'Empresa XYZ' }]} />,
+      <Breadcrumbs
+        items={[{ label: 'Início' }, { label: 'Clientes' }, { label: 'Empresa XYZ' }]}
+      />,
     );
     expect(await axe(container)).toHaveNoViolations();
   });
@@ -344,7 +358,9 @@ describe('ListView — render', () => {
   });
 
   it('renders selection indicators when selectable', () => {
-    const { container } = render(<ListView items={LIST_ITEMS} columns={LIST_COLS} selectable onSelectionChange={vi.fn()} />);
+    const { container } = render(
+      <ListView items={LIST_ITEMS} columns={LIST_COLS} selectable onSelectionChange={vi.fn()} />,
+    );
     // Custom checkbox divs are rendered (not native checkboxes)
     const rows = container.querySelectorAll('[class*="cursor-pointer"]');
     expect(rows.length).toBeGreaterThan(0);

@@ -81,7 +81,9 @@ describe('NumberDisplay — render', () => {
   });
 
   it('renders prefix and suffix', () => {
-    const { container } = render(<NumberDisplay value={99} prefix="€ " suffix=" EUR" decimals={0} />);
+    const { container } = render(
+      <NumberDisplay value={99} prefix="€ " suffix=" EUR" decimals={0} />,
+    );
     expect(container.textContent).toContain('€');
     expect(container.textContent).toContain('EUR');
   });
@@ -96,7 +98,9 @@ describe('NumberDisplay — render', () => {
 
 describe('NumberDisplay — accessibility', () => {
   it('has no axe violations', async () => {
-    const { container } = render(<NumberDisplay value={9850} prefix="€ " decimals={2} variant="currency" />);
+    const { container } = render(
+      <NumberDisplay value={9850} prefix="€ " decimals={2} variant="currency" />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
@@ -115,16 +119,12 @@ describe('DateDisplay — render', () => {
   });
 
   it('renders relative time when showRelative is true', () => {
-    const { container } = render(
-      <DateDisplay value="2025-01-01" showRelative />,
-    );
+    const { container } = render(<DateDisplay value="2025-01-01" showRelative />);
     expect(container.textContent).toBeTruthy();
   });
 
   it('applies a custom format', () => {
-    const { container } = render(
-      <DateDisplay value="2025-06-15" dateFormat="yyyy" />,
-    );
+    const { container } = render(<DateDisplay value="2025-06-15" dateFormat="yyyy" />);
     expect(container.textContent).toContain('2025');
   });
 });
