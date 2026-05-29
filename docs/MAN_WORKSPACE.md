@@ -1,7 +1,7 @@
 # Normordis Core UI — Workspace SDK
 ## Manual de Consumo
 
-> **Versão:** 0.1.x · **Pacote:** `normordis-core-ui`
+> **Versão:** 1.0.0 · **Pacote:** `@carloscanutocosta/core-ui`
 
 ---
 
@@ -71,15 +71,15 @@ próprias apps como componentes React e registam-nas na shell.
 ### Instalação
 
 ```bash
-npm install normordis-core-ui
-# ou
-pnpm add normordis-core-ui
+pnpm add @carloscanutocosta/core-ui
 ```
 
 Dependências de pares necessárias no projecto consumidor:
 
 ```bash
-pnpm add react react-dom framer-motion lucide-react
+pnpm add react react-dom lucide-react
+# Para usar WorkspaceCommandPalette (opcional):
+pnpm add cmdk
 ```
 
 ### Configuração do Tailwind
@@ -90,7 +90,7 @@ No `tailwind.config.js`, adicionar o caminho do SDK ao `content`:
 export default {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
-    './node_modules/normordis-core-ui/dist/**/*.js', // ← obrigatório
+    './node_modules/@carloscanutocosta/core-ui/dist/**/*.js', // ← obrigatório
   ],
 };
 ```
@@ -98,9 +98,9 @@ export default {
 Importar o CSS e restaurar o tema antes da renderização:
 
 ```js
-// src/main.jsx
-import 'normordis-core-ui/dist/normordis-core-ui.css';
-import { applyTheme, getStoredTheme } from 'normordis-core-ui';
+// src/main.tsx
+import '@carloscanutocosta/core-ui/styles';
+import { applyTheme, getStoredTheme } from '@carloscanutocosta/core-ui';
 
 applyTheme(getStoredTheme()); // evita flash de tema errado
 
@@ -110,7 +110,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 ### Uso Mínimo
 
 ```jsx
-import { AppShell } from 'normordis-core-ui';
+import { AppShell } from '@carloscanutocosta/core-ui/workspace';
 import { LayoutDashboard, FileText } from 'lucide-react';
 
 const APPS = [
@@ -267,7 +267,7 @@ O `useApp()` é o principal ponto de integração para os app-developers.
 Deve ser chamado dentro de componentes renderizados pelo AppShell.
 
 ```jsx
-import { useApp } from 'normordis-core-ui';
+import { useApp } from '@carloscanutocosta/core-ui/workspace';
 
 export default function MyApp() {
   const {
@@ -499,7 +499,7 @@ assegura a limpeza automática:
 
 ```jsx
 import { useEffect, useState } from 'react';
-import { useApp } from 'normordis-core-ui';
+import { useApp } from '@carloscanutocosta/core-ui/workspace';
 import { Plus, Download, Filter } from 'lucide-react';
 
 export default function DocumentsApp() {
@@ -734,14 +734,14 @@ em `localStorage` e restaurada automaticamente.
 
 ```js
 // src/main.jsx — antes de createRoot
-import { applyTheme, getStoredTheme } from 'normordis-core-ui';
+import { applyTheme, getStoredTheme } from '@carloscanutocosta/core-ui';
 applyTheme(getStoredTheme());
 ```
 
 ### API programática
 
 ```js
-import { applyTheme, getStoredTheme, THEMES } from 'normordis-core-ui';
+import { applyTheme, getStoredTheme, THEMES } from '@carloscanutocosta/core-ui';
 
 // Listar temas disponíveis
 console.log(THEMES);
@@ -757,7 +757,7 @@ const current = getStoredTheme(); // 'light' | 'dark' | 'high-contrast' | 'high-
 ### Dentro do workspace (componentes)
 
 ```jsx
-import { useWorkspace } from 'normordis-core-ui';
+import { useWorkspace } from '@carloscanutocosta/core-ui/workspace';
 
 function ThemeWidget() {
   const { theme, changeTheme } = useWorkspace();
@@ -815,7 +815,7 @@ import type {
   AppAPI,
   AppShellProps,
   IconComponent,
-} from 'normordis-core-ui';
+} from '@carloscanutocosta/core-ui/workspace';
 ```
 
 ### `AppDefinition`
@@ -931,7 +931,7 @@ import {
   WorkspaceContentArea,
   WorkspaceStatusBar,
   WorkspaceCommandPalette,
-} from 'normordis-core-ui';
+} from '@carloscanutocosta/core-ui/workspace';
 
 export default function CustomLayout({ apps, children }) {
   return (
@@ -957,7 +957,7 @@ export default function CustomLayout({ apps, children }) {
 Usar em componentes de layout/shell. Para componentes de apps, preferir `useApp()`.
 
 ```jsx
-import { useWorkspace } from 'normordis-core-ui';
+import { useWorkspace } from '@carloscanutocosta/core-ui/workspace';
 
 function MyWidget() {
   const {
@@ -982,7 +982,7 @@ function MyWidget() {
 
 ```jsx
 import { useEffect, useState } from 'react';
-import { useApp } from 'normordis-core-ui';
+import { useApp } from '@carloscanutocosta/core-ui/workspace';
 import { Plus, Download, RefreshCw } from 'lucide-react';
 
 export default function TasksApp() {
@@ -1039,7 +1039,7 @@ export default function TasksApp() {
 
 ```jsx
 import { useState } from 'react';
-import { AppShell } from 'normordis-core-ui';
+import { AppShell } from '@carloscanutocosta/core-ui/workspace';
 import { LayoutDashboard, FileText, CheckSquare, Settings, Star, Calendar, Phone, Mail, Users } from 'lucide-react';
 
 import DashboardApp from './apps/DashboardApp';
@@ -1159,12 +1159,21 @@ pnpm storybook
 | Grupo | Componentes |
 |---|---|
 | **UI** | Button (7 variantes), Badge (4 variantes) |
-| **Workspace** | NotificationsPanel, LeftRail (com badges), WorkspaceCommandPalette |
+| **Display** | TextDisplay, BadgeDisplay, NumberDisplay, DateDisplay, ProgressDisplay, RichTextDisplay |
+| **Charts** | AreaChart, BarChart, LineChart, PieChart, Heatmap, Sparkline |
+| **Forms/Inputs** | TextInput, NumberInput, SelectInput, SliderInput, SwitchInput, CheckboxInput, RatingInput, TagsInput, PasswordInput, MultiSelectInput, SearchInput, OTPInput |
+| **Forms/Fields** | TextField e variantes (multiline, prefix, suffix) |
+| **Data** | StatCard, AlertBanner, Breadcrumbs, Stepper, Timeline, DataTable, ListView |
+| **Layout** | SidebarLayout, TopNavbar |
+| **UI Extra** | AvatarGroup, CodeBlock, EmptyState, ConfirmDialog, NotificationCenter, ImageGallery |
+| **Workspace** | AppShell, AtendimentoPanel, LeftRail, NotificationsPanel, WorkspaceCommandPalette |
 
 Cada story tem:
 - **Controls** — ajustar props em tempo real;
 - **A11y** — resultado de auditoria axe automático por story;
-- **Docs** — documentação de props gerada automaticamente.
+- **Docs** — documentação de props gerada automaticamente (autodocs).
+
+O Storybook é publicado automaticamente no **Chromatic** a cada push para `devel`/`main`.
 
 **Publicar Storybook estático (CI/GitHub Pages):**
 
@@ -1220,16 +1229,25 @@ pnpm test:coverage
 
 ```
 src/test/
-  setup.js                              — mocks globais (matchMedia, ResizeObserver, IntersectionObserver)
-  lib/
-    utils.test.js                       — cn(), isBrowser
-  workspace/
-    WorkspaceContext.test.jsx           — estado inicial, openApp, closeTab, badges, notificações,
-                                          registerCommands, atendimento, error boundary
-    NotificationsPanel.test.jsx         — trigger button, aria-label, axe (acessibilidade)
-  hooks/
-    use-app.test.jsx                    — error boundary, navigate, notify, setBadge, registerCommands
+  setup.js                    — mocks globais (matchMedia, ResizeObserver, IntersectionObserver)
+  lib/                        — utils, theme, query-client
+  hooks/                      — use-app, use-mobile
+  workspace/                  — WorkspaceContext (57 testes), AppShell, Header, LeftRail,
+                                RightPanel, RightRail, TabBar, StatusBar, AtendimentoPanel,
+                                ContentArea, NotificationsPanel, WorkspaceCommandPalette
+  display/                    — TextDisplay, BadgeDisplay, NumberDisplay, DateDisplay,
+                                ProgressDisplay, RichTextDisplay (render + axe)
+  charts/                     — AreaChart, BarChart, LineChart, PieChart, Heatmap, Sparkline
+  forms/
+    inputs.test.jsx           — TextInput, NumberInput, SelectInput, SliderInput,
+                                SwitchInput, CheckboxInput, RatingInput, TagsInput,
+                                PasswordInput, MultiSelectInput, SearchInput, OTPInput
+    fields.test.jsx           — TextField, SelectField (render + axe)
+  data/                       — StatCard, AlertBanner, Breadcrumbs, Stepper, Timeline,
+                                DataTable, ListView (render + interactions + axe)
 ```
+
+**Total: 358 testes em 21 suites, 0 falhas.**
 
 **Escrever um novo teste:**
 
@@ -1255,13 +1273,13 @@ describe('MyComponent', () => {
 });
 ```
 
-**Thresholds de cobertura:**
+**Thresholds de cobertura (enforçados no CI para workspace/hooks/lib):**
 
 | Métrica | Mínimo |
 |---|---|
-| Linhas | 60% |
-| Funções | 60% |
-| Branches | 60% |
+| Linhas | 80% |
+| Funções | 70% |
+| Branches | 75% |
 
 ---
 
