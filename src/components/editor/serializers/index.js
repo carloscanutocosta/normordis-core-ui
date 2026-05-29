@@ -1,4 +1,4 @@
-export { getPlainTextFromLexical } from "./lexical-json";
+export { getPlainTextFromLexical } from './lexical-json';
 export {
   exportToNcrtf,
   importFromNcrtf,
@@ -6,4 +6,4 @@ export {
   ncrtfToLexical,
   NCRTF_MIME_TYPE,
   NCRTF_VERSION,
-} from "./ncrtf";
+} from './ncrtf';

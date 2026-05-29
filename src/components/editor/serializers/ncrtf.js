@@ -1,16 +1,16 @@
-import { getLexicalPayload } from "../editorState";
+import { getLexicalPayload } from '../editorState';
 
-export const NCRTF_VERSION = "1.3.0";
-export const NCRTF_MIME_TYPE = "application/vnd.normordis.ncrtf+json";
+export const NCRTF_VERSION = '1.3.0';
+export const NCRTF_MIME_TYPE = 'application/vnd.normordis.ncrtf+json';
 
 // ---------------------------------------------------------------------------
 // Font family mapping  (CSS stored in Lexical ↔ canonical name in NCRTF)
 // ---------------------------------------------------------------------------
 
 const FONT_MAP = [
-  { ncrtf: "LiberationSans",  css: "LiberationSans, Arial, sans-serif"        },
-  { ncrtf: "LiberationSerif", css: "LiberationSerif, Georgia, serif"           },
-  { ncrtf: "LiberationMono",  css: "LiberationMono, 'Courier New', monospace"  },
+  { ncrtf: 'LiberationSans', css: 'LiberationSans, Arial, sans-serif' },
+  { ncrtf: 'LiberationSerif', css: 'LiberationSerif, Georgia, serif' },
+  { ncrtf: 'LiberationMono', css: "LiberationMono, 'Courier New', monospace" },
 ];
 
 function cssToNcrtfFont(cssValue) {
@@ -18,7 +18,7 @@ function cssToNcrtfFont(cssValue) {
   const entry = FONT_MAP.find((f) => f.css === cssValue);
   // Fallback: match on first font name in the stack
   if (!entry) {
-    const first = cssValue.split(",")[0].trim();
+    const first = cssValue.split(',')[0].trim();
     return FONT_MAP.find((f) => f.ncrtf === first)?.ncrtf ?? null;
   }
   return entry.ncrtf;
@@ -33,7 +33,7 @@ function ncrtfFontToCss(ncrtfFont) {
 //   → "LiberationSans, Arial, sans-serif"
 function parseCssProperty(cssString, property) {
   if (!cssString) return null;
-  const re = new RegExp(`(?:^|;)\\s*${property}\\s*:\\s*([^;]+)`, "i");
+  const re = new RegExp(`(?:^|;)\\s*${property}\\s*:\\s*([^;]+)`, 'i');
   const m = cssString.match(re);
   return m ? m[1].trim() : null;
 }
@@ -55,10 +55,14 @@ function buildCssProperty(property, value) {
 // 0=none, 1=left, 2=center, 3=right, 4=justify, 5=start, 6=end
 function elementFormatToAlign(format) {
   switch (format) {
-    case 2: return "center";
-    case 3: return "right";
-    case 4: return "justify";
-    default: return undefined; // left is the default — omit
+    case 2:
+      return 'center';
+    case 3:
+      return 'right';
+    case 4:
+      return 'justify';
+    default:
+      return undefined; // left is the default — omit
   }
 }
 
@@ -67,13 +71,13 @@ function elementFormatToAlign(format) {
 function textFormatToMarks(format) {
   if (!format) return undefined;
   const marks = [];
-  if (format & 1) marks.push("bold");
-  if (format & 2) marks.push("italic");
-  if (format & 8) marks.push("underline");
-  if (format & 4) marks.push("strikethrough");
-  if (format & 16) marks.push("code");
-  if (format & 32) marks.push("subscript");
-  if (format & 64) marks.push("superscript");
+  if (format & 1) marks.push('bold');
+  if (format & 2) marks.push('italic');
+  if (format & 8) marks.push('underline');
+  if (format & 4) marks.push('strikethrough');
+  if (format & 16) marks.push('code');
+  if (format & 32) marks.push('subscript');
+  if (format & 64) marks.push('superscript');
   return marks.length > 0 ? marks : undefined;
 }
 
@@ -93,28 +97,28 @@ function convertInlineNode(node) {
   if (!node) return null;
 
   switch (node.type) {
-    case "text": {
+    case 'text': {
       const marks = textFormatToMarks(node.format) ?? [];
-      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.style, "font-family"));
-      if (fontNcrtf) marks.push({ type: "font_family", value: fontNcrtf });
-      const n = { type: "text", text: node.text ?? "" };
+      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.style, 'font-family'));
+      if (fontNcrtf) marks.push({ type: 'font_family', value: fontNcrtf });
+      const n = { type: 'text', text: node.text ?? '' };
       if (marks.length > 0) n.marks = marks;
       return n;
     }
 
-    case "link":
-    case "autolink": {
+    case 'link':
+    case 'autolink': {
       return {
-        type: "link",
-        href: node.url ?? "",
+        type: 'link',
+        href: node.url ?? '',
         ...(node.title ? { title: node.title } : {}),
         ...(node.target ? { target: node.target } : {}),
         children: convertInlines(node.children),
       };
     }
 
-    case "linebreak":
-      return { type: "hard_break" };
+    case 'linebreak':
+      return { type: 'hard_break' };
 
     default:
       return null;
@@ -129,12 +133,12 @@ function convertBlock(node) {
   if (!node) return null;
 
   switch (node.type) {
-    case "paragraph": {
+    case 'paragraph': {
       const alignment = elementFormatToAlign(node.format);
       const indent = node.indent > 0 ? node.indent : undefined;
       // textStyle holds the paragraph-level pending font (Lexical ParagraphNode.__textStyle)
-      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.textStyle, "font-family"));
-      const n = { type: "paragraph" };
+      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.textStyle, 'font-family'));
+      const n = { type: 'paragraph' };
       if (alignment) n.alignment = alignment;
       if (indent != null) n.indent = indent;
       if (fontNcrtf) n.font_family = fontNcrtf;
@@ -142,38 +146,38 @@ function convertBlock(node) {
       return n;
     }
 
-    case "heading": {
-      const level = parseInt(node.tag?.replace("h", "") ?? "1", 10);
+    case 'heading': {
+      const level = parseInt(node.tag?.replace('h', '') ?? '1', 10);
       const alignment = elementFormatToAlign(node.format);
-      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.textStyle, "font-family"));
-      const n = { type: "heading", level };
+      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.textStyle, 'font-family'));
+      const n = { type: 'heading', level };
       if (alignment) n.alignment = alignment;
       if (fontNcrtf) n.font_family = fontNcrtf;
       n.children = convertInlines(node.children);
       return n;
     }
 
-    case "list": {
-      const listType = node.listType === "number" ? "ordered" : "bullet";
+    case 'list': {
+      const listType = node.listType === 'number' ? 'ordered' : 'bullet';
       return {
-        type: "list",
+        type: 'list',
         list_type: listType,
         children: convertListItems(node.children ?? []),
       };
     }
 
-    case "quote": {
+    case 'quote': {
       return {
-        type: "blockquote",
+        type: 'blockquote',
         children: convertInlines(node.children),
       };
     }
 
-    case "simple-table":
+    case 'simple-table':
       return convertSimpleTable(node);
 
-    case "image": {
-      const n = { type: "image", src: node.src ?? "" };
+    case 'image': {
+      const n = { type: 'image', src: node.src ?? '' };
       if (node.altText) n.alt = node.altText;
       if (node.caption) n.caption = node.caption;
       if (node.width != null) n.width_percent = node.width;
@@ -187,11 +191,9 @@ function convertBlock(node) {
 
 function convertListItems(children) {
   return children
-    .filter((child) => child?.type === "listitem")
+    .filter((child) => child?.type === 'listitem')
     .map((node) => {
-      const inlines = convertInlines(
-        (node.children ?? []).filter((c) => c?.type !== "list")
-      );
+      const inlines = convertInlines((node.children ?? []).filter((c) => c?.type !== 'list'));
       const item = { children: inlines };
       if (node.indent > 0) item.indent = node.indent;
       if (node.checked != null) item.checked = node.checked;
@@ -209,17 +211,17 @@ function convertSimpleTable(node) {
   rows.forEach((row, rowIndex) => {
     const isHeaderRow = includeHeader && rowIndex === 0;
     const cells = (Array.isArray(row) ? row : []).map((cellText) => {
-      const text = typeof cellText === "string" ? cellText : "";
+      const text = typeof cellText === 'string' ? cellText : '';
       const cell = {};
       if (isHeaderRow) cell.header = true;
-      cell.children = text ? [{ type: "text", text }] : [];
+      cell.children = text ? [{ type: 'text', text }] : [];
       return cell;
     });
 
     (isHeaderRow ? head : body).push({ cells });
   });
 
-  return { type: "table", head, body };
+  return { type: 'table', head, body };
 }
 
 // =============================================================================
@@ -233,11 +235,16 @@ function convertSimpleTable(node) {
 // NCRTF TextAlign → Lexical ElementFormat integer
 function alignToElementFormat(alignment) {
   switch (alignment) {
-    case "left": return 1;
-    case "center": return 2;
-    case "right": return 3;
-    case "justify": return 4;
-    default: return 0;
+    case 'left':
+      return 1;
+    case 'center':
+      return 2;
+    case 'right':
+      return 3;
+    case 'justify':
+      return 4;
+    default:
+      return 0;
   }
 }
 
@@ -247,14 +254,28 @@ function marksToTextFormat(marks) {
   if (!Array.isArray(marks)) return 0;
   let format = 0;
   for (const mark of marks) {
-    switch (typeof mark === "string" ? mark : mark?.type) {
-      case "bold":          format |= 1;  break;
-      case "italic":        format |= 2;  break;
-      case "strikethrough": format |= 4;  break;
-      case "underline":     format |= 8;  break;
-      case "code":          format |= 16; break;
-      case "subscript":     format |= 32; break;
-      case "superscript":   format |= 64; break;
+    switch (typeof mark === 'string' ? mark : mark?.type) {
+      case 'bold':
+        format |= 1;
+        break;
+      case 'italic':
+        format |= 2;
+        break;
+      case 'strikethrough':
+        format |= 4;
+        break;
+      case 'underline':
+        format |= 8;
+        break;
+      case 'code':
+        format |= 16;
+        break;
+      case 'subscript':
+        format |= 32;
+        break;
+      case 'superscript':
+        format |= 64;
+        break;
     }
   }
   return format;
@@ -270,14 +291,14 @@ function makeElement(type, extra, children) {
     version: 1,
     format: 0,
     indent: 0,
-    direction: "ltr",
+    direction: 'ltr',
     children,
     ...extra,
   };
 }
 
-function makeText(text, format = 0, style = "") {
-  return { type: "text", version: 1, format, detail: 0, mode: "normal", style, text };
+function makeText(text, format = 0, style = '') {
+  return { type: 'text', version: 1, format, detail: 0, mode: 'normal', style, text };
 }
 
 // ---------------------------------------------------------------------------
@@ -298,37 +319,37 @@ function importInlineNode(node, blockFont) {
   if (!node) return null;
 
   switch (node.type) {
-    case "text": {
+    case 'text': {
       const format = marksToTextFormat(node.marks);
       const fontMark = (node.marks ?? []).find(
-        (m) => typeof m === "object" && m.type === "font_family"
+        (m) => typeof m === 'object' && m.type === 'font_family',
       );
       // Inline mark takes precedence; fall back to block-level font
       const resolvedNcrtf = fontMark?.value ?? blockFont ?? null;
       const css = resolvedNcrtf ? ncrtfFontToCss(resolvedNcrtf) : null;
-      const style = css ? buildCssProperty("font-family", css) : "";
-      return makeText(node.text ?? "", format, style);
+      const style = css ? buildCssProperty('font-family', css) : '';
+      return makeText(node.text ?? '', format, style);
     }
 
-    case "link": {
+    case 'link': {
       return makeElement(
-        "link",
+        'link',
         {
-          url: node.href ?? "",
-          rel: node.target ? "noreferrer" : null,
+          url: node.href ?? '',
+          rel: node.target ? 'noreferrer' : null,
           target: node.target ?? null,
           title: node.title ?? null,
         },
-        importInlines(node.children, blockFont)
+        importInlines(node.children, blockFont),
       );
     }
 
-    case "hard_break":
-      return { type: "linebreak", version: 1 };
+    case 'hard_break':
+      return { type: 'linebreak', version: 1 };
 
-    case "footnote_ref":
+    case 'footnote_ref':
       // Render as superscript text — no dedicated node in the editor
-      return makeText(String(node.number ?? ""), 64 /* superscript */);
+      return makeText(String(node.number ?? ''), 64 /* superscript */);
 
     default:
       return null;
@@ -343,79 +364,79 @@ function importBlock(block) {
   if (!block) return null;
 
   switch (block.type) {
-    case "paragraph": {
+    case 'paragraph': {
       return makeElement(
-        "paragraph",
+        'paragraph',
         {
           format: alignToElementFormat(block.alignment),
           indent: block.indent ?? 0,
         },
-        importInlines(block.children, block.font_family)
+        importInlines(block.children, block.font_family),
       );
     }
 
-    case "heading": {
+    case 'heading': {
       const level = Math.min(Math.max(Number(block.level) || 1, 1), 6);
       return makeElement(
-        "heading",
+        'heading',
         {
           tag: `h${level}`,
           format: alignToElementFormat(block.alignment),
         },
-        importInlines(block.children, block.font_family)
+        importInlines(block.children, block.font_family),
       );
     }
 
-    case "list": {
-      const isOrdered = block.list_type === "ordered";
-      const isCheck = block.list_type === "checklist";
-      const listType = isOrdered ? "number" : isCheck ? "check" : "bullet";
-      const tag = isOrdered ? "ol" : "ul";
+    case 'list': {
+      const isOrdered = block.list_type === 'ordered';
+      const isCheck = block.list_type === 'checklist';
+      const listType = isOrdered ? 'number' : isCheck ? 'check' : 'bullet';
+      const tag = isOrdered ? 'ol' : 'ul';
 
       const items = (block.children ?? []).map((item, idx) => {
         const n = makeElement(
-          "listitem",
+          'listitem',
           {
             value: idx + 1,
             indent: item.indent ?? 0,
             ...(item.checked != null ? { checked: item.checked } : {}),
           },
-          importInlines(item.children)
+          importInlines(item.children),
         );
         return n;
       });
 
-      return makeElement("list", { listType, tag, start: 1 }, items);
+      return makeElement('list', { listType, tag, start: 1 }, items);
     }
 
-    case "blockquote": {
-      return makeElement("quote", {}, importInlines(block.children));
+    case 'blockquote': {
+      return makeElement('quote', {}, importInlines(block.children));
     }
 
-    case "table": {
+    case 'table': {
       return importTable(block);
     }
 
-    case "image": {
+    case 'image': {
       return {
-        type: "image",
+        type: 'image',
         version: 1,
-        src: block.src ?? "",
-        altText: block.alt ?? "",
-        caption: block.caption ?? "",
+        src: block.src ?? '',
+        altText: block.alt ?? '',
+        caption: block.caption ?? '',
         width: block.width_percent ?? 100,
       };
     }
 
-    case "code_block": {
+    case 'code_block': {
       // No code block node in the editor — map to a plain paragraph
-      return makeElement("paragraph", {}, [makeText(block.code ?? "")]);
+      return makeElement('paragraph', {}, [makeText(block.code ?? '')]);
     }
 
     // Layout-only blocks with no editor equivalent — skip silently
-    case "horizontal_rule":
-    case "page_break":
-    case "fixed_box":
+    case 'horizontal_rule':
+    case 'page_break':
+    case 'fixed_box':
       return null;
 
     default:
@@ -424,34 +445,30 @@ function importBlock(block) {
 }
 
 function importTable(block) {
-  const headRows = (block.head ?? []).map((row) =>
-    (row.cells ?? []).map(extractCellText)
-  );
-  const bodyRows = (block.body ?? []).map((row) =>
-    (row.cells ?? []).map(extractCellText)
-  );
+  const headRows = (block.head ?? []).map((row) => (row.cells ?? []).map(extractCellText));
+  const bodyRows = (block.body ?? []).map((row) => (row.cells ?? []).map(extractCellText));
 
   const rows = [...headRows, ...bodyRows];
   const includeHeader = headRows.length > 0;
   const columns = rows[0]?.length ?? 0;
 
-  return { type: "simple-table", version: 1, rows, columns, includeHeader };
+  return { type: 'simple-table', version: 1, rows, columns, includeHeader };
 }
 
 function extractCellText(cell) {
   // SimpleTableNode stores flat strings — extract plain text from NCRTF inlines
   return (cell.children ?? [])
     .map((c) => {
-      if (c.type === "text") return c.text ?? "";
-      if (c.type === "link") {
+      if (c.type === 'text') return c.text ?? '';
+      if (c.type === 'link') {
         return (c.children ?? [])
-          .filter((lc) => lc.type === "text")
-          .map((lc) => lc.text ?? "")
-          .join("");
+          .filter((lc) => lc.type === 'text')
+          .map((lc) => lc.text ?? '')
+          .join('');
       }
-      return "";
+      return '';
     })
-    .join("");
+    .join('');
 }
 
 // =============================================================================
@@ -462,8 +479,7 @@ function extractCellText(cell) {
  * Converts a Lexical editor state JSON to an NCRTF v1.3.0 document object.
  */
 export function lexicalToNcrtf(lexicalJson) {
-  const state =
-    typeof lexicalJson === "string" ? JSON.parse(lexicalJson) : lexicalJson;
+  const state = typeof lexicalJson === 'string' ? JSON.parse(lexicalJson) : lexicalJson;
   const rootNode = state?.root ?? state;
 
   const blocks = (rootNode?.children ?? []).map(convertBlock).filter(Boolean);
@@ -476,8 +492,7 @@ export function lexicalToNcrtf(lexicalJson) {
  * The result can be fed directly to editor.parseEditorState().
  */
 export function ncrtfToLexical(ncrtfDoc) {
-  const parsed =
-    typeof ncrtfDoc === "string" ? JSON.parse(ncrtfDoc) : ncrtfDoc;
+  const parsed = typeof ncrtfDoc === 'string' ? JSON.parse(ncrtfDoc) : ncrtfDoc;
 
   if (!parsed?.ncrtf) {
     throw new Error("Payload NCRTF inválido: campo 'ncrtf' em falta.");
@@ -487,11 +502,11 @@ export function ncrtfToLexical(ncrtfDoc) {
 
   return {
     root: {
-      type: "root",
+      type: 'root',
       version: 1,
-      format: "",
+      format: '',
       indent: 0,
-      direction: "ltr",
+      direction: 'ltr',
       children,
     },
   };
@@ -506,10 +521,7 @@ export function ncrtfToLexical(ncrtfDoc) {
  *   pretty: true              — indent JSON string output
  */
 export function exportToNcrtf(editorDocument, options = {}) {
-  const lexical =
-    getLexicalPayload(editorDocument) ??
-    editorDocument?.toJSON?.() ??
-    editorDocument;
+  const lexical = getLexicalPayload(editorDocument) ?? editorDocument?.toJSON?.() ?? editorDocument;
 
   const doc = lexicalToNcrtf(lexical);
 
@@ -524,9 +536,7 @@ export function exportToNcrtf(editorDocument, options = {}) {
     };
   }
 
-  return options.as === "string"
-    ? JSON.stringify(doc, null, options.pretty ? 2 : 0)
-    : doc;
+  return options.as === 'string' ? JSON.stringify(doc, null, options.pretty ? 2 : 0) : doc;
 }
 
 /**
@@ -535,8 +545,7 @@ export function exportToNcrtf(editorDocument, options = {}) {
  * Throws if the payload is missing the 'ncrtf' version field.
  */
 export function importFromNcrtf(payload) {
-  const parsed =
-    typeof payload === "string" ? JSON.parse(payload) : payload;
+  const parsed = typeof payload === 'string' ? JSON.parse(payload) : payload;
 
   if (!parsed?.ncrtf) {
     throw new Error("Payload NCRTF inválido: campo 'ncrtf' em falta.");

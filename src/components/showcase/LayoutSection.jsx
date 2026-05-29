@@ -1,7 +1,7 @@
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import SidebarLayoutDemo from "../layout/SidebarLayout";
-import TopNavbar from "../layout/TopNavbar";
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import SidebarLayoutDemo from '../layout/SidebarLayout';
+import TopNavbar from '../layout/TopNavbar';
 
 export default function LayoutSection() {
   return (
@@ -9,7 +9,9 @@ export default function LayoutSection() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Sidebar Layout</CardTitle>
-          <CardDescription>Layout com sidebar colapsável, navegação activa e perfil de utilizador</CardDescription>
+          <CardDescription>
+            Layout com sidebar colapsável, navegação activa e perfil de utilizador
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <SidebarLayoutDemo />
@@ -19,7 +21,9 @@ export default function LayoutSection() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Top Navbar</CardTitle>
-          <CardDescription>Barra de navegação superior com dropdowns, pesquisa e menu mobile</CardDescription>
+          <CardDescription>
+            Barra de navegação superior com dropdowns, pesquisa e menu mobile
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <TopNavbar />

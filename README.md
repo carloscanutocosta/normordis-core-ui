@@ -157,6 +157,7 @@ Instala apenas o que usares:
 | Charts | `recharts` |
 | Editor Lexical | `lexical @lexical/react` |
 | MapView | `react-leaflet leaflet` |
+| WorkspaceCommandPalette | `cmdk` |
 | Formulários com validação | `react-hook-form @hookform/resolvers zod` |
 | Tabelas avançadas | `@tanstack/react-table` |
 | Drag & drop | `@hello-pangea/dnd` |

@@ -1,47 +1,41 @@
-import { useMemo, useState } from "react";
-import { DocumentEditor } from "@/components/editor";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { useMemo, useState } from 'react';
+import { DocumentEditor } from '@/components/editor';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 const semanticBlocks = [
   {
-    id: "notice.validation",
-    label: "Nota de validação",
-    category: "Notas",
-    description: "Texto padrão para documentos em validação.",
+    id: 'notice.validation',
+    label: 'Nota de validação',
+    category: 'Notas',
+    description: 'Texto padrão para documentos em validação.',
     content: {
-      type: "paragraphs",
+      type: 'paragraphs',
       blocks: [
-        "Este documento encontra-se em fase de validação e pode ser revisto antes da sua consolidação documental.",
+        'Este documento encontra-se em fase de validação e pode ser revisto antes da sua consolidação documental.',
       ],
     },
   },
   {
-    id: "custody.reference",
-    label: "Referência de custódia",
-    category: "Custódia",
+    id: 'custody.reference',
+    label: 'Referência de custódia',
+    category: 'Custódia',
     content: {
-      type: "template",
-      text: "A versão sob custódia será integrada pelo core-documental após validação do payload NCRTF.",
+      type: 'template',
+      text: 'A versão sob custódia será integrada pelo core-documental após validação do payload NCRTF.',
     },
   },
   {
-    id: "signature.standard",
-    label: "Assinatura padrão",
-    category: "Assinaturas",
+    id: 'signature.standard',
+    label: 'Assinatura padrão',
+    category: 'Assinaturas',
     placeholders: [
-      { id: "name", label: "Nome" },
-      { id: "role", label: "Função" },
+      { id: 'name', label: 'Nome' },
+      { id: 'role', label: 'Função' },
     ],
     content: {
-      type: "template",
-      text: "{{name}}\n{{role}}",
+      type: 'template',
+      text: '{{name}}\n{{role}}',
     },
   },
 ];
@@ -51,7 +45,7 @@ export default function EditorPlayground() {
   const [exportedPayload, setExportedPayload] = useState(null);
 
   const payloadPreview = useMemo(() => {
-    if (!exportedPayload) return "Exporta o documento para pré-visualizar NCRTF.";
+    if (!exportedPayload) return 'Exporta o documento para pré-visualizar NCRTF.';
     return JSON.stringify(exportedPayload, null, 2);
   }, [exportedPayload]);
 
@@ -65,8 +59,8 @@ export default function EditorPlayground() {
           <Badge variant="secondary">novo</Badge>
         </div>
         <p className="max-w-3xl text-sm text-muted-foreground">
-          Demonstração do editor rich text baseado em Lexical, com toolbar
-          substituível, blocos semânticos e serialização canónica para NCRTF.
+          Demonstração do editor rich text baseado em Lexical, com toolbar substituível, blocos
+          semânticos e serialização canónica para NCRTF.
         </p>
       </div>
 
@@ -75,8 +69,8 @@ export default function EditorPlayground() {
           <CardHeader>
             <CardTitle>Documento em composição</CardTitle>
             <CardDescription>
-              Fluxo previsto: Lexical JSON para NCRTF, depois core-documental
-              para NDF de custódia em DB.
+              Fluxo previsto: Lexical JSON para NCRTF, depois core-documental para NDF de custódia
+              em DB.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -90,8 +84,8 @@ export default function EditorPlayground() {
               exportOptions={{
                 pretty: true,
                 metadata: {
-                  title: "Documento de demonstração",
-                  locale: "pt-PT",
+                  title: 'Documento de demonstração',
+                  locale: 'pt-PT',
                 },
               }}
               semanticBlocks={semanticBlocks}
@@ -103,8 +97,7 @@ export default function EditorPlayground() {
           <CardHeader>
             <CardTitle>Payload NCRTF</CardTitle>
             <CardDescription>
-              O core-ui gera o contrato; a app decide se guarda, descarrega ou
-              envia para backend.
+              O core-ui gera o contrato; a app decide se guarda, descarrega ou envia para backend.
             </CardDescription>
           </CardHeader>
           <CardContent>
