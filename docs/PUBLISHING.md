@@ -33,20 +33,34 @@ export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
 
 ## Publicar uma nova versão
 
+**Versão actual: 1.0.0**
+
 ```bash
-# 1. Garantir que o build está actualizado
-pnpm build
+# 1. Garantir que o build está actualizado e os testes passam
+pnpm test && pnpm build
 
 # 2. Bump de versão (escolher semver adequado)
-pnpm version patch   # 0.1.0 → 0.1.1  (bug fix)
-pnpm version minor   # 0.1.0 → 0.2.0  (nova feature, API compatível)
-pnpm version major   # 0.1.0 → 1.0.0  (breaking change)
+pnpm version patch   # 1.0.0 → 1.0.1  (bug fix)
+pnpm version minor   # 1.0.0 → 1.1.0  (nova feature, API compatível)
+pnpm version major   # 1.0.0 → 2.0.0  (breaking change)
 
 # 3. Publicar
 pnpm publish --no-git-checks
 ```
 
 O `--no-git-checks` ignora a verificação de working tree limpa. Para CI é recomendado omiti-lo.
+
+### Breaking changes a documentar antes de publicar
+
+Antes de cada publicação, verificar se há breaking changes e documentá-los em:
+- `CHANGELOG.md` — secção `### Breaking Changes`
+- `README.md` — tabela de peer deps opcionais (se alguma dep mudar de categoria)
+
+**Historial de breaking changes:**
+
+| Versão | Mudança |
+|---|---|
+| 1.0.0 | `cmdk` movido de `dependencies` para `peerDependencies`. Consumidores de `WorkspaceCommandPalette` precisam de instalar `cmdk` explicitamente. |
 
 ---
 
