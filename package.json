@@ -1,7 +1,7 @@
 {
   "name": "@carloscanutocosta/core-ui",
   "private": false,
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "SDK React de componentes, tokens e padrões UX reutilizáveis do ecossistema NORMORDIS.",
   "license": "EUPL-1.2",
   "type": "module",
@@ -18,7 +18,15 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./dist/normordis-core-ui.css": "./dist/normordis-core-ui.css"
+    "./workspace": {
+      "types": "./dist/workspace.d.ts",
+      "import": "./dist/workspace.js"
+    },
+    "./charts": {
+      "types": "./dist/charts.d.ts",
+      "import": "./dist/charts.js"
+    },
+    "./styles": "./dist/normordis-core-ui.css"
   },
   "files": [
     "dist",
@@ -41,7 +49,10 @@
     "check:repo": "powershell -ExecutionPolicy Bypass -File ./tools/repo/check-hygiene.ps1",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\" \"*.{ts,js,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json}\" \"*.{ts,js,json}\"",
     "typecheck": "tsc -p ./jsconfig.json",
+    "pack": "pnpm pack --pack-destination ./package",
     "pack:inspect": "powershell -ExecutionPolicy Bypass -File ./tools/package/inspect-pack.ps1",
     "backup": "powershell -ExecutionPolicy Bypass -File ./scripts/backup/full-repo-backup.ps1",
     "security:manifest": "powershell -ExecutionPolicy Bypass -File ./scripts/security/generate-manifest.ps1",
@@ -49,12 +60,17 @@
     "restore:list": "powershell -ExecutionPolicy Bypass -File ./scripts/backup/full-repo-restore.ps1 -List",
     "preview": "vite preview",
     "demo": "powershell -ExecutionPolicy Bypass -File ./scripts/dev.ps1",
-    "publish:sdk": "powershell -ExecutionPolicy Bypass -File ./scripts/publish-sdk.ps1"
+    "publish:sdk": "powershell -ExecutionPolicy Bypass -File ./scripts/publish-sdk.ps1",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "size": "size-limit",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cmdk": "^1.0.0",
     "dompurify": "^3.4.5",
     "embla-carousel-react": "^8.5.2",
     "input-otp": "^1.4.2",
@@ -64,6 +80,7 @@
     "vaul": "^1.1.2"
   },
   "peerDependencies": {
+    "cmdk": ">=1.0.0",
     "@hello-pangea/dnd": ">=17.0.0",
     "@hookform/resolvers": ">=4.0.0",
     "@lexical/react": ">=0.21.0",
@@ -101,6 +118,7 @@
     "framer-motion": ">=11.0.0",
     "html2canvas": ">=1.4.0",
     "jspdf": ">=4.0.0",
+    "leaflet": ">=1.9.0",
     "lexical": ">=0.21.0",
     "lodash": ">=4.17.0",
     "lucide-react": ">=0.400.0",
@@ -118,10 +136,12 @@
     "react-router-dom": ">=6.26.0",
     "recharts": ">=2.0.0",
     "three": ">=0.171.0",
-    "zod": ">=3.24.0",
-    "leaflet": ">=1.9.0"
+    "zod": ">=3.24.0"
   },
   "peerDependenciesMeta": {
+    "cmdk": {
+      "optional": true
+    },
     "@hello-pangea/dnd": {
       "optional": true
     },
@@ -197,25 +217,39 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@size-limit/preset-small-lib": "^12.1.0",
+    "@storybook/addon-a11y": "^10.4.1",
+    "@storybook/react-vite": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.13.5",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^4.1.7",
     "autoprefixer": "^10.4.20",
     "baseline-browser-mapping": "^2.8.32",
     "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "eslint-plugin-unused-imports": "^4.3.0",
     "globals": "^15.14.0",
+    "jest-axe": "^10.0.0",
+    "jsdom": "^29.1.1",
     "postcss": "^8.5.3",
+    "prettier": "^3.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "size-limit": "^12.1.0",
+    "storybook": "^10.4.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.2",
     "vite": "^6.1.0",
-    "vite-plugin-dts": "^5.0.1"
+    "vite-plugin-dts": "^5.0.1",
+    "vitest": "^4.1.7"
   },
   "repository": {
     "type": "git",

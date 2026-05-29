@@ -1,11 +1,10 @@
-import { clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs) {
-  return twMerge(clsx(inputs))
-} 
+  return twMerge(clsx(inputs));
+}
 
+export const isBrowser = typeof window !== 'undefined';
 
-export const isBrowser = typeof window !== "undefined"
-
-export const isIframe = isBrowser ? window.self !== window.top : false
+export const isIframe = isBrowser ? window.self !== window.top : false;
