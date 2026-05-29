@@ -137,7 +137,11 @@ interface TimelineProps {
   className?: string;
 }
 
-export default function Timeline({ steps = [], orientation = 'vertical', className }: TimelineProps) {
+export default function Timeline({
+  steps = [],
+  orientation = 'vertical',
+  className,
+}: TimelineProps) {
   return (
     <div
       className={cn(orientation === 'horizontal' ? 'flex items-start' : 'flex flex-col', className)}

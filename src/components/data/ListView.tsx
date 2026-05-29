@@ -158,7 +158,9 @@ export default function ListView({
               )}
               {columns.map((col) => (
                 <div key={col.key} className="px-3 py-2.5 text-sm text-foreground truncate">
-                  {col.render ? col.render(item[col.key], item) : ((item[col.key] as React.ReactNode) ?? '—')}
+                  {col.render
+                    ? col.render(item[col.key], item)
+                    : ((item[col.key] as React.ReactNode) ?? '—')}
                 </div>
               ))}
               {onRowAction && (

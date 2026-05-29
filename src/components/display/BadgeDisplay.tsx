@@ -19,7 +19,12 @@ interface BadgeDisplayProps {
   className?: string;
 }
 
-export default function BadgeDisplay({ value, color = 'default', icon: Icon, className }: BadgeDisplayProps) {
+export default function BadgeDisplay({
+  value,
+  color = 'default',
+  icon: Icon,
+  className,
+}: BadgeDisplayProps) {
   if (!value) return null;
   return (
     <Badge variant="outline" className={cn('text-xs font-medium', colorMap[color], className)}>

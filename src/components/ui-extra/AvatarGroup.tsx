@@ -25,7 +25,12 @@ interface AvatarGroupProps {
   className?: string;
 }
 
-export default function AvatarGroup({ users = [], max = 4, size = 'md', className }: AvatarGroupProps) {
+export default function AvatarGroup({
+  users = [],
+  max = 4,
+  size = 'md',
+  className,
+}: AvatarGroupProps) {
   const sizes = { sm: 'h-7 w-7 text-[10px]', md: 'h-9 w-9 text-xs', lg: 'h-11 w-11 text-sm' };
   const shown = users.slice(0, max);
   const overflow = users.length - max;
