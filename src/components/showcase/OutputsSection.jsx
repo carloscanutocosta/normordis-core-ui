@@ -1,13 +1,13 @@
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Check, AlertTriangle, Clock, Zap } from "lucide-react";
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Check, AlertTriangle, Clock, Zap } from 'lucide-react';
 
-import { TextDisplay } from "../display";
-import { NumberDisplay } from "../display";
-import { DateDisplay } from "../display";
-import { RichTextDisplay } from "../display";
-import { BadgeDisplay } from "../display";
-import { ProgressDisplay } from "../display";
+import { TextDisplay } from '../display';
+import { NumberDisplay } from '../display';
+import { DateDisplay } from '../display';
+import { RichTextDisplay } from '../display';
+import { BadgeDisplay } from '../display';
+import { ProgressDisplay } from '../display';
 
 export default function OutputsSection() {
   const sampleHtml = `
@@ -32,32 +32,55 @@ export default function OutputsSection() {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Heading</span>
-              <div><TextDisplay value="Título Principal" variant="heading" /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Heading
+              </span>
+              <div>
+                <TextDisplay value="Título Principal" variant="heading" />
+              </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Subheading</span>
-              <div><TextDisplay value="Subtítulo da Seção" variant="subheading" /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Subheading
+              </span>
+              <div>
+                <TextDisplay value="Subtítulo da Seção" variant="subheading" />
+              </div>
             </div>
             <div className="space-y-1">
               <span className="text-xs text-muted-foreground uppercase tracking-wider">Body</span>
-              <div><TextDisplay value="Texto do corpo principal com informações importantes." variant="body" /></div>
+              <div>
+                <TextDisplay
+                  value="Texto do corpo principal com informações importantes."
+                  variant="body"
+                />
+              </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Caption</span>
-              <div><TextDisplay value="Texto auxiliar em tamanho menor" variant="caption" /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Caption
+              </span>
+              <div>
+                <TextDisplay value="Texto auxiliar em tamanho menor" variant="caption" />
+              </div>
             </div>
             <div className="space-y-1">
               <span className="text-xs text-muted-foreground uppercase tracking-wider">Label</span>
-              <div><TextDisplay value="Rótulo de campo" variant="label" /></div>
+              <div>
+                <TextDisplay value="Rótulo de campo" variant="label" />
+              </div>
             </div>
             <div className="space-y-1">
               <span className="text-xs text-muted-foreground uppercase tracking-wider">Code</span>
-              <div><TextDisplay value="const x = 42;" variant="code" /></div>
+              <div>
+                <TextDisplay value="const x = 42;" variant="code" />
+              </div>
             </div>
             <div className="space-y-1">
               <span className="text-xs text-muted-foreground uppercase tracking-wider">Vazio</span>
-              <div><TextDisplay value={null} /></div>
+              <div>
+                <TextDisplay value={null} />
+              </div>
             </div>
           </div>
         </CardContent>
@@ -73,27 +96,45 @@ export default function OutputsSection() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             <div className="space-y-1">
               <span className="text-xs text-muted-foreground uppercase tracking-wider">Padrão</span>
-              <div><NumberDisplay value={1234.56} /></div>
+              <div>
+                <NumberDisplay value={1234.56} />
+              </div>
             </div>
             <div className="space-y-1">
               <span className="text-xs text-muted-foreground uppercase tracking-wider">Moeda</span>
-              <div><NumberDisplay value={15899.99} prefix="R$ " variant="currency" /></div>
+              <div>
+                <NumberDisplay value={15899.99} prefix="R$ " variant="currency" />
+              </div>
             </div>
             <div className="space-y-1">
               <span className="text-xs text-muted-foreground uppercase tracking-wider">Grande</span>
-              <div><NumberDisplay value={42567} decimals={0} variant="large" /></div>
+              <div>
+                <NumberDisplay value={42567} decimals={0} variant="large" />
+              </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Positivo</span>
-              <div><NumberDisplay value={12.5} suffix="%" variant="positive" prefix="+" /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Positivo
+              </span>
+              <div>
+                <NumberDisplay value={12.5} suffix="%" variant="positive" prefix="+" />
+              </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Negativo</span>
-              <div><NumberDisplay value={-3.2} suffix="%" variant="negative" /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Negativo
+              </span>
+              <div>
+                <NumberDisplay value={-3.2} suffix="%" variant="negative" />
+              </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Compacto</span>
-              <div><NumberDisplay value={98765} decimals={0} variant="compact" suffix=" un." /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Compacto
+              </span>
+              <div>
+                <NumberDisplay value={98765} decimals={0} variant="compact" suffix=" un." />
+              </div>
             </div>
           </div>
         </CardContent>
@@ -108,20 +149,36 @@ export default function OutputsSection() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Data simples</span>
-              <div><DateDisplay value="2025-04-15" /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Data simples
+              </span>
+              <div>
+                <DateDisplay value="2025-04-15" />
+              </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Data e hora</span>
-              <div><DateDisplay value="2025-04-15T14:30:00" dateFormat="dd/MM/yyyy 'às' HH:mm" /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Data e hora
+              </span>
+              <div>
+                <DateDisplay value="2025-04-15T14:30:00" dateFormat="dd/MM/yyyy 'às' HH:mm" />
+              </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Com relativo</span>
-              <div><DateDisplay value={new Date().toISOString()} showRelative /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Com relativo
+              </span>
+              <div>
+                <DateDisplay value={new Date().toISOString()} showRelative />
+              </div>
             </div>
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Formato longo</span>
-              <div><DateDisplay value="2025-01-01" dateFormat="dd 'de' MMMM 'de' yyyy" /></div>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                Formato longo
+              </span>
+              <div>
+                <DateDisplay value="2025-01-01" dateFormat="dd 'de' MMMM 'de' yyyy" />
+              </div>
             </div>
           </div>
         </CardContent>

@@ -1,5 +1,5 @@
-import { $setBlocksType } from "@lexical/selection";
-import { $getNearestNodeOfType } from "@lexical/utils";
+import { $setBlocksType } from '@lexical/selection';
+import { $getNearestNodeOfType } from '@lexical/utils';
 import {
   $createParagraphNode,
   $createTextNode,
@@ -8,23 +8,23 @@ import {
   $insertNodes,
   $isRangeSelection,
   $isTextNode,
-} from "lexical";
-import { $isListNode, ListItemNode } from "@lexical/list";
-import { $createHeadingNode, $createQuoteNode } from "@lexical/rich-text";
-import { $createImageNode } from "./nodes/ImageNode";
-import { $createSimpleTableNode } from "./nodes/SimpleTableNode";
+} from 'lexical';
+import { $isListNode, ListItemNode } from '@lexical/list';
+import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
+import { $createImageNode } from './nodes/ImageNode';
+import { $createSimpleTableNode } from './nodes/SimpleTableNode';
 
 export function setBlockType(editor, type) {
   editor.update(() => {
     const selection = $getSelection();
     if (!$isRangeSelection(selection)) return;
 
-    if (type === "paragraph") {
+    if (type === 'paragraph') {
       $setBlocksType(selection, () => $createParagraphNode());
       return;
     }
 
-    if (type === "quote") {
+    if (type === 'quote') {
       $setBlocksType(selection, () => $createQuoteNode());
       return;
     }
@@ -75,33 +75,31 @@ export function exitCurrentListItem(editor) {
 }
 
 export function getPlaceholderToken(placeholder) {
-  if (!placeholder) return "";
+  if (!placeholder) return '';
   if (placeholder.token) return placeholder.token;
   if (placeholder.id) return `{{${placeholder.id}}}`;
   if (placeholder.label) return `{{${placeholder.label}}}`;
-  return "";
+  return '';
 }
 
 function normalizePlaceholderId(value) {
-  return String(value ?? "")
+  return String(value ?? '')
     .trim()
-    .replace(/^\{\{\s*/, "")
-    .replace(/\s*\}\}$/, "")
-    .replace(/\s+/g, ".")
-    .replace(/[^\w.-]/g, "")
+    .replace(/^\{\{\s*/, '')
+    .replace(/\s*\}\}$/, '')
+    .replace(/\s+/g, '.')
+    .replace(/[^\w.-]/g, '')
     .toLowerCase();
 }
 
 function resolvePlaceholderToken(rawValue, definitions = []) {
   const normalized = normalizePlaceholderId(rawValue);
-  if (!normalized) return "";
+  if (!normalized) return '';
 
   const match = definitions.find((placeholder) => {
-    const candidates = [
-      placeholder.id,
-      placeholder.label,
-      placeholder.token,
-    ].map(normalizePlaceholderId);
+    const candidates = [placeholder.id, placeholder.label, placeholder.token].map(
+      normalizePlaceholderId,
+    );
 
     return candidates.includes(normalized);
   });
@@ -160,8 +158,8 @@ export function insertImage(editor, image) {
 
   editor.update(() => {
     const imageNode = $createImageNode({
-      altText: image.altText ?? "",
-      caption: image.caption ?? "",
+      altText: image.altText ?? '',
+      caption: image.caption ?? '',
       src: image.src,
       width: image.width ?? 100,
     });
@@ -199,9 +197,7 @@ export function insertTable(editor, options = {}) {
     if ($isRangeSelection(selection)) {
       const anchorNode = selection.anchor.getNode();
       const topLevelElement =
-        anchorNode.getKey() === "root"
-          ? null
-          : anchorNode.getTopLevelElementOrThrow();
+        anchorNode.getKey() === 'root' ? null : anchorNode.getTopLevelElementOrThrow();
 
       if (topLevelElement) {
         topLevelElement.insertAfter(tableNode);
@@ -236,7 +232,7 @@ export function insertSemanticBlock(editor, block) {
 export function getSemanticBlockParagraphs(block) {
   if (!block) return [];
 
-  if (typeof block.content === "string") {
+  if (typeof block.content === 'string') {
     return block.content.split(/\n{2,}/).filter(Boolean);
   }
 
@@ -244,7 +240,7 @@ export function getSemanticBlockParagraphs(block) {
     return block.content.blocks.filter(Boolean);
   }
 
-  if (typeof block.content?.text === "string") {
+  if (typeof block.content?.text === 'string') {
     return block.content.text.split(/\n{2,}/).filter(Boolean);
   }
 

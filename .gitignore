@@ -40,6 +40,7 @@ test-results
 tmp
 temp
 *.local
+.artifacts
 
 # Editor directories and files
 .vscode/*
@@ -61,3 +62,6 @@ DESIGN.md
 
 # Claude Code local state
 .claude/
+cov.txt
+coverage_out.txt
+coverage/
