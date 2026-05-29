@@ -25,7 +25,12 @@ interface HeatmapProps {
   className?: string;
 }
 
-export default function Heatmap({ data = GRID, days = DAYS, hours = HOURS, className }: HeatmapProps) {
+export default function Heatmap({
+  data = GRID,
+  days = DAYS,
+  hours = HOURS,
+  className,
+}: HeatmapProps) {
   return (
     <div className={cn('w-full', className)}>
       <div className="overflow-x-auto">

@@ -54,7 +54,11 @@ interface ImageGalleryProps {
   className?: string;
 }
 
-export default function ImageGallery({ images = SAMPLE, columns = 3, className }: ImageGalleryProps) {
+export default function ImageGallery({
+  images = SAMPLE,
+  columns = 3,
+  className,
+}: ImageGalleryProps) {
   const [lightbox, setLightbox] = useState(null); // index
 
   const prev = () => setLightbox((i) => (i - 1 + images.length) % images.length);

@@ -301,14 +301,15 @@ export default function DataTable({
                             options={col.inlineOptions}
                             onCommit={(val) => {
                               setEditingCell(null);
-                              if (val !== row[col.key]) onCellEdit(row.id as string | number ?? i, col.key, val);
+                              if (val !== row[col.key])
+                                onCellEdit((row.id as string | number) ?? i, col.key, val);
                             }}
                             onCancel={() => setEditingCell(null)}
                           />
                         ) : col.render ? (
                           col.render(row[col.key], row)
                         ) : (
-                          (row[col.key] as React.ReactNode) ?? '—'
+                          ((row[col.key] as React.ReactNode) ?? '—')
                         )}
                       </td>
                     );

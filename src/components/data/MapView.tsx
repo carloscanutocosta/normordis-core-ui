@@ -23,11 +23,20 @@ export default function MapView({
     >
       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       <MapContainer
-        {...({ center, zoom, style: { height: '100%', width: '100%' }, scrollWheelZoom: false } as any)}
+        {...({
+          center,
+          zoom,
+          style: { height: '100%', width: '100%' },
+          scrollWheelZoom: false,
+        } as any)}
       >
         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
         <TileLayer
-          {...({ attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' } as any)}
+          {...({
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          } as any)}
         />
         {markers.map((m) => (
           <Marker key={m.id} position={[m.lat, m.lng]}>

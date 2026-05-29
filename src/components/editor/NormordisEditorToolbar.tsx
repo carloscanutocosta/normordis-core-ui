@@ -216,7 +216,14 @@ function TableInsertDialog({ disabled, editor }) {
   );
 }
 
-export function ToolbarButton({ children, disabled, label, onClick, pressed = undefined, showLabel = false }) {
+export function ToolbarButton({
+  children,
+  disabled,
+  label,
+  onClick,
+  pressed = undefined,
+  showLabel = false,
+}) {
   return (
     <button
       type="button"
