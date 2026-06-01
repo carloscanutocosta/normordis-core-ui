@@ -71,7 +71,7 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "dompurify": "^3.4.5",
+    "dompurify": "^3.4.7",
     "embla-carousel-react": "^8.5.2",
     "input-otp": "^1.4.2",
     "sonner": "^2.0.1",
