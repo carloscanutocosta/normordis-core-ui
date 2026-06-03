@@ -187,12 +187,12 @@ import { ThemeSwitcher } from '@normordis/core-ui'
 
 ## Desenvolvimento
 
-Requer Node.js ≥ 18 e pnpm ≥ 9.
+Requer Node.js 24.x e pnpm 11.x.
 
 ```bash
 pnpm install
-pnpm dev        # app de showcase
-pnpm build      # build do SDK (dist/)
+pnpm dev          # app de showcase
+pnpm run build    # build do SDK (dist/)
 ```
 
 ### Scripts de utilidade

@@ -5,10 +5,10 @@
   "description": "SDK React de componentes, tokens e padrões UX reutilizáveis do ecossistema NORMORDIS.",
   "license": "EUPL-1.2",
   "type": "module",
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@11.5.1+sha512.93f7b57422ea7068257235b4c16eb60762eb68e1dc23723199cc739043ea9be2c4143274a399d8c6defa2b1176226d9ca1c4b63482d6200c1a8fbaa78c1d1485",
   "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=9.0.0"
+    "node": "24.x",
+    "pnpm": "11.x"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -26,7 +26,9 @@
       "types": "./dist/charts.d.ts",
       "import": "./dist/charts.js"
     },
-    "./styles": "./dist/normordis-core-ui.css"
+    "./styles": "./dist/normordis-core-ui.css",
+    "./styles.css": "./dist/normordis-core-ui.css",
+    "./tailwind.config": "./tailwind.config.js"
   },
   "files": [
     "dist",

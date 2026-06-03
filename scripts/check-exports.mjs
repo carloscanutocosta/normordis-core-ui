@@ -1,7 +1,12 @@
 import { readFileSync, existsSync, statSync } from 'fs';
 import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const root = 'c:/Users/carlo/Documents/Projetos/normordis-core-ui/src';
+// Derivar o root do repositório a partir da localização deste script.
+// scripts/ fica um nível abaixo da raiz do repo, portanto "../src".
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const root = resolve(__dirname, '../src');
 const EXTS = ['', '.js', '.jsx', '.ts', '.tsx', '/index.js', '/index.jsx', '/index.ts', '/index.tsx'];
 
 function resolveFile(base, specifier) {
@@ -68,7 +73,7 @@ function collectExports(filePath, label, depth = 0) {
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
-const indexPath = root + '/index.js';
+const indexPath = root + '/index.ts';
 const src = readFileSync(indexPath, 'utf8');
 const all = [];
 
@@ -79,7 +84,7 @@ for (const m of src.matchAll(/export\s+\*\s+from\s+['"]([^'"]+)['"]/g)) {
   collectExports(target, m[1]).forEach(e => all.push(e));
 }
 
-// export { default as X } from '...'  (top-level named re-exports in index.js)
+// export { default as X } from '...'  (top-level named re-exports in index.ts)
 for (const m of src.matchAll(/export\s*\{([^}]+)\}\s+from\s+['"]([^'"]+)['"]/g)) {
   m[1].split(',').forEach(e => {
     const parts = e.trim().split(/\s+as\s+/);

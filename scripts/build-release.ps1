@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 #  Script de Release (Producao)
 #  Projecto: normordis-core-ui
 #  Objectivo: Validacao completa e empacotamento do SDK React.
@@ -71,7 +71,7 @@ try {
     Write-Host ""
     Write-Host "    Para publicar no GitHub Packages:" -ForegroundColor DarkGray
     Write-Host "    pnpm publish --no-git-checks" -ForegroundColor DarkGray
-    Write-Host "    (requer GITHUB_TOKEN definido — ver scripts\publish-sdk.bat)" -ForegroundColor DarkGray
+    Write-Host "    (requer GITHUB_TOKEN definido - ver scripts\publish-sdk.bat)" -ForegroundColor DarkGray
 
     Write-Host ""
     Write-Host "------------------------------------------------" -ForegroundColor Green
