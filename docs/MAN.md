@@ -45,7 +45,10 @@ CSS uma vez na entrada da aplicação:
 
 ```js
 // entry point da app (ex: main.tsx)
+// Ambas as formas são equivalentes:
 import '@carloscanutocosta/core-ui/styles';
+// ou, com extensão explícita (@normordis/core-ui/styles.css):
+// import '@normordis/core-ui/styles.css';
 import { applyTheme, getStoredTheme } from '@carloscanutocosta/core-ui';
 
 applyTheme(getStoredTheme()); // evita flash de tema errado
@@ -81,6 +84,104 @@ são exportados pelo pacote. Contrato em `docs/formats/NCRTF.md`.
 
 NCRTF é a fronteira entre editor rich text e domínio documental:
 `Lexical JSON → NCRTF → core-documental → NDF de custódia em DB`.
+
+## Inputs personalizados com FieldWrapper
+
+O `FieldWrapper` é o contentor semântico de todos os campos de formulário — gere o
+label, hint, mensagem de erro e os IDs ARIA associados. Todos os `*Field` do SDK
+injetam automaticamente `aria-invalid`, `aria-describedby` e `aria-required` nos
+seus controlos internos via `FieldContext`.
+
+Para criar um input personalizado que se comporte como os nativos do SDK, usa-se
+`useFieldContext` e `FieldContextValue`, exportados pelo entrypoint principal:
+
+```tsx
+import {
+  FieldWrapper,
+  useFieldContext,
+} from '@carloscanutocosta/core-ui';
+import type { FieldContextValue } from '@carloscanutocosta/core-ui';
+
+// Input personalizado que consome o contexto do FieldWrapper pai.
+function MyCustomInput({ value, onChange, ...props }) {
+  // Retorna null quando chamado fora de um FieldWrapper — sem crash.
+  const field = useFieldContext();
+
+  return (
+    <input
+      value={value}
+      onChange={onChange}
+      // Atributos ARIA injetados automaticamente pelo contexto:
+      id={field?.id}
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+      aria-required={field?.required || undefined}
+      {...props}
+    />
+  );
+}
+
+// Uso — FieldWrapper gere label, hint, erro e os IDs ARIA.
+// MyCustomInput lê esses IDs via contexto sem acoplamento direto.
+<FieldWrapper
+  label="Campo personalizado"
+  hint="Texto de ajuda"
+  error="Mensagem de erro"
+  required
+>
+  <MyCustomInput value={value} onChange={setValue} />
+</FieldWrapper>
+```
+
+### Contrato de `FieldContextValue`
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `id` | `string` | ID estável do campo — usar em `id` e como alvo de `htmlFor` |
+| `invalid` | `boolean` | `true` quando existe uma mensagem de erro |
+| `describedBy` | `string \| undefined` | Valor para `aria-describedby` — aponta para o ID do erro ou hint |
+| `required` | `boolean` | `true` quando o campo é obrigatório |
+
+### Componentes Radix UI
+
+Para componentes baseados em Radix, os atributos ARIA são passados como props ao
+elemento Radix, que os propaga para o elemento interativo correto:
+
+```tsx
+import { Switch } from '@/components/ui/switch';
+import { useFieldContext } from '@carloscanutocosta/core-ui';
+
+function MySwitch(props) {
+  const field = useFieldContext();
+  return (
+    <Switch
+      {...props}
+      // O Radix Switch propaga estes atributos para o <button role="switch"> interno.
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+    />
+  );
+}
+```
+
+Para editores ricos (contenteditable, ReactQuill, etc.) onde não é possível
+injetar atributos ARIA no elemento interno, usa-se um `<div role="group">` como
+contentor semântico:
+
+```tsx
+function MyRichEditor({ value, onChange, ...props }) {
+  const field = useFieldContext();
+  return (
+    <div
+      role="group"
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+    >
+      <MyEditorLibrary value={value} onChange={onChange} />
+    </div>
+  );
+}
+```
 
 ## Qualidade
 

@@ -1,7 +1,7 @@
 import { useState, useRef, useId } from 'react';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import FieldWrapper from './FieldWrapper';
+import FieldWrapper, { useFieldContext } from './FieldWrapper';
 
 export default function TagsField({
   id: idProp,
@@ -86,20 +86,17 @@ export default function TagsField({
             )}
           </span>
         ))}
-        <input
+        <TagsInputInner
           id={id}
-          ref={inputRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setFocused(true)}
-          onBlur={() => {
-            setFocused(false);
-            if (input.trim()) addTag(input);
-          }}
+          inputRef={inputRef}
+          input={input}
+          setInput={setInput}
+          handleKeyDown={handleKeyDown}
+          setFocused={setFocused}
+          addTag={addTag}
           disabled={disabled}
-          placeholder={tags.length === 0 ? placeholder : ''}
-          className="flex-1 min-w-[120px] bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed"
+          tags={tags}
+          placeholder={placeholder}
         />
       </div>
       {focused && filteredSuggestions.length > 0 && (
@@ -125,5 +122,30 @@ export default function TagsField({
         </p>
       )}
     </FieldWrapper>
+  );
+}
+
+// Sub-componente que consome o FieldContext para injetar atributos ARIA no input.
+function TagsInputInner({ id, inputRef, input, setInput, handleKeyDown, setFocused, addTag, disabled, tags, placeholder }) {
+  const field = useFieldContext();
+  return (
+    <input
+      id={id}
+      ref={inputRef}
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      onKeyDown={handleKeyDown}
+      onFocus={() => setFocused(true)}
+      onBlur={() => {
+        setFocused(false);
+        if (input.trim()) addTag(input);
+      }}
+      disabled={disabled}
+      placeholder={tags.length === 0 ? placeholder : ''}
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+      aria-required={field?.required || undefined}
+      className="flex-1 min-w-[120px] bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed"
+    />
   );
 }
