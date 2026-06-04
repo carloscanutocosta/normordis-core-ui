@@ -113,7 +113,18 @@ export default function TextField({
 
 // ─── Sub-components que consomem useFieldContext ──────────────────────────────
 
-function SimpleInput({ id, placeholder, value, onChange, disabled, readOnly, error, baseInput, inputClassName, ...props }) {
+function SimpleInput({
+  id,
+  placeholder,
+  value,
+  onChange,
+  disabled,
+  readOnly,
+  error,
+  baseInput,
+  inputClassName,
+  ...props
+}) {
   const field = useFieldContext();
   return (
     <input
@@ -137,7 +148,19 @@ function SimpleInput({ id, placeholder, value, onChange, disabled, readOnly, err
   );
 }
 
-function TextareaWithContext({ id, rows, placeholder, value, onChange, disabled, readOnly, error, baseInput, inputClassName, ...props }) {
+function TextareaWithContext({
+  id,
+  rows,
+  placeholder,
+  value,
+  onChange,
+  disabled,
+  readOnly,
+  error,
+  baseInput,
+  inputClassName,
+  ...props
+}) {
   const field = useFieldContext();
   return (
     <textarea
@@ -162,7 +185,18 @@ function TextareaWithContext({ id, rows, placeholder, value, onChange, disabled,
   );
 }
 
-function InputWithPrefixSuffix({ id, prefix, suffix, placeholder, value, onChange, disabled, readOnly, inputClassName, ...props }) {
+function InputWithPrefixSuffix({
+  id,
+  prefix,
+  suffix,
+  placeholder,
+  value,
+  onChange,
+  disabled,
+  readOnly,
+  inputClassName,
+  ...props
+}) {
   const field = useFieldContext();
   return (
     <div className="flex items-center rounded-lg border border-input bg-background focus-within:ring-2 focus-within:ring-ring/40 focus-within:border-ring transition-all overflow-hidden">

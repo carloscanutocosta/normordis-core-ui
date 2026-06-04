@@ -50,7 +50,14 @@ export default function RichTextField({
   const id = idProp ?? autoId;
 
   return (
-    <FieldWrapper id={id} label={label} hint={hint} error={error} required={required} className={className}>
+    <FieldWrapper
+      id={id}
+      label={label}
+      hint={hint}
+      error={error}
+      required={required}
+      className={className}
+    >
       {/* Wrapper com role="group" associa aria-invalid e aria-describedby ao editor.
           O ReactQuill não expõe atributos ARIA no contenteditable interno, por isso
           o grupo é a alternativa semântica mais robusta para leitores de ecrã. */}

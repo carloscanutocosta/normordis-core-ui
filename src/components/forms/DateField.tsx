@@ -115,7 +115,17 @@ export default function DateField({
 }
 
 // Sub-componente que consome o FieldContext para injetar atributos ARIA no trigger.
-function DateTriggerButton({ id, disabled, isValidDate, displayValue, showTime, placeholder, clearable, error, onClear }) {
+function DateTriggerButton({
+  id,
+  disabled,
+  isValidDate,
+  displayValue,
+  showTime,
+  placeholder,
+  clearable,
+  error,
+  onClear,
+}) {
   const field = useFieldContext();
   return (
     <button
@@ -138,15 +148,10 @@ function DateTriggerButton({ id, disabled, isValidDate, displayValue, showTime, 
         ) : (
           <Calendar className="w-4 h-4 text-muted-foreground" />
         )}
-        {displayValue ||
-          placeholder ||
-          (showTime ? 'Selecione data e hora' : 'Selecione uma data')}
+        {displayValue || placeholder || (showTime ? 'Selecione data e hora' : 'Selecione uma data')}
       </span>
       {clearable && isValidDate && (
-        <X
-          className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground"
-          onClick={onClear}
-        />
+        <X className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground" onClick={onClear} />
       )}
     </button>
   );
