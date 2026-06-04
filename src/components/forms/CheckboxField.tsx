@@ -26,7 +26,11 @@ export default function CheckboxField({
       {label && (
         <p className="text-sm font-medium text-foreground">
           {label}
-          {required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}
+          {required && (
+            <span className="ml-1 text-destructive" aria-hidden="true">
+              *
+            </span>
+          )}
         </p>
       )}
       <label

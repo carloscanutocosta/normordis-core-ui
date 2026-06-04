@@ -85,7 +85,11 @@ export default function FieldWrapper({
         {label && (
           <label htmlFor={id} className="text-sm font-medium text-foreground leading-none">
             {label}
-            {required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}
+            {required && (
+              <span className="ml-1 text-destructive" aria-hidden="true">
+                *
+              </span>
+            )}
           </label>
         )}
         {children}

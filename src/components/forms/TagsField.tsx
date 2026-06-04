@@ -126,7 +126,18 @@ export default function TagsField({
 }
 
 // Sub-componente que consome o FieldContext para injetar atributos ARIA no input.
-function TagsInputInner({ id, inputRef, input, setInput, handleKeyDown, setFocused, addTag, disabled, tags, placeholder }) {
+function TagsInputInner({
+  id,
+  inputRef,
+  input,
+  setInput,
+  handleKeyDown,
+  setFocused,
+  addTag,
+  disabled,
+  tags,
+  placeholder,
+}) {
   const field = useFieldContext();
   return (
     <input

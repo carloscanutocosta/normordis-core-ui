@@ -91,9 +91,7 @@ describe('NumberField — FieldContext ARIA', () => {
   });
 
   it('injects aria-describedby pointing to error element', () => {
-    render(
-      <NumberField label="Quantidade" value={0} error="Valor negativo" onChange={vi.fn()} />,
-    );
+    render(<NumberField label="Quantidade" value={0} error="Valor negativo" onChange={vi.fn()} />);
     const input = screen.getByRole('spinbutton');
     const describedById = input.getAttribute('aria-describedby');
     expect(describedById).toBeTruthy();
@@ -207,7 +205,13 @@ describe('CheckboxField — render', () => {
 
   it('shows required indicator when required', () => {
     const { container } = render(
-      <CheckboxField label="Termos" checkLabel="Aceito" value={false} required onChange={vi.fn()} />,
+      <CheckboxField
+        label="Termos"
+        checkLabel="Aceito"
+        value={false}
+        required
+        onChange={vi.fn()}
+      />,
     );
     expect(container.textContent).toContain('*');
   });
@@ -216,24 +220,14 @@ describe('CheckboxField — render', () => {
 describe('CheckboxField — FieldContext ARIA', () => {
   it('injects aria-invalid when error is set', () => {
     render(
-      <CheckboxField
-        checkLabel="Aceito"
-        value={false}
-        error="Obrigatório"
-        onChange={vi.fn()}
-      />,
+      <CheckboxField checkLabel="Aceito" value={false} error="Obrigatório" onChange={vi.fn()} />,
     );
     expect(screen.getByRole('checkbox')).toHaveAttribute('aria-invalid', 'true');
   });
 
   it('injects aria-describedby pointing to error element', () => {
     render(
-      <CheckboxField
-        checkLabel="Aceito"
-        value={false}
-        error="Obrigatório"
-        onChange={vi.fn()}
-      />,
+      <CheckboxField checkLabel="Aceito" value={false} error="Obrigatório" onChange={vi.fn()} />,
     );
     const cb = screen.getByRole('checkbox');
     const describedById = cb.getAttribute('aria-describedby');
@@ -242,9 +236,7 @@ describe('CheckboxField — FieldContext ARIA', () => {
   });
 
   it('injects aria-required when required', () => {
-    render(
-      <CheckboxField checkLabel="Aceito" value={false} required onChange={vi.fn()} />,
-    );
+    render(<CheckboxField checkLabel="Aceito" value={false} required onChange={vi.fn()} />);
     expect(screen.getByRole('checkbox')).toHaveAttribute('aria-required', 'true');
   });
 
@@ -255,7 +247,12 @@ describe('CheckboxField — FieldContext ARIA', () => {
 
   it('has no axe violations (default)', async () => {
     const { container } = render(
-      <CheckboxField label="Aceito os termos" checkLabel="Li e aceito" value={false} onChange={vi.fn()} />,
+      <CheckboxField
+        label="Aceito os termos"
+        checkLabel="Li e aceito"
+        value={false}
+        onChange={vi.fn()}
+      />,
     );
     expect(await axe(container)).toHaveNoViolations();
   });
@@ -294,7 +291,9 @@ describe('RadioField — render', () => {
 
   it('marks the selected option', () => {
     render(<RadioField label="Resposta" options={OPCOES_RADIO} value="sim" onChange={vi.fn()} />);
-    const checked = screen.getAllByRole('radio').find(r => r.getAttribute('data-state') === 'checked');
+    const checked = screen
+      .getAllByRole('radio')
+      .find((r) => r.getAttribute('data-state') === 'checked');
     expect(checked).toBeInTheDocument();
   });
 
@@ -305,7 +304,13 @@ describe('RadioField — render', () => {
 
   it('shows error message', () => {
     render(
-      <RadioField label="Resposta" options={OPCOES_RADIO} value="" error="Escolha uma opção" onChange={vi.fn()} />,
+      <RadioField
+        label="Resposta"
+        options={OPCOES_RADIO}
+        value=""
+        error="Escolha uma opção"
+        onChange={vi.fn()}
+      />,
     );
     expect(screen.getByRole('alert')).toHaveTextContent('Escolha uma opção');
   });
@@ -443,7 +448,12 @@ describe('SwitchField — FieldContext ARIA', () => {
 
   it('has no axe violations (error state)', async () => {
     const { container } = render(
-      <SwitchField label="Receber notificações" value={false} error="Obrigatório" onChange={vi.fn()} />,
+      <SwitchField
+        label="Receber notificações"
+        value={false}
+        error="Obrigatório"
+        onChange={vi.fn()}
+      />,
     );
     expect(await axe(container)).toHaveNoViolations();
   });
@@ -494,9 +504,7 @@ describe('SliderField — render', () => {
 
 describe('SliderField — FieldContext ARIA', () => {
   it('injects aria-describedby on slider when error is set', () => {
-    render(
-      <SliderField label="Volume" value={50} error="Fora do intervalo" onChange={vi.fn()} />,
-    );
+    render(<SliderField label="Volume" value={50} error="Fora do intervalo" onChange={vi.fn()} />);
     const slider = screen.getByRole('slider');
     const describedById = slider.getAttribute('aria-describedby');
     expect(describedById).toBeTruthy();
