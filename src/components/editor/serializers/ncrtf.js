@@ -150,9 +150,13 @@ function convertBlock(node) {
     case 'list': {
       const listTypeMap = { number: 'ordered', bullet: 'bullet', check: 'checklist' };
       const list_type = listTypeMap[node.listType] ?? 'bullet';
+      const alignment = elementFormatToAlign(node.format);
       const content = convertListItems(node.children ?? []);
       if (content.length === 0) return null;
-      return { type: 'list', list_type, content };
+      const n = { type: 'list', list_type };
+      if (alignment) n.alignment = alignment;
+      n.content = content;
+      return n;
     }
 
     case 'quote': {
@@ -387,7 +391,7 @@ function importBlock(block) {
         );
       });
 
-      return makeElement('list', { listType, tag, start: 1 }, items);
+      return makeElement('list', { listType, tag, start: 1, format: alignToElementFormat(block.alignment) }, items);
     }
 
     case 'blockquote':
