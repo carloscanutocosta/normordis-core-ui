@@ -546,14 +546,6 @@ export async function prepareImagesForArchive(ncrtfDoc, imageExtractor) {
       return { ...node, content: await processContent(node.content) };
     }
 
-    if (node.head || node.body) {
-      return {
-        ...node,
-        ...(node.head ? { head: node.head } : {}),
-        ...(node.body ? { body: node.body } : {}),
-      };
-    }
-
     return node;
   }
 
