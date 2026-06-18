@@ -162,7 +162,13 @@ function convertBlock(node) {
     case 'quote': {
       const inlines = convertInlines(node.children ?? []);
       if (inlines.length === 0) return null;
-      return { type: 'blockquote', content: inlines };
+      const alignment = elementFormatToAlign(node.format);
+      const fontNcrtf = cssToNcrtfFont(parseCssProperty(node.textStyle, 'font-family'));
+      const n = { type: 'blockquote' };
+      if (alignment) n.alignment = alignment;
+      if (fontNcrtf) n.font_family = fontNcrtf;
+      n.content = inlines;
+      return n;
     }
 
     case 'simple-table':
@@ -395,7 +401,16 @@ function importBlock(block) {
     }
 
     case 'blockquote':
-      return makeElement('quote', {}, importInlines(block.content ?? []));
+      return makeElement(
+        'quote',
+        {
+          format: alignToElementFormat(block.alignment),
+          ...(block.font_family
+            ? { textStyle: buildCssProperty('font-family', ncrtfFontToCss(block.font_family) ?? '') }
+            : {}),
+        },
+        importInlines(block.content ?? [], block.font_family),
+      );
 
     case 'table':
       return importTable(block);
