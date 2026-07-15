@@ -23,7 +23,7 @@ jobs:
 
     env:
       NODE_VERSION: "24"
-      PNPM_VERSION: "10.20.0"
+      PNPM_VERSION: "11.5.1"
       SYFT_VERSION: "1.20.0"
       TRUST_OUT_DIR: "artifacts/trust"
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -88,6 +88,29 @@ jobs:
           New-Item -ItemType Directory -Force -Path $env:TRUST_OUT_DIR | Out-Null
           syft dir:. -o cyclonedx-json="$env:TRUST_OUT_DIR/sbom.cyclonedx.json"
 
+      - name: Instalar Grype
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $grypeVer = "0.79.6" # ou "latest" no futuro
+          $url = "https://github.com/anchore/grype/releases/download/v$grypeVer/grype_$grypeVer`_windows_amd64.zip"
+          New-Item -ItemType Directory -Force -Path "$env:RUNNER_TEMP\grype" | Out-Null
+          Invoke-WebRequest -Uri $url -OutFile "$env:RUNNER_TEMP\grype.zip"
+          Expand-Archive -Path "$env:RUNNER_TEMP\grype.zip" -DestinationPath "$env:RUNNER_TEMP\grype" -Force
+          Add-Content -Path $env:GITHUB_PATH -Value "$env:RUNNER_TEMP\grype"
+          & "$env:RUNNER_TEMP\grype\grype.exe" version
+
+      - name: Verificar Vulnerabilidades no SBOM (SCA)
+        id: sca
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          # Analisa o sbom com grype e gera um relatório
+          grype sbom:"$env:TRUST_OUT_DIR/sbom.cyclonedx.json" -o json > "$env:TRUST_OUT_DIR/grype-report.json"
+          # E gera também a listagem para os logs (falha se houver High ou Critical)
+          grype sbom:"$env:TRUST_OUT_DIR/sbom.cyclonedx.json" --fail-on high
+
       - name: Gerar manifest
         id: manifest
         shell: pwsh
@@ -117,7 +140,8 @@ jobs:
             "",
             "| Passo | Resultado |",
             "| --- | --- |",
-            "| Gerar SBOM | ${{ steps.sbom.outcome }} |",
+            "| Gerar SBOM (Syft) | ${{ steps.sbom.outcome }} |",
+            "| Analisar Vulnerabilidades (Grype) | ${{ steps.sca.outcome }} |",
             "| Gerar manifest | ${{ steps.manifest.outcome }} |",
             "| Verificar manifest | ${{ steps.verify.outcome }} |",
             "| Atestar evidencia | ${{ steps.attest.outcome }} |"

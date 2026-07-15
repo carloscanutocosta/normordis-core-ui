@@ -1,7 +1,12 @@
 import { readFileSync, existsSync, statSync, readdirSync } from 'fs';
 import { resolve, dirname, basename, extname } from 'path';
+import { fileURLToPath } from 'url';
 
-const root = 'c:/Users/carlo/Documents/Projetos/normordis-core-ui/src';
+// Derivar o root do repositório a partir da localização deste script.
+// scripts/ fica um nível abaixo da raiz do repo, portanto "../src".
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const root = resolve(__dirname, '../src');
 const EXTS = ['', '.js', '.jsx', '.ts', '.tsx', '/index.js', '/index.jsx', '/index.ts', '/index.tsx'];
 
 // Custom component directories to audit (skip ui/ — covered by explicit export * lines)
@@ -10,8 +15,16 @@ const AUDIT_DIRS = ['forms', 'display', 'editor', 'data', 'charts', 'layout', 'u
 // Files to ignore (internal helpers, not public components)
 const IGNORE_FILES = new Set([
   'index.js', 'index.jsx', 'index.ts', 'index.tsx',
-  'FormField.jsx',   // internal layout wrapper — intentionally not exported publicly
+  'FormField.jsx',       // internal layout wrapper — intentionally not exported publicly
+  'MenuShowcase.tsx',    // individual named exports pulled directly in index.ts
+  'editorCommands.js',   // internal editor helper — not a public component
+  'editorState.js',      // internal editor helper — not a public component
 ]);
+
+// Patterns to ignore by substring — matches any file containing these strings
+const IGNORE_PATTERNS = [
+  '.stories.',   // Storybook story files are not public exports
+];
 
 function resolveFile(base, specifier) {
   const target = resolve(dirname(base), specifier);
@@ -66,9 +79,11 @@ function collectAllExported(filePath, depth = 0) {
   return names;
 }
 
-// ── Build the set of all exported names from src/index.js ────────────────────
-const indexPath = root + '/index.js';
+// ── Build the set of all exported names from src/index.ts ────────────────────
+const indexPath = root + '/index.ts';
+const indexSrc = readFileSync(indexPath, 'utf8');
 const exported = collectAllExported(indexPath);
+
 
 // ── Scan each audit dir for component files ──────────────────────────────────
 const missing = [];
@@ -79,6 +94,7 @@ for (const dir of AUDIT_DIRS) {
 
   const files = readdirSync(dirPath).filter(f => {
     if (IGNORE_FILES.has(f)) return false;
+    if (IGNORE_PATTERNS.some(p => f.includes(p))) return false;
     const ext = extname(f);
     return ['.js', '.jsx', '.ts', '.tsx'].includes(ext);
   });
@@ -100,7 +116,16 @@ for (const dir of AUDIT_DIRS) {
     }
 
     if (!exported.has(componentName)) {
-      missing.push({ dir, file, componentName });
+      // Fallback: check if the file itself is referenced in index.ts by path
+      // (handles cases where the default export has a different alias in the barrel)
+      const relPath = `./${dir}/${basename(file, extname(file))}`;
+      const altPath = `./components/${dir}/${basename(file, extname(file))}`;
+      const fileReferenced = indexSrc.includes(relPath) || indexSrc.includes(altPath) ||
+        indexSrc.includes(`'${basename(file, extname(file))}'`) ||
+        indexSrc.includes(`"${basename(file, extname(file))}"`); 
+      if (!fileReferenced) {
+        missing.push({ dir, file, componentName });
+      }
     }
   }
 }
