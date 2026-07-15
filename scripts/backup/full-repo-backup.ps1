@@ -1,6 +1,6 @@
 # ============================================================
 #  Full Repo Backup - normordis-core-ui
-#  Destino: D:\Backup\normordis-core-ui
+#  Destino: E:\Backup\normordis-core-ui
 #  Objectivo: Snapshot completo do SDK para reposicao noutro PC.
 #             Exclui artefactos reconstruiveis.
 #
@@ -11,7 +11,7 @@
 # ============================================================
 
 param(
-    [string]$DestDir = "D:\Backup\normordis-core-ui",
+    [string]$DestDir = "E:\Backup\normordis-core-ui",
     [int]$KeepLast = 7
 )
 
