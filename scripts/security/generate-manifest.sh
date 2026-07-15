@@ -1,12 +1,20 @@
 #!/bin/sh
 set -eu
 
-OUT_DIR="${1:-${TRUST_OUT_DIR:-artifacts/trust}}"
-SHA_FILE="$OUT_DIR/MANIFEST.sha256"
-JSON_FILE="$OUT_DIR/MANIFEST.json"
-TMP_FILE="$OUT_DIR/.manifest-files.tmp"
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
 
-mkdir -p "$OUT_DIR"
+OUT_DIR="${1:-${TRUST_OUT_DIR:-artifacts/trust}}"
+if [ "$OUT_DIR" = "${OUT_DIR#/}" ]; then
+  ABS_OUT_DIR="$REPO_ROOT/$OUT_DIR"
+else
+  ABS_OUT_DIR="$OUT_DIR"
+fi
+SHA_FILE="$ABS_OUT_DIR/MANIFEST.sha256"
+JSON_FILE="$ABS_OUT_DIR/MANIFEST.json"
+TMP_FILE="$ABS_OUT_DIR/.manifest-files.tmp"
+
+mkdir -p "$ABS_OUT_DIR"
 
 hash_file() {
   if command -v sha256sum >/dev/null 2>&1; then
@@ -22,26 +30,26 @@ json_escape() {
   sed 's/\\/\\\\/g; s/"/\\"/g'
 }
 
-find . \
-  \( -path './.git' -o -path './.git/*' \
-    -o -path './.vs' -o -path './.vs/*' \
-    -o -path './.vscode' -o -path './.vscode/*' \
-    -o -path './node_modules' -o -path './node_modules/*' \
-    -o -path './dist' -o -path './dist/*' \
-    -o -path './dist-ssr' -o -path './dist-ssr/*' \
-    -o -path './build' -o -path './build/*' \
-    -o -path './.cache' -o -path './.cache/*' \
-    -o -path './.turbo' -o -path './.turbo/*' \
-    -o -path './.vite' -o -path './.vite/*' \
-    -o -path './coverage' -o -path './coverage/*' \
-    -o -path './artifacts' -o -path './artifacts/*' \
-    -o -path './tmp' -o -path './tmp/*' \
-    -o -path './temp' -o -path './temp/*' \
-    -o -path './logs' -o -path './logs/*' \
-    -o -path './.logs' -o -path './.logs/*' \
-    -o -path "./$SHA_FILE" \
-    -o -path "./$JSON_FILE" \
-    -o -path "./$TMP_FILE" \) -prune \
+find "$REPO_ROOT" \
+  \( -path "$REPO_ROOT/.git" -o -path "$REPO_ROOT/.git/*" \
+    -o -path "$REPO_ROOT/.vs" -o -path "$REPO_ROOT/.vs/*" \
+    -o -path "$REPO_ROOT/.vscode" -o -path "$REPO_ROOT/.vscode/*" \
+    -o -path "$REPO_ROOT/node_modules" -o -path "$REPO_ROOT/node_modules/*" \
+    -o -path "$REPO_ROOT/dist" -o -path "$REPO_ROOT/dist/*" \
+    -o -path "$REPO_ROOT/dist-ssr" -o -path "$REPO_ROOT/dist-ssr/*" \
+    -o -path "$REPO_ROOT/build" -o -path "$REPO_ROOT/build/*" \
+    -o -path "$REPO_ROOT/.cache" -o -path "$REPO_ROOT/.cache/*" \
+    -o -path "$REPO_ROOT/.turbo" -o -path "$REPO_ROOT/.turbo/*" \
+    -o -path "$REPO_ROOT/.vite" -o -path "$REPO_ROOT/.vite/*" \
+    -o -path "$REPO_ROOT/coverage" -o -path "$REPO_ROOT/coverage/*" \
+    -o -path "$REPO_ROOT/artifacts" -o -path "$REPO_ROOT/artifacts/*" \
+    -o -path "$REPO_ROOT/tmp" -o -path "$REPO_ROOT/tmp/*" \
+    -o -path "$REPO_ROOT/temp" -o -path "$REPO_ROOT/temp/*" \
+    -o -path "$REPO_ROOT/logs" -o -path "$REPO_ROOT/logs/*" \
+    -o -path "$REPO_ROOT/.logs" -o -path "$REPO_ROOT/.logs/*" \
+    -o -path "$SHA_FILE" -o -path "$SHA_FILE/*" \
+    -o -path "$JSON_FILE" -o -path "$JSON_FILE/*" \
+    -o -path "$TMP_FILE" -o -path "$TMP_FILE/*" \) -prune \
   -o -type f -print | LC_ALL=C sort > "$TMP_FILE"
 
 : > "$SHA_FILE"
@@ -54,7 +62,7 @@ find . \
 
 first=1
 while IFS= read -r file; do
-  path=${file#./}
+  path=${file#"$REPO_ROOT/"}
   hash=$(hash_file "$file")
   printf '%s  %s\n' "$hash" "$path" >> "$SHA_FILE"
 
