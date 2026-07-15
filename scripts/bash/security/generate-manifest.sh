@@ -4,12 +4,17 @@ set -Eeuo pipefail
 repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$repo_root"
 
-OUT_DIR="${1:-${TRUST_OUT_DIR:-artifacts/trust}}"
-SHA_FILE="$OUT_DIR/MANIFEST.sha256"
-JSON_FILE="$OUT_DIR/MANIFEST.json"
-TMP_FILE="$OUT_DIR/.manifest-files.tmp"
+out_dir="${1:-${TRUST_OUT_DIR:-artifacts/trust}}"
+if [[ "$out_dir" = /* ]]; then
+  output_dir=$out_dir
+else
+  output_dir="$repo_root/$out_dir"
+fi
+SHA_FILE="$output_dir/MANIFEST.sha256"
+JSON_FILE="$output_dir/MANIFEST.json"
+TMP_FILE="$output_dir/.manifest-files.tmp"
 
-mkdir -p "$OUT_DIR"
+mkdir -p "$output_dir"
 
 hash_file() {
   if command -v sha256sum >/dev/null 2>&1; then
@@ -25,32 +30,32 @@ json_escape() {
   sed 's/\\/\\\\/g; s/"/\\"/g'
 }
 
-find . \
-  \( -path './.git' -o -path './.git/*' \
-    -o -path './.vs' -o -path './.vs/*' \
-    -o -path './.vscode' -o -path './.vscode/*' \
-    -o -path './.agents' -o -path './.agents/*' \
-    -o -path './.codex' -o -path './.codex/*' \
-    -o -path './.claude' -o -path './.claude/*' \
-    -o -path './node_modules' -o -path './node_modules/*' \
-    -o -path './.pnpm-store' -o -path './.pnpm-store/*' \
-    -o -path './dist' -o -path './dist/*' \
-    -o -path './dist-ssr' -o -path './dist-ssr/*' \
-    -o -path './build' -o -path './build/*' \
-    -o -path './.cache' -o -path './.cache/*' \
-    -o -path './.turbo' -o -path './.turbo/*' \
-    -o -path './.vite' -o -path './.vite/*' \
-    -o -path './coverage' -o -path './coverage/*' \
-    -o -path './storybook-static' -o -path './storybook-static/*' \
-    -o -path './package' -o -path './package/*' \
-    -o -path './artifacts' -o -path './artifacts/*' \
-    -o -path './tmp' -o -path './tmp/*' \
-    -o -path './temp' -o -path './temp/*' \
-    -o -path './logs' -o -path './logs/*' \
-    -o -path './.logs' -o -path './.logs/*' \
-    -o -path "./$SHA_FILE" \
-    -o -path "./$JSON_FILE" \
-    -o -path "./$TMP_FILE" \) -prune \
+find "$repo_root" \
+  \( -path "$repo_root/.git" -o -path "$repo_root/.git/*" \
+    -o -path "$repo_root/.vs" -o -path "$repo_root/.vs/*" \
+    -o -path "$repo_root/.vscode" -o -path "$repo_root/.vscode/*" \
+    -o -path "$repo_root/.agents" -o -path "$repo_root/.agents/*" \
+    -o -path "$repo_root/.codex" -o -path "$repo_root/.codex/*" \
+    -o -path "$repo_root/.claude" -o -path "$repo_root/.claude/*" \
+    -o -path "$repo_root/node_modules" -o -path "$repo_root/node_modules/*" \
+    -o -path "$repo_root/.pnpm-store" -o -path "$repo_root/.pnpm-store/*" \
+    -o -path "$repo_root/dist" -o -path "$repo_root/dist/*" \
+    -o -path "$repo_root/dist-ssr" -o -path "$repo_root/dist-ssr/*" \
+    -o -path "$repo_root/build" -o -path "$repo_root/build/*" \
+    -o -path "$repo_root/.cache" -o -path "$repo_root/.cache/*" \
+    -o -path "$repo_root/.turbo" -o -path "$repo_root/.turbo/*" \
+    -o -path "$repo_root/.vite" -o -path "$repo_root/.vite/*" \
+    -o -path "$repo_root/coverage" -o -path "$repo_root/coverage/*" \
+    -o -path "$repo_root/storybook-static" -o -path "$repo_root/storybook-static/*" \
+    -o -path "$repo_root/package" -o -path "$repo_root/package/*" \
+    -o -path "$repo_root/artifacts" -o -path "$repo_root/artifacts/*" \
+    -o -path "$repo_root/tmp" -o -path "$repo_root/tmp/*" \
+    -o -path "$repo_root/temp" -o -path "$repo_root/temp/*" \
+    -o -path "$repo_root/logs" -o -path "$repo_root/logs/*" \
+    -o -path "$repo_root/.logs" -o -path "$repo_root/.logs/*" \
+    -o -path "$SHA_FILE" -o -path "$SHA_FILE/*" \
+    -o -path "$JSON_FILE" -o -path "$JSON_FILE/*" \
+    -o -path "$TMP_FILE" -o -path "$TMP_FILE/*" \) -prune \
   -o -type f -print | LC_ALL=C sort > "$TMP_FILE"
 
 : > "$SHA_FILE"
@@ -64,7 +69,7 @@ find . \
 
 first=1
 while IFS= read -r file; do
-  path=${file#./}
+  path=${file#"$repo_root/"}
   hash=$(hash_file "$file")
   printf '%s  %s\n' "$hash" "$path" >> "$SHA_FILE"
 
