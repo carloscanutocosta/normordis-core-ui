@@ -5,12 +5,14 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$Root = (Resolve-Path ".").Path
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+Set-Location $RepoRoot
+
 $OutputPath = if ([System.IO.Path]::IsPathRooted($OutputDir)) {
     $OutputDir
 }
 else {
-    Join-Path $Root $OutputDir
+    Join-Path $RepoRoot $OutputDir
 }
 
 New-Item -ItemType Directory -Force -Path $OutputPath | Out-Null
@@ -51,8 +53,8 @@ $ManifestFiles = @(
 function Convert-ToRepoPath {
     param([string]$Path)
     $ResolvedPath = [System.IO.Path]::GetFullPath($Path)
-    if ($ResolvedPath.StartsWith($Root, [System.StringComparison]::OrdinalIgnoreCase)) {
-        $Relative = $ResolvedPath.Substring($Root.Length).TrimStart("\", "/")
+    if ($ResolvedPath.StartsWith($RepoRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        $Relative = $ResolvedPath.Substring($RepoRoot.Length).TrimStart("\", "/")
         return ($Relative -replace "\\", "/")
     }
 
@@ -90,7 +92,7 @@ function Get-Sha256 {
     }
 }
 
-$Files = Get-ChildItem -LiteralPath $Root -File -Recurse -Force |
+$Files = Get-ChildItem -LiteralPath $RepoRoot -File -Recurse -Force |
     Where-Object { -not (Test-IsExcludedPath -Path $_.FullName) } |
     Sort-Object { Convert-ToRepoPath -Path $_.FullName }
 
