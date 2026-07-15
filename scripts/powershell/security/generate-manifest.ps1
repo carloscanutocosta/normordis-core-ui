@@ -1,3 +1,4 @@
+# Variante PowerShell; a entrada principal multiplataforma vive em scripts/bash/.
 param(
     [string]$OutputDir = $(if ($env:TRUST_OUT_DIR) { $env:TRUST_OUT_DIR } else { "artifacts/trust" })
 )
@@ -22,7 +23,11 @@ $ExcludedDirectories = @(
     ".git",
     ".vs",
     ".vscode",
+    ".agents",
+    ".codex",
+    ".claude",
     "node_modules",
+    ".pnpm-store",
     "dist",
     "dist-ssr",
     "build",
@@ -30,6 +35,8 @@ $ExcludedDirectories = @(
     ".turbo",
     ".vite",
     "coverage",
+    "storybook-static",
+    "package",
     "artifacts",
     "tmp",
     "temp",

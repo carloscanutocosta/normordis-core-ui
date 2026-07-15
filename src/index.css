@@ -11,7 +11,7 @@
 
     /* Surfaces */
     --background: 220 20% 98%;
-    --foreground: 222 47% 11%;         /* 15:1 on background ✓ */
+    --foreground: 222 47% 11%; /* 15:1 on background ✓ */
 
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
@@ -20,19 +20,19 @@
     --popover-foreground: 222 47% 11%;
 
     /* Interactive */
-    --primary: 243 75% 50%;            /* #4338ca — 7.2:1 on white ✓ */
+    --primary: 243 75% 50%; /* #4338ca — 7.2:1 on white ✓ */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 14% 93%;
     --secondary-foreground: 222 47% 18%;
 
     --muted: 220 14% 93%;
-    --muted-foreground: 220 9% 40%;    /* 5.4:1 on muted ✓ */
+    --muted-foreground: 220 9% 40%; /* 5.4:1 on muted ✓ */
 
     --accent: 243 75% 94%;
-    --accent-foreground: 243 75% 30%;  /* 7.5:1 on accent ✓ */
+    --accent-foreground: 243 75% 30%; /* 7.5:1 on accent ✓ */
 
-    --destructive: 0 84% 42%;          /* #c91c1c — 5.8:1 on white ✓ */
+    --destructive: 0 84% 42%; /* #c91c1c — 5.8:1 on white ✓ */
     --destructive-foreground: 0 0% 100%;
 
     /* Form */
@@ -59,10 +59,10 @@
     --sidebar-ring: 243 75% 50%;
   }
 
-/* ─── Dark theme ─────────────────────────────────────────────────── */
+  /* ─── Dark theme ─────────────────────────────────────────────────── */
   .dark {
     --background: 222 47% 7%;
-    --foreground: 213 31% 93%;         /* 13:1 on background ✓ */
+    --foreground: 213 31% 93%; /* 13:1 on background ✓ */
 
     --card: 222 47% 10%;
     --card-foreground: 213 31% 93%;
@@ -70,19 +70,19 @@
     --popover: 222 47% 10%;
     --popover-foreground: 213 31% 93%;
 
-    --primary: 243 80% 70%;            /* #7c6ee6 — 6.8:1 on dark bg ✓ */
+    --primary: 243 80% 70%; /* #7c6ee6 — 6.8:1 on dark bg ✓ */
     --primary-foreground: 222 47% 7%;
 
     --secondary: 222 47% 16%;
     --secondary-foreground: 213 31% 93%;
 
     --muted: 222 47% 16%;
-    --muted-foreground: 220 9% 64%;    /* 5.1:1 on dark bg ✓ */
+    --muted-foreground: 220 9% 64%; /* 5.1:1 on dark bg ✓ */
 
     --accent: 243 60% 22%;
     --accent-foreground: 243 80% 80%; /* 7:1 on accent ✓ */
 
-    --destructive: 0 72% 62%;          /* 5.4:1 on dark bg ✓ */
+    --destructive: 0 72% 62%; /* 5.4:1 on dark bg ✓ */
     --destructive-foreground: 222 47% 7%;
 
     --border: 222 47% 22%;
@@ -105,10 +105,10 @@
     --sidebar-ring: 243 80% 70%;
   }
 
-/* ─── High-contrast theme (WCAG AAA 7:1 minimum) ────────────────── */
+  /* ─── High-contrast theme (WCAG AAA 7:1 minimum) ────────────────── */
   .high-contrast {
     --background: 0 0% 100%;
-    --foreground: 0 0% 0%;             /* 21:1 ✓ */
+    --foreground: 0 0% 0%; /* 21:1 ✓ */
 
     --card: 0 0% 100%;
     --card-foreground: 0 0% 0%;
@@ -116,22 +116,22 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
 
-    --primary: 240 100% 30%;           /* #0000a0 — 10.1:1 on white ✓ */
+    --primary: 240 100% 30%; /* #0000a0 — 10.1:1 on white ✓ */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 92%;
     --secondary-foreground: 0 0% 0%;
 
     --muted: 0 0% 92%;
-    --muted-foreground: 0 0% 20%;      /* 9.7:1 on muted ✓ */
+    --muted-foreground: 0 0% 20%; /* 9.7:1 on muted ✓ */
 
     --accent: 0 0% 88%;
     --accent-foreground: 240 100% 25%;
 
-    --destructive: 0 100% 30%;         /* #990000 — 8.6:1 on white ✓ */
+    --destructive: 0 100% 30%; /* #990000 — 8.6:1 on white ✓ */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 0%;                 /* Pure black borders */
+    --border: 0 0% 0%; /* Pure black borders */
     --input: 0 0% 0%;
     --ring: 240 100% 30%;
 
@@ -151,10 +151,10 @@
     --sidebar-ring: 240 100% 30%;
   }
 
-/* ─── High-contrast dark variant ────────────────────────────────── */
+  /* ─── High-contrast dark variant ────────────────────────────────── */
   .high-contrast-dark {
     --background: 0 0% 0%;
-    --foreground: 0 0% 100%;           /* 21:1 ✓ */
+    --foreground: 0 0% 100%; /* 21:1 ✓ */
 
     --card: 0 0% 4%;
     --card-foreground: 0 0% 100%;
@@ -162,22 +162,22 @@
     --popover: 0 0% 4%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 210 100% 72%;           /* #4db8ff — 7.2:1 on black ✓ */
+    --primary: 210 100% 72%; /* #4db8ff — 7.2:1 on black ✓ */
     --primary-foreground: 0 0% 0%;
 
     --secondary: 0 0% 14%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 80%;      /* 8.5:1 on black ✓ */
+    --muted-foreground: 0 0% 80%; /* 8.5:1 on black ✓ */
 
     --accent: 0 0% 18%;
     --accent-foreground: 210 100% 80%;
 
-    --destructive: 0 100% 67%;         /* #ff4444 — 7.7:1 on black ✓ */
+    --destructive: 0 100% 67%; /* #ff4444 — 7.7:1 on black ✓ */
     --destructive-foreground: 0 0% 0%;
 
-    --border: 0 0% 100%;               /* Pure white borders */
+    --border: 0 0% 100%; /* Pure white borders */
     --input: 0 0% 100%;
     --ring: 210 100% 72%;
 
@@ -199,8 +199,13 @@
 }
 
 /* ─── Workspace shell scrollbar ─────────────────────────────────── */
-.workspace-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
-.workspace-scroll::-webkit-scrollbar-track { background: transparent; }
+.workspace-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.workspace-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
 .workspace-scroll::-webkit-scrollbar-thumb {
   background: hsl(var(--muted-foreground) / 0.25);
   border-radius: 3px;
@@ -231,8 +236,8 @@
   .high-contrast textarea,
   .high-contrast select,
   .high-contrast button,
-  .high-contrast [role="combobox"],
-  .high-contrast [role="listbox"] {
+  .high-contrast [role='combobox'],
+  .high-contrast [role='listbox'] {
     border-width: 2px !important;
   }
 
@@ -240,8 +245,8 @@
   .high-contrast-dark textarea,
   .high-contrast-dark select,
   .high-contrast-dark button,
-  .high-contrast-dark [role="combobox"],
-  .high-contrast-dark [role="listbox"] {
+  .high-contrast-dark [role='combobox'],
+  .high-contrast-dark [role='listbox'] {
     border-width: 2px !important;
   }
 

@@ -29,12 +29,12 @@ jobs:
       - name: Gerar manifest
         id: manifest
         continue-on-error: true
-        run: bash ./scripts/security/generate-manifest.sh "$TRUST_OUT_DIR"
+        run: bash ./scripts/bash/security/generate-manifest.sh "$TRUST_OUT_DIR"
 
       - name: Verificar manifest
         id: verify
         continue-on-error: true
-        run: bash ./scripts/security/verify-manifest.sh "$TRUST_OUT_DIR/MANIFEST.sha256"
+        run: bash ./scripts/bash/security/verify-manifest.sh "$TRUST_OUT_DIR/MANIFEST.sha256"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4.1.0

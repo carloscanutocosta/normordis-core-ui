@@ -1,0 +1,18 @@
+[Unit]
+Description=NORMORDIS core-ui local and Google Drive backup
+Documentation=file:/srv/normordis/repos/core-ui/docs/MAN.md
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/normordis/repos/core-ui
+UMask=0027
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+TimeoutStartSec=2h
+ExecStartPre=/usr/bin/mountpoint -q /mnt/normordis-backup
+ExecStartPre=/usr/bin/test -d /mnt/normordis-backup/backups/repos/core-ui
+ExecStart=/usr/bin/bash /srv/normordis/repos/core-ui/scripts/bash/backup/full-repo-backup.sh --keep-last 5
+ExecStart=/usr/bin/bash /srv/normordis/repos/core-ui/scripts/bash/backup/sync-google-drive.sh --keep-last 5
+StandardOutput=append:/srv/normordis/logs/backups/core-ui-backup.log
+StandardError=append:/srv/normordis/logs/backups/core-ui-backup.log

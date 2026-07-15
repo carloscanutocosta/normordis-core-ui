@@ -1,5 +1,5 @@
 # ============================================================
-#  Full Repo Restore - normordis-core-ui
+#  Full Repo Restore (PowerShell) - normordis-core-ui
 #  Origem:  D:\Backup\normordis-core-ui  (ou -BackupFile)
 #  Destino: pasta a escolha              (ou -RestoreDir)
 #

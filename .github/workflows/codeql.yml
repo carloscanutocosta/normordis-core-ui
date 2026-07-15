@@ -1,10 +1,10 @@
-name: "CodeQL SAST"
+name: 'CodeQL SAST'
 
 on:
   push:
-    branches: [ "main", "master", "devel" ]
+    branches: ['main', 'master', 'devel']
   pull_request:
-    branches: [ "main", "master", "devel" ]
+    branches: ['main', 'master', 'devel']
   schedule:
     - cron: '30 2 * * 1' # Corre todas as semanas (Segunda-feira)
 
@@ -42,4 +42,4 @@ jobs:
       - name: Realizar Análise CodeQL
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:${{matrix.language}}"
+          category: '/language:${{matrix.language}}'

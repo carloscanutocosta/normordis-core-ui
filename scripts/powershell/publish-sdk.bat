@@ -1,4 +1,5 @@
 @echo off
+rem Launcher da variante PowerShell.
 :: Publica o SDK no GitHub Packages.
 :: Requer GITHUB_TOKEN definido como variavel de ambiente.
 :: Ver docs\PUBLISHING.md para instrucoes completas.

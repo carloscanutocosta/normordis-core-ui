@@ -17,7 +17,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
 $Timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $ZipName = "normordis-core-ui-$Timestamp.zip"
 $ZipPath = Join-Path $DestDir $ZipName
@@ -39,6 +39,7 @@ if (-not (Test-Path $DestDir)) {
 
 $ExcludeDirs = @(
     "node_modules",
+    ".pnpm-store",
     "dist",
     ".vite",
     ".turbo",
@@ -46,6 +47,11 @@ $ExcludeDirs = @(
     ".logs",
     "artifacts",
     "coverage",
+    "storybook-static",
+    "package",
+    ".agents",
+    ".codex",
+    ".claude",
     "tmp",
     "temp"
 )
@@ -148,7 +154,7 @@ Write-Host "  Tamanho  : ${ZipSize} MB (fonte: ${StageMB} MB)"
 Write-Host "  Ficheiros: $FileCount"
 Write-Host ""
 Write-Host "  Para restaurar noutro PC:" -ForegroundColor DarkCyan
-Write-Host "    1. Extrair o ZIP ou usar scripts\backup\full-repo-restore.ps1"
+Write-Host "    1. Extrair o ZIP ou usar scripts\powershell\backup\full-repo-restore.ps1"
 Write-Host "    2. corepack enable"
 Write-Host "    3. pnpm install"
 Write-Host "    4. pnpm run build"

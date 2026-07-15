@@ -1,3 +1,4 @@
+# Variante PowerShell; a entrada principal multiplataforma vive em scripts/bash/.
 param(
     [string]$ManifestPath = $(if ($env:TRUST_MANIFEST) { $env:TRUST_MANIFEST } else { "artifacts/trust/MANIFEST.sha256" }),
     [switch]$VerboseOk

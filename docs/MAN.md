@@ -206,14 +206,39 @@ Atalhos operacionais:
 - `pnpm run check` — higiene do repositório, lint, typecheck e build.
 - `pnpm run check:repo` — valida invariantes estruturais do SDK.
 - `pnpm run check:docs` — valida presença da documentação obrigatória.
-- `pnpm run build:debug` — build local em modo `development`.
-- `pnpm run build:release` — checks completos + build + validação do pacote.
-- `pnpm run pack:inspect` — gera e inspeciona o pacote em `C:\tmp`.
-- `pnpm run backup` — snapshot ZIP em `D:\Backup\normordis-core-ui`.
+- `pnpm run build:debug` — build local Bash em modo `development`.
+- `pnpm run build:release` — checks completos Bash + build + validação do pacote.
+- `pnpm run demo` — arranca o playground sem abrir browser; em desktop, usar
+  `pnpm run demo -- --open`.
+- `pnpm run pack:inspect` — gera e inspeciona o pacote em `./package`.
+- `pnpm run backup` — snapshot ZIP em
+  `/mnt/normordis-backup/backups/repos/core-ui`; aceita
+  outro destino com `pnpm run backup -- --dest-dir <pasta>`.
+- `pnpm run backup:cloud` — copia os snapshots, sem cifragem, para
+  `gdrive:backups/projetos/core-ui`; usa `rclone copy --immutable` e mantém
+  apenas os 5 backups remotos mais recentes com nomes válidos do `core-ui`.
 - `pnpm run security:manifest` — gera `MANIFEST.sha256` e `MANIFEST.json`.
 - `pnpm run security:verify` — verifica o manifest gerado.
 
-O restore completo é feito por `scripts/backup/full-repo-restore.ps1 -RestoreDir "<destino>"`.
+Os scripts operacionais estão separados por runtime: Bash em `scripts/bash/` e
+PowerShell em `scripts/powershell/`. O restore completo em Bash é feito com
+`scripts/bash/backup/full-repo-restore.sh --restore-dir "<destino>"`; a variante
+Windows equivalente vive em
+`scripts/powershell/backup/full-repo-restore.ps1`.
+
+O snapshot preserva o histórico Git e a configuração local dos agentes, mas
+exclui dependências, artefactos reconstruíveis, ficheiros `.env*`, chaves e
+certificados privados. Ficheiros `.env.example` são preservados.
+
+No servidor NORMORDIS, `scripts/systemd/normordis-core-ui-backup.timer` agenda
+o fluxo diariamente às 02:30, com atraso aleatório até 10 minutos e execução
+persistente após períodos offline. A service exige o SSD montado, cria primeiro
+o snapshot local e só então executa a cópia cloud. A saída fica em
+`/srv/normordis/logs/backups/core-ui-backup.log`.
+
+O backup local e o backup cloud mantêm os 5 snapshots mais recentes. O log é
+abrangido pela configuração central `/etc/logrotate.d/normordis`, com rotação
+semanal, 8 rotações, compressão e `delaycompress`.
 
 ## Release e segurança
 

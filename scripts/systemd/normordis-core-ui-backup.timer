@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily NORMORDIS core-ui backup
+
+[Timer]
+OnCalendar=*-*-* 02:30:00
+RandomizedDelaySec=10m
+AccuracySec=1m
+Persistent=true
+Unit=normordis-core-ui-backup.service
+
+[Install]
+WantedBy=timers.target

@@ -3,9 +3,9 @@
 #  Ver docs\PUBLISHING.md para instrucoes detalhadas.
 #
 #  Uso rapido:
-#    .\scripts\publish-sdk.ps1 -t ghp_xxxxxxxxxxxx
-#    .\scripts\publish-sdk.ps1 -t ghp_xxxxxxxxxxxx -DryRun
-#    .\scripts\publish-sdk.ps1 -t ghp_xxxxxxxxxxxx -SkipBuild
+#    .\scripts\powershell\publish-sdk.ps1 -t ghp_xxxxxxxxxxxx
+#    .\scripts\powershell\publish-sdk.ps1 -t ghp_xxxxxxxxxxxx -DryRun
+#    .\scripts\powershell\publish-sdk.ps1 -t ghp_xxxxxxxxxxxx -SkipBuild
 # ============================================================
 
 param(
@@ -16,7 +16,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 Set-Location $RepoRoot
 
 # Resolver token: parametro -t tem prioridade sobre variavel de ambiente
@@ -31,11 +31,11 @@ if (-not $env:GITHUB_TOKEN -or $env:GITHUB_TOKEN -eq "dev-placeholder") {
     Write-Host "[ERRO] GITHUB_TOKEN nao esta definido." -ForegroundColor Red
     Write-Host ""
     Write-Host "  Opcao A -- passar o token directamente (recomendado):" -ForegroundColor Yellow
-    Write-Host '    .\scripts\publish-sdk.ps1 -t ghp_xxxxxxxxxxxx' -ForegroundColor White
+    Write-Host '    .\scripts\powershell\publish-sdk.ps1 -t ghp_xxxxxxxxxxxx' -ForegroundColor White
     Write-Host ""
     Write-Host "  Opcao B -- definir na sessao PowerShell actual:" -ForegroundColor Yellow
     Write-Host '    $env:GITHUB_TOKEN = "ghp_xxxxxxxxxxxx"' -ForegroundColor White
-    Write-Host '    .\scripts\publish-sdk.ps1' -ForegroundColor White
+    Write-Host '    .\scripts\powershell\publish-sdk.ps1' -ForegroundColor White
     Write-Host ""
     Write-Host "  Como obter o token: ver docs\PUBLISHING.md" -ForegroundColor DarkGray
     exit 1

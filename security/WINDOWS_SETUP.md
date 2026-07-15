@@ -13,7 +13,7 @@ PowerShell 7, Git for Windows e VSCode.
 - PowerShell 7 ou superior.
 - Git for Windows.
 - Node.js 24.x.
-- pnpm 10.20.0 via Corepack.
+- pnpm 11.5.1 via Corepack.
 
 ## Execution policy
 
@@ -26,7 +26,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 Execução pontual:
 
 ```powershell
-pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/security/generate-manifest.ps1
+pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/powershell/security/generate-manifest.ps1
 ```
 
 ## Testes locais
@@ -34,17 +34,17 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/security/generate-manifest
 Gerar manifest:
 
 ```powershell
-pnpm run security:manifest
+pnpm run security:manifest:windows
 ```
 
 Verificar manifest:
 
 ```powershell
-pnpm run security:verify
+pnpm run security:verify:windows
 ```
 
 ## Integração GitHub Actions
 
 O workflow `.github/workflows/trust-baseline.yml` usa runner Windows
-(`windows-2022`), PowerShell, Node 24.x e pnpm 10.20.0. A geração de SBOM ocorre
+(`windows-2022`), PowerShell, Node 24.x e pnpm 11.5.1. A geração de SBOM ocorre
 via Syft, sem secrets e sem serviços pagos.

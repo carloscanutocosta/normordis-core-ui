@@ -14,7 +14,7 @@ const preview = {
       default: 'light',
       values: [
         { name: 'light', value: 'hsl(0 0% 100%)' },
-        { name: 'dark',  value: 'hsl(240 10% 3.9%)' },
+        { name: 'dark', value: 'hsl(240 10% 3.9%)' },
       ],
     },
     a11y: {

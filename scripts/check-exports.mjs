@@ -7,7 +7,17 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const root = resolve(__dirname, '../src');
-const EXTS = ['', '.js', '.jsx', '.ts', '.tsx', '/index.js', '/index.jsx', '/index.ts', '/index.tsx'];
+const EXTS = [
+  '',
+  '.js',
+  '.jsx',
+  '.ts',
+  '.tsx',
+  '/index.js',
+  '/index.jsx',
+  '/index.ts',
+  '/index.tsx',
+];
 
 function resolveFile(base, specifier) {
   const target = resolve(dirname(base), specifier);
@@ -25,14 +35,16 @@ function getOwnExports(filePath) {
 
   // export { A, B as C }  (without "from", i.e. re-exporting own bindings)
   for (const m of src.matchAll(/export\s*\{([^}]+)\}(?!\s*from)/g)) {
-    m[1].split(',').forEach(e => {
+    m[1].split(',').forEach((e) => {
       const parts = e.trim().split(/\s+as\s+/);
       const alias = parts[parts.length - 1].trim();
       if (alias && alias !== 'default') names.add(alias);
     });
   }
   // export function/const/class/let/var Foo
-  for (const m of src.matchAll(/^export\s+(?:(?:async\s+)?function\*?|class|const|let|var)\s+(\w+)/gm)) {
+  for (const m of src.matchAll(
+    /^export\s+(?:(?:async\s+)?function\*?|class|const|let|var)\s+(\w+)/gm,
+  )) {
     names.add(m[1]);
   }
   // export * as Foo from ...
@@ -53,13 +65,12 @@ function collectExports(filePath, label, depth = 0) {
   for (const m of src.matchAll(/export\s+\*\s+from\s+['"]([^'"]+)['"]/g)) {
     const target = resolveFile(filePath, m[1]);
     if (!target) continue;
-    collectExports(target, m[1], depth + 1)
-      .forEach(e => results.push(e));
+    collectExports(target, m[1], depth + 1).forEach((e) => results.push(e));
   }
 
   // export { X as Y } from './foo'  (named re-exports, including "default as Y")
   for (const m of src.matchAll(/export\s*\{([^}]+)\}\s+from\s+['"]([^'"]+)['"]/g)) {
-    m[1].split(',').forEach(e => {
+    m[1].split(',').forEach((e) => {
       const parts = e.trim().split(/\s+as\s+/);
       const alias = parts[parts.length - 1].trim();
       if (alias && alias !== 'default') results.push({ name: alias, source: label });
@@ -67,7 +78,7 @@ function collectExports(filePath, label, depth = 0) {
   }
 
   // Own exports (export const Foo, export { Foo } without from, etc.)
-  getOwnExports(filePath).forEach(name => results.push({ name, source: label }));
+  getOwnExports(filePath).forEach((name) => results.push({ name, source: label }));
 
   return results;
 }
@@ -80,13 +91,16 @@ const all = [];
 // export * from '...'
 for (const m of src.matchAll(/export\s+\*\s+from\s+['"]([^'"]+)['"]/g)) {
   const target = resolveFile(indexPath, m[1]);
-  if (!target) { console.log('MISSING:', m[1]); continue; }
-  collectExports(target, m[1]).forEach(e => all.push(e));
+  if (!target) {
+    console.log('MISSING:', m[1]);
+    continue;
+  }
+  collectExports(target, m[1]).forEach((e) => all.push(e));
 }
 
 // export { default as X } from '...'  (top-level named re-exports in index.ts)
 for (const m of src.matchAll(/export\s*\{([^}]+)\}\s+from\s+['"]([^'"]+)['"]/g)) {
-  m[1].split(',').forEach(e => {
+  m[1].split(',').forEach((e) => {
     const parts = e.trim().split(/\s+as\s+/);
     const alias = parts[parts.length - 1].trim();
     if (alias && alias !== 'default') all.push({ name: alias, source: m[2] });
@@ -110,7 +124,7 @@ if (collisions.length === 0) {
   console.log(`⚠️  ${collisions.length} colisao(oes) reais encontrada(s):\n`);
   collisions.forEach(([name, sources]) => {
     console.log(`  "${name}" exportado por:`);
-    [...sources].forEach(s => console.log(`    - ${s}`));
+    [...sources].forEach((s) => console.log(`    - ${s}`));
     console.log('');
   });
   console.log(`Total de exports analisados: ${all.length}`);

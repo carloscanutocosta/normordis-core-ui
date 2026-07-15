@@ -4,6 +4,23 @@ Todas as alterações relevantes deste projeto devem ser documentadas neste fich
 
 O formato segue a ideia de Keep a Changelog e o versionamento deve seguir SemVer.
 
+## [Unreleased]
+
+### Changed
+
+- Scripts operacionais reorganizados por runtime em `scripts/bash/` e
+  `scripts/powershell/`, com Bash como entrada principal dos comandos `pnpm`.
+- Adicionadas variantes Bash para build, checks, demo, publicação, backup e
+  restauro, mantendo as variantes PowerShell para compatibilidade Windows.
+- A abertura automática do browser no playground Bash passou a ser opcional
+  através de `pnpm run demo -- --open`.
+- Adicionada cópia offsite não cifrada para Google Drive com `rclone copy
+  --immutable`, sem propagação de eliminações locais.
+- Adicionado timer `systemd --user` diário para executar sequencialmente o
+  backup local e a cópia offsite, com logs operacionais centralizados.
+- Limitada a retenção a 5 snapshots no SSD e no Google Drive; documentada a
+  cobertura do log pela política central de `logrotate`.
+
 ## [1.0.0] - 2026-05-29
 
 ### Added

@@ -44,7 +44,7 @@ de build e ao pacote npm gerado localmente por `pnpm pack`.
 
 ## Scripts
 
-- `scripts/security/generate-manifest.ps1`
-- `scripts/security/generate-manifest.sh`
-- `scripts/security/verify-manifest.ps1`
-- `scripts/security/verify-manifest.sh`
+- `scripts/bash/security/generate-manifest.sh`
+- `scripts/bash/security/verify-manifest.sh`
+- `scripts/powershell/security/generate-manifest.ps1`
+- `scripts/powershell/security/verify-manifest.ps1`
