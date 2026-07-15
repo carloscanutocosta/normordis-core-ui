@@ -1,19 +1,20 @@
 # ============================================================
-#  Full Repo Restore (PowerShell) - normordis-core-ui
-#  Origem:  D:\Backup\normordis-core-ui  (ou -BackupFile)
-#  Destino: pasta a escolha              (ou -RestoreDir)
+#  Full Repo Restore - normordis-core-ui
+#  Origem:  E:\Backup\normordis-core-ui  (ou -BackupFile)
+#  Destino: D:\Projects\core-ui          (ou -RestoreDir)
 #
 #  Uso:
-#    .\full-repo-restore.ps1 -RestoreDir "C:\Projetos\normordis-core-ui"
-#    .\full-repo-restore.ps1 -BackupFile "D:\Backup\normordis-core-ui\normordis-core-ui-20260524-083841.zip" -RestoreDir "C:\Projetos\normordis-core-ui"
-#    .\full-repo-restore.ps1 -RestoreDir "C:\Projetos\normordis-core-ui" -Rebuild
+#    .\full-repo-restore.ps1
+#    .\full-repo-restore.ps1 -RestoreDir "D:\Projects\core-ui"
+#    .\full-repo-restore.ps1 -BackupFile "E:\Backup\normordis-core-ui\normordis-core-ui-20260524-083841.zip" -RestoreDir "D:\Projects\core-ui"
+#    .\full-repo-restore.ps1 -RestoreDir "D:\Projects\core-ui" -Rebuild
 #    .\full-repo-restore.ps1 -List
 # ============================================================
 
 param(
     [string]$BackupFile = "",
-    [string]$RestoreDir = "",
-    [string]$BackupDir = "D:\Backup\normordis-core-ui",
+    [string]$RestoreDir = "D:\Projects\core-ui",
+    [string]$BackupDir = "E:\Backup\normordis-core-ui",
     [switch]$Rebuild = $false,
     [switch]$List = $false
 )
@@ -49,7 +50,7 @@ if ($List) {
 if (-not $RestoreDir) {
     Write-Host ""
     Write-Host "  [ERRO] E necessario especificar -RestoreDir" -ForegroundColor Red
-    Write-Host "  Exemplo: .\full-repo-restore.ps1 -RestoreDir `"C:\Projetos\normordis-core-ui`"" -ForegroundColor DarkGray
+    Write-Host "  Exemplo: .\full-repo-restore.ps1 -RestoreDir `"D:\Projects\core-ui`"" -ForegroundColor DarkGray
     Write-Host "  Para listar backups: .\full-repo-restore.ps1 -List" -ForegroundColor DarkGray
     Write-Host ""
     exit 1
