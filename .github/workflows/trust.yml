@@ -37,7 +37,7 @@ jobs:
         run: bash ./scripts/bash/security/verify-manifest.sh "$TRUST_OUT_DIR/MANIFEST.sha256"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4.1.0
+        uses: pnpm/action-setup@v6.0.9
         # Sem 'version' explícito: a action lê packageManager do package.json
 
       - name: Setup Node.js
