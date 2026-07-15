@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import FieldWrapper from './FieldWrapper';
+import FieldWrapper, { useFieldContext } from './FieldWrapper';
 
 const PRESETS = [
   '#ef4444',
@@ -48,26 +48,7 @@ export default function ColorField({
               error && 'border-destructive',
             )}
           >
-            <span className="text-sm text-muted-foreground mr-2">#</span>
-            <input
-              type="text"
-              value={(value || '#ffffff').replace('#', '')}
-              onChange={(e) => {
-                const v = '#' + e.target.value.replace(/[^0-9a-fA-F]/g, '').slice(0, 6);
-                onChange?.(v);
-              }}
-              disabled={disabled}
-              className="flex-1 bg-transparent text-sm font-mono text-foreground focus:outline-none disabled:cursor-not-allowed uppercase"
-              maxLength={6}
-            />
-            <input
-              type="color"
-              value={value || '#ffffff'}
-              onChange={(e) => onChange?.(e.target.value)}
-              disabled={disabled}
-              className="w-0 h-0 opacity-0"
-              id="native-color"
-            />
+            <ColorHexInput value={value} onChange={onChange} disabled={disabled} />
           </div>
         </div>
         {showPresets && (
@@ -90,5 +71,40 @@ export default function ColorField({
         )}
       </div>
     </FieldWrapper>
+  );
+}
+
+// Sub-componente que consome o FieldContext para injetar atributos ARIA no input hex.
+function ColorHexInput({ value, onChange, disabled }) {
+  const field = useFieldContext();
+  return (
+    <>
+      <span className="text-sm text-muted-foreground mr-2">#</span>
+      <input
+        type="text"
+        value={(value || '#ffffff').replace('#', '')}
+        onChange={(e) => {
+          const v = '#' + e.target.value.replace(/[^0-9a-fA-F]/g, '').slice(0, 6);
+          onChange?.(v);
+        }}
+        disabled={disabled}
+        aria-invalid={field?.invalid || undefined}
+        aria-describedby={field?.describedBy}
+        aria-required={field?.required || undefined}
+        aria-label="Código de cor hexadecimal"
+        className="flex-1 bg-transparent text-sm font-mono text-foreground focus:outline-none disabled:cursor-not-allowed uppercase"
+        maxLength={6}
+      />
+      <input
+        type="color"
+        value={value || '#ffffff'}
+        onChange={(e) => onChange?.(e.target.value)}
+        disabled={disabled}
+        className="w-0 h-0 opacity-0"
+        id="native-color"
+        aria-hidden="true"
+        tabIndex={-1}
+      />
+    </>
   );
 }
