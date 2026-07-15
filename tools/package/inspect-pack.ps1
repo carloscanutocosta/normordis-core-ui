@@ -1,5 +1,5 @@
 param(
-    [string]$PackDestination = ".\package"
+    [string]$PackDestination = "D:\tmp\normordis-packages"
 )
 
 $ErrorActionPreference = "Stop"

@@ -208,7 +208,7 @@ Atalhos operacionais:
 - `pnpm run check:docs` — valida presença da documentação obrigatória.
 - `pnpm run build:debug` — build local em modo `development`.
 - `pnpm run build:release` — checks completos + build + validação do pacote.
-- `pnpm run pack:inspect` — gera e inspeciona o pacote em `C:\tmp`.
+- `pnpm run pack:inspect` — gera e inspeciona o pacote em `D:\tmp`.
 - `pnpm run backup` — snapshot ZIP em `D:\Backup\normordis-core-ui`.
 - `pnpm run security:manifest` — gera `MANIFEST.sha256` e `MANIFEST.json`.
 - `pnpm run security:verify` — verifica o manifest gerado.
