@@ -6,7 +6,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
 Set-Location $RepoRoot
 
 $OutputPath = if ([System.IO.Path]::IsPathRooted($OutputDir)) {

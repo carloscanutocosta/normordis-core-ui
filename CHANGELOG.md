@@ -20,6 +20,15 @@ O formato segue a ideia de Keep a Changelog e o versionamento deve seguir SemVer
   backup local e a cópia offsite, com logs operacionais centralizados.
 - Limitada a retenção a 5 snapshots no SSD e no Google Drive; documentada a
   cobertura do log pela política central de `logrotate`.
+- Alinhada a documentação de consumo com o pacote público
+  `@carloscanutocosta/core-ui`, a versão `1.0.2` e o entrypoint CSS
+  `@carloscanutocosta/core-ui/styles.css`.
+- Atualizadas as actions de checkout e CodeQL para as versões atuais.
+
+### Fixed
+
+- Corrigida a raiz do repositório no gerador PowerShell do manifesto de
+  confiança, para produzir a evidência em `artifacts/trust/`.
 
 ## [1.0.0] - 2026-05-29
 

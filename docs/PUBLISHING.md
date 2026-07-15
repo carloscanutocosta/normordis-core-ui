@@ -33,16 +33,16 @@ export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
 
 ## Publicar uma nova versão
 
-**Versão actual: 1.0.0**
+**Versão actual: 1.0.2**
 
 ```bash
 # 1. Garantir que o build está actualizado e os testes passam
 pnpm test && pnpm build
 
 # 2. Bump de versão (escolher semver adequado)
-pnpm version patch   # 1.0.0 → 1.0.1  (bug fix)
-pnpm version minor   # 1.0.0 → 1.1.0  (nova feature, API compatível)
-pnpm version major   # 1.0.0 → 2.0.0  (breaking change)
+pnpm version patch   # 1.0.2 → 1.0.3  (bug fix)
+pnpm version minor   # 1.0.2 → 1.1.0  (nova feature, API compatível)
+pnpm version major   # 1.0.2 → 2.0.0  (breaking change)
 
 # 3. Publicar
 pnpm publish --no-git-checks
@@ -95,7 +95,7 @@ pnpm add @carloscanutocosta/core-ui
 ### 3. Importar CSS no entry point
 
 ```js
-import '@carloscanutocosta/core-ui/dist/normordis-core-ui.css'
+import '@carloscanutocosta/core-ui/styles.css'
 ```
 
 ### 4. Configurar Tailwind para processar as classes do SDK

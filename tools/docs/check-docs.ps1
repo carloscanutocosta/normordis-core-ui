@@ -41,8 +41,12 @@ if ((Test-Path "README.md") -and -not (Select-String -Path "README.md" -Pattern 
     $Errors.Add("README.md deve documentar o comando pnpm run build.") | Out-Null
 }
 
-if ((Test-Path "docs\MAN.md") -and -not (Select-String -Path "docs\MAN.md" -Pattern "@normordis/core-ui/styles.css" -Quiet)) {
-    $Errors.Add("docs/MAN.md deve documentar o CSS publico @normordis/core-ui/styles.css.") | Out-Null
+if (Test-Path "package.json") {
+    $PackageName = (Get-Content -Path "package.json" -Raw | ConvertFrom-Json).name
+    $PublicCssEntrypoint = "$PackageName/styles.css"
+    if ((Test-Path "docs\MAN.md") -and -not (Select-String -Path "docs\MAN.md" -Pattern ([regex]::Escape($PublicCssEntrypoint)) -Quiet)) {
+        $Errors.Add("docs/MAN.md deve documentar o CSS publico $PublicCssEntrypoint.") | Out-Null
+    }
 }
 
 if ($Errors.Count -gt 0) {

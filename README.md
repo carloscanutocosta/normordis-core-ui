@@ -1,4 +1,4 @@
-# @normordis/core-ui
+# @carloscanutocosta/core-ui
 
 SDK React de componentes, tokens e padrões UX reutilizáveis para aplicações do ecossistema NORMORDIS.
 
@@ -9,7 +9,7 @@ Baseado em [Radix UI](https://www.radix-ui.com/), [Tailwind CSS](https://tailwin
 ## Instalação
 
 ```bash
-pnpm add @normordis/core-ui
+pnpm add @carloscanutocosta/core-ui
 ```
 
 ### Peer dependencies obrigatórias
@@ -36,7 +36,7 @@ pnpm add react react-dom lucide-react date-fns \
 Importa a stylesheet do SDK uma vez no entry point da tua aplicação:
 
 ```js
-import '@normordis/core-ui/dist/normordis-core-ui.css'
+import '@carloscanutocosta/core-ui/styles.css'
 ```
 
 ---
@@ -44,8 +44,8 @@ import '@normordis/core-ui/dist/normordis-core-ui.css'
 ## Quickstart
 
 ```jsx
-import { TextField, SelectField, NumberField, Button } from '@normordis/core-ui'
-import '@normordis/core-ui/dist/normordis-core-ui.css'
+import { TextField, SelectField, NumberField, Button } from '@carloscanutocosta/core-ui'
+import '@carloscanutocosta/core-ui/styles.css'
 
 export function ExemploFormulario() {
   return (
@@ -178,7 +178,7 @@ O SDK usa variáveis CSS do Tailwind e suporta temas **claro**, **escuro** e **a
 Para usar o `ThemeSwitcher` incluído:
 
 ```jsx
-import { ThemeSwitcher } from '@normordis/core-ui'
+import { ThemeSwitcher } from '@carloscanutocosta/core-ui'
 // Coloca no teu header ou navbar
 <ThemeSwitcher />
 ```
@@ -237,4 +237,5 @@ Este pacote fornece uma **camada de apresentação** partilhada. Não deve conte
 
 ## Licença
 
-Privado — uso exclusivo no ecossistema NORMORDIS.
+Licenciado sob [EUPL-1.2](./LICENSE). As contribuições e trabalhos derivados
+distribuídos devem respeitar os termos de reciprocidade da licença.

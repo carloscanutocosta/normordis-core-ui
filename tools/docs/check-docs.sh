@@ -20,6 +20,8 @@ for file in README.md docs/MAN.md DESIGN.md CHANGELOG.md LICENSE AGENTS.md SECUR
 done
 
 rg -q 'pnpm run build' README.md || { printf '  [ERRO] README.md deve documentar pnpm run build.\n' >&2; errors=$((errors + 1)); }
-rg -q '@normordis/core-ui/styles.css' docs/MAN.md || { printf '  [ERRO] docs/MAN.md deve documentar o CSS público.\n' >&2; errors=$((errors + 1)); }
+package_name="$(node -p "JSON.parse(require('node:fs').readFileSync('package.json', 'utf8')).name")"
+public_css_entrypoint="${package_name}/styles.css"
+rg -Fq "$public_css_entrypoint" docs/MAN.md || { printf '  [ERRO] docs/MAN.md deve documentar o CSS público %s.\n' "$public_css_entrypoint" >&2; errors=$((errors + 1)); }
 ((errors == 0)) || exit 1
 $quiet || printf '>>> [TOOL docs] OK.\n'

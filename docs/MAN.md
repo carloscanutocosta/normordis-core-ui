@@ -47,8 +47,8 @@ CSS uma vez na entrada da aplicação:
 // entry point da app (ex: main.tsx)
 // Ambas as formas são equivalentes:
 import '@carloscanutocosta/core-ui/styles';
-// ou, com extensão explícita (@normordis/core-ui/styles.css):
-// import '@normordis/core-ui/styles.css';
+// ou, com extensão explícita:
+// import '@carloscanutocosta/core-ui/styles.css';
 import { applyTheme, getStoredTheme } from '@carloscanutocosta/core-ui';
 
 applyTheme(getStoredTheme()); // evita flash de tema errado
