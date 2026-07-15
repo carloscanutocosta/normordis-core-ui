@@ -1,4 +1,6 @@
-export { default as FieldWrapper } from './FieldWrapper';
+export { default as FieldWrapper, useFieldContext } from './FieldWrapper';
+export type { FieldContextValue } from './FieldWrapper';
+
 export { default as TextInput } from './TextInput';
 export { default as NumberInput } from './NumberInput';
 export { default as TextAreaInput } from './TextAreaInput';

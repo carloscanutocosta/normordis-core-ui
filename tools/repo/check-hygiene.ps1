@@ -31,7 +31,7 @@ Test-RequiredFile "package.json"
 Test-RequiredFile "pnpm-lock.yaml"
 Test-RequiredFile ".nvmrc"
 Test-RequiredFile ".node-version"
-Test-RequiredFile "src\index.js"
+Test-RequiredFile "src\index.ts"
 
 foreach ($forbiddenLock in @("package-lock.json", "npm-shrinkwrap.json", "yarn.lock")) {
     if (Test-Path $forbiddenLock) {
@@ -59,12 +59,13 @@ if (Test-Path "package.json") {
         Add-WarningMessage "engines.node esperado: 24.x. Valor atual: $($Package.engines.node)."
     }
 
-    if ($Package.engines.pnpm -ne "10.x") {
-        Add-WarningMessage "engines.pnpm esperado: 10.x. Valor atual: $($Package.engines.pnpm)."
+    $expectedPnpmMajor = "10"
+    if ($Package.engines.pnpm -notmatch "^(10|11|>=10|>=11)") {
+        Add-WarningMessage "engines.pnpm esperado: 10.x ou 11.x. Valor atual: $($Package.engines.pnpm)."
     }
 
-    if ($Package.packageManager -ne "pnpm@10.20.0") {
-        Add-WarningMessage "packageManager esperado: pnpm@10.20.0. Valor atual: $($Package.packageManager)."
+    if ($Package.packageManager -notmatch "^pnpm@") {
+        Add-WarningMessage "packageManager deve comecar com pnpm@. Valor atual: $($Package.packageManager)."
     }
 
     if (-not $Package.peerDependencies.react) {

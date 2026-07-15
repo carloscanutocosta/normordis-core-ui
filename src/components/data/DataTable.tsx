@@ -247,17 +247,29 @@ export default function DataTable({
         <table className="w-full text-sm">
           <thead className="bg-muted/50 border-b border-border">
             <tr>
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  onClick={() => toggleSort(col.key)}
-                  className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground cursor-pointer hover:text-foreground select-none"
-                >
-                  <span className="inline-flex items-center gap-1.5">
-                    {col.label} <SortIcon col={col} />
-                  </span>
-                </th>
-              ))}
+              {columns.map((col) => {
+                const isSorted = sortKey === col.key;
+                const ariaSortVal: 'none' | 'ascending' | 'descending' = !isSorted
+                  ? 'none'
+                  : sortDir === 'asc'
+                    ? 'ascending'
+                    : 'descending';
+                return (
+                  <th
+                    key={col.key}
+                    aria-sort={ariaSortVal}
+                    className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground select-none"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleSort(col.key)}
+                      className="inline-flex items-center gap-1.5 hover:text-foreground focus-visible:outline-none focus-visible:underline focus-visible:text-foreground transition-colors cursor-pointer"
+                    >
+                      {col.label} <SortIcon col={col} />
+                    </button>
+                  </th>
+                );
+              })}
               {onRowAction && <th className="px-2 py-2.5 w-10" />}
             </tr>
           </thead>

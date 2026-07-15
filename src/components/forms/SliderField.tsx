@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Slider } from '@/components/ui/slider';
-import FieldWrapper from './FieldWrapper';
+import FieldWrapper, { useFieldContext } from './FieldWrapper';
 
 export default function SliderField({
   label,
@@ -23,13 +23,15 @@ export default function SliderField({
     <FieldWrapper label={label} hint={hint} error={error} required={required} className={className}>
       <div className="flex items-center gap-4">
         <div className="flex-1">
-          <Slider
+          <SliderWithContext
             value={[value ?? min]}
             onValueChange={([v]) => onChange?.(v)}
             min={min}
             max={max}
             step={step}
             disabled={disabled}
+            // aria-label é obrigatório no thumb (role="slider") quando não há labelledby
+            aria-label={label ?? 'Controlo deslizante'}
             className={cn(error && '[&>span]:border-destructive')}
           />
         </div>
@@ -44,5 +46,19 @@ export default function SliderField({
         <span>{formatValue ? formatValue(max) : max}</span>
       </div>
     </FieldWrapper>
+  );
+}
+
+// Slider com `aria-invalid` e `aria-describedby` via FieldContext.
+// O Radix Slider renderiza um span com <span role="slider"> no thumb — os
+// atributos ARIA na raiz são propagados pelo Radix para os elementos relevantes.
+function SliderWithContext(props) {
+  const field = useFieldContext();
+  return (
+    <Slider
+      {...props}
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+    />
   );
 }
