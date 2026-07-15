@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import FieldWrapper from './FieldWrapper';
+import FieldWrapper, { useFieldContext } from './FieldWrapper';
 
 export default function RadioField({
   label,
@@ -17,8 +17,11 @@ export default function RadioField({
   const normalized = options.map((o) => (typeof o === 'string' ? { value: o, label: o } : o));
 
   return (
+    // O FieldWrapper cria o label de grupo (via <label htmlFor>), mas para
+    // RadioGroup a semântica correta é aria-labelledby no grupo. O Radix
+    // RadioGroup aceita aria-* props que são aplicados ao <div role="radiogroup">.
     <FieldWrapper label={label} hint={hint} error={error} required={required} className={className}>
-      <RadioGroup
+      <RadioGroupWithContext
         value={value ?? ''}
         onValueChange={onChange}
         disabled={disabled}
@@ -36,7 +39,23 @@ export default function RadioField({
             <span className="text-foreground">{opt.label}</span>
           </label>
         ))}
-      </RadioGroup>
+      </RadioGroupWithContext>
     </FieldWrapper>
+  );
+}
+
+// RadioGroup com `aria-invalid`, `aria-describedby` e `aria-required` via FieldContext.
+// O Radix RadioGroup renderiza um <div role="radiogroup"> — aceita atributos ARIA arbitrários.
+function RadioGroupWithContext({ children, ...props }) {
+  const field = useFieldContext();
+  return (
+    <RadioGroup
+      {...props}
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+      aria-required={field?.required || undefined}
+    >
+      {children}
+    </RadioGroup>
   );
 }

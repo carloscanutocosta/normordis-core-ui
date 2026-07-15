@@ -3,7 +3,7 @@ import { Calendar, Clock, X } from 'lucide-react';
 import { format, isValid, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
-import FieldWrapper from './FieldWrapper';
+import FieldWrapper, { useFieldContext } from './FieldWrapper';
 import { Calendar as CalendarPicker } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
@@ -77,34 +77,17 @@ export default function DateField({
     >
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <button
+          <DateTriggerButton
             id={id}
-            type="button"
             disabled={disabled}
-            className={cn(
-              'w-full flex items-center justify-between rounded-lg border border-input bg-background px-3 py-2 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring',
-              !isValidDate && 'text-muted-foreground',
-              error && 'border-destructive focus:ring-destructive/30',
-              disabled && 'opacity-50 cursor-not-allowed',
-            )}
-          >
-            <span className="flex items-center gap-2">
-              {showTime ? (
-                <Clock className="w-4 h-4 text-muted-foreground" />
-              ) : (
-                <Calendar className="w-4 h-4 text-muted-foreground" />
-              )}
-              {displayValue ||
-                placeholder ||
-                (showTime ? 'Selecione data e hora' : 'Selecione uma data')}
-            </span>
-            {clearable && isValidDate && (
-              <X
-                className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground"
-                onClick={handleClear}
-              />
-            )}
-          </button>
+            isValidDate={!!isValidDate}
+            displayValue={displayValue}
+            showTime={showTime}
+            placeholder={placeholder}
+            clearable={clearable}
+            error={error}
+            onClear={handleClear}
+          />
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <CalendarPicker
@@ -128,5 +111,48 @@ export default function DateField({
         </PopoverContent>
       </Popover>
     </FieldWrapper>
+  );
+}
+
+// Sub-componente que consome o FieldContext para injetar atributos ARIA no trigger.
+function DateTriggerButton({
+  id,
+  disabled,
+  isValidDate,
+  displayValue,
+  showTime,
+  placeholder,
+  clearable,
+  error,
+  onClear,
+}) {
+  const field = useFieldContext();
+  return (
+    <button
+      id={id}
+      type="button"
+      disabled={disabled}
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+      aria-required={field?.required || undefined}
+      className={cn(
+        'w-full flex items-center justify-between rounded-lg border border-input bg-background px-3 py-2 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring',
+        !isValidDate && 'text-muted-foreground',
+        error && 'border-destructive focus:ring-destructive/30',
+        disabled && 'opacity-50 cursor-not-allowed',
+      )}
+    >
+      <span className="flex items-center gap-2">
+        {showTime ? (
+          <Clock className="w-4 h-4 text-muted-foreground" />
+        ) : (
+          <Calendar className="w-4 h-4 text-muted-foreground" />
+        )}
+        {displayValue || placeholder || (showTime ? 'Selecione data e hora' : 'Selecione uma data')}
+      </span>
+      {clearable && isValidDate && (
+        <X className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground" onClick={onClear} />
+      )}
+    </button>
   );
 }

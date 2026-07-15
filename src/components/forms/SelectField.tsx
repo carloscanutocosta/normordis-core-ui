@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import { cn } from '@/lib/utils';
-import FieldWrapper from './FieldWrapper';
+import FieldWrapper, { useFieldContext } from './FieldWrapper';
 import {
   Select,
   SelectContent,
@@ -38,12 +38,9 @@ export default function SelectField({
       className={className}
     >
       <Select value={value ?? ''} onValueChange={onChange} disabled={disabled}>
-        <SelectTrigger
-          id={id}
-          className={cn('w-full', error && 'border-destructive focus:ring-destructive/30')}
-        >
+        <SelectTriggerInner id={id} error={error}>
           <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
+        </SelectTriggerInner>
         <SelectContent>
           {normalized.map((opt) => (
             <SelectItem key={opt.value} value={opt.value} disabled={opt.disabled}>
@@ -53,5 +50,21 @@ export default function SelectField({
         </SelectContent>
       </Select>
     </FieldWrapper>
+  );
+}
+
+// Sub-componente que consome o FieldContext para injetar atributos ARIA.
+function SelectTriggerInner({ id, error, children }) {
+  const field = useFieldContext();
+  return (
+    <SelectTrigger
+      id={id}
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+      aria-required={field?.required || undefined}
+      className={cn('w-full', error && 'border-destructive focus:ring-destructive/30')}
+    >
+      {children}
+    </SelectTrigger>
   );
 }

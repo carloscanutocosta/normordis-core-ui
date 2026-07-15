@@ -35,8 +35,10 @@ $RequiredPaths = @(
     "docs/MAN.md",
     "tailwind.config.js",
     "dist/normordis-core-ui.css",
-    "dist/normordis-core-ui.js",
-    "dist/normordis-core-ui.umd.cjs"
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/charts.js",
+    "dist/workspace.js"
 )
 
 $Errors = New-Object System.Collections.Generic.List[string]

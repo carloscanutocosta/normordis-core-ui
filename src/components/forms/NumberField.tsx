@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import FieldWrapper from './FieldWrapper';
+import FieldWrapper, { useFieldContext } from './FieldWrapper';
 
 export default function NumberField({
   id: idProp,
@@ -74,32 +74,32 @@ export default function NumberField({
             type="button"
             onClick={decrement}
             disabled={disabled || (min !== undefined && (value ?? 0) <= min)}
+            aria-label="Diminuir"
             className="px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            <Minus className="w-3.5 h-3.5" />
+            <Minus className="w-3.5 h-3.5" aria-hidden="true" />
           </button>
         )}
-        <input
+        <NumberInputInner
           id={id}
-          type="number"
-          value={value ?? ''}
+          value={value}
           onChange={handleChange}
           min={min}
           max={max}
           step={step}
           disabled={disabled}
-          placeholder={placeholder ?? '0'}
-          className="flex-1 bg-transparent text-sm px-3 py-2 text-foreground text-center placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-          {...props}
+          placeholder={placeholder}
+          props={props}
         />
         {showControls && (
           <button
             type="button"
             onClick={increment}
             disabled={disabled || (max !== undefined && (value ?? 0) >= max)}
+            aria-label="Aumentar"
             className="px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-3.5 h-3.5" aria-hidden="true" />
           </button>
         )}
         {suffix && (
@@ -109,5 +109,28 @@ export default function NumberField({
         )}
       </div>
     </FieldWrapper>
+  );
+}
+
+// Sub-componente interno que lê o FieldContext para injetar atributos ARIA.
+function NumberInputInner({ id, value, onChange, min, max, step, disabled, placeholder, props }) {
+  const field = useFieldContext();
+  return (
+    <input
+      id={id}
+      type="number"
+      value={value ?? ''}
+      onChange={onChange}
+      min={min}
+      max={max}
+      step={step}
+      disabled={disabled}
+      placeholder={placeholder ?? '0'}
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+      aria-required={field?.required || undefined}
+      className="flex-1 bg-transparent text-sm px-3 py-2 text-foreground text-center placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+      {...props}
+    />
   );
 }

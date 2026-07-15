@@ -1,5 +1,5 @@
 import { Switch } from '@/components/ui/switch';
-import FieldWrapper from './FieldWrapper';
+import FieldWrapper, { useFieldContext } from './FieldWrapper';
 
 export default function SwitchField({
   label,
@@ -19,7 +19,7 @@ export default function SwitchField({
           {label && <span className="text-sm font-medium text-foreground">{label}</span>}
           {description && <span className="text-xs text-muted-foreground">{description}</span>}
         </div>
-        <Switch
+        <SwitchWithContext
           checked={!!value}
           onCheckedChange={onChange}
           disabled={disabled}
@@ -27,5 +27,18 @@ export default function SwitchField({
         />
       </div>
     </FieldWrapper>
+  );
+}
+
+// Switch com `aria-invalid` e `aria-describedby` injetados via FieldContext.
+// O Radix Switch renderiza um <button role="switch"> — aceita atributos ARIA arbitrários.
+function SwitchWithContext(props) {
+  const field = useFieldContext();
+  return (
+    <Switch
+      {...props}
+      aria-invalid={field?.invalid || undefined}
+      aria-describedby={field?.describedBy}
+    />
   );
 }
