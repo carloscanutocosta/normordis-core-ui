@@ -195,12 +195,37 @@ pnpm dev          # app de showcase
 pnpm run build    # build do SDK (dist/)
 ```
 
+Em servidor ou via Remote-SSH, `pnpm run demo` arranca sem tentar abrir um
+browser. Num Linux desktop, usa `pnpm run demo -- --open`.
+
 ### Scripts de utilidade
 
 ```bash
 node scripts/check-exports.mjs          # detectar colisões de nomes no barrel
 node scripts/check-missing-exports.mjs  # componentes sem export público
+pnpm run check                          # higiene, documentação, lint, tipos e build
 ```
+
+Os fluxos operacionais estão separados por shell: `scripts/bash/` contém as
+entradas principais e `scripts/powershell/` mantém as variantes Windows. Os
+utilitários Node independentes do shell permanecem diretamente em `scripts/`.
+Em Linux, `pnpm run backup` guarda por omissão em
+`/mnt/normordis-backup/backups/repos/core-ui` e exclui secrets locais (`.env*`,
+`*.pem` e `*.key`). O destino pode ser substituído com `--dest-dir` ou com a
+variável `NORMORDIS_BACKUP_DIR`.
+
+`pnpm run backup:cloud` copia os ZIP para
+`gdrive:backups/projetos/core-ui` através de `rclone`. A cópia é deliberadamente
+não cifrada e mantém os 5 snapshots mais recentes no SSD e no Google Drive.
+Antes do primeiro envio, pode ser simulada com
+`pnpm run backup:cloud -- --dry-run`.
+
+No servidor NORMORDIS, o timer `normordis-core-ui-backup.timer` executa
+diariamente o backup local e, após sucesso, a cópia Google Drive. Os templates
+das units vivem em `scripts/systemd/` e os logs em
+`/srv/normordis/logs/backups/core-ui-backup.log`.
+O log é abrangido pela política central `/etc/logrotate.d/normordis`: rotação
+semanal, 8 rotações, compressão e `delaycompress`.
 
 ---
 

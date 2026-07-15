@@ -4,7 +4,7 @@
 #  os componentes do SDK em modo de desenvolvimento.
 # ============================================================
 
-$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 Set-Location $RepoRoot
 
 Write-Host ">>> normordis-core-ui — Playground" -ForegroundColor Cyan

@@ -11,7 +11,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 Set-Location $RepoRoot
 
 if (-not (Test-Path "package.json") -or -not (Test-Path "pnpm-lock.yaml")) {
@@ -71,7 +71,7 @@ try {
     Write-Host ""
     Write-Host "    Para publicar no GitHub Packages:" -ForegroundColor DarkGray
     Write-Host "    pnpm publish --no-git-checks" -ForegroundColor DarkGray
-    Write-Host "    (requer GITHUB_TOKEN definido - ver scripts\publish-sdk.bat)" -ForegroundColor DarkGray
+    Write-Host "    (requer GITHUB_TOKEN definido - ver scripts\powershell\publish-sdk.bat)" -ForegroundColor DarkGray
 
     Write-Host ""
     Write-Host "------------------------------------------------" -ForegroundColor Green

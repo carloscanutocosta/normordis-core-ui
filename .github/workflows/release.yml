@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - "v*"
+      - 'v*'
 
 permissions:
   contents: write
@@ -22,10 +22,10 @@ jobs:
     timeout-minutes: 20
 
     env:
-      NODE_VERSION: "24"
-      PNPM_VERSION: "11.5.1"
-      RELEASE_OUT_DIR: "artifacts/release"
-      TRUST_OUT_DIR: "artifacts/trust"
+      NODE_VERSION: '24'
+      PNPM_VERSION: '11.5.1'
+      RELEASE_OUT_DIR: 'artifacts/release'
+      TRUST_OUT_DIR: 'artifacts/trust'
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
@@ -68,10 +68,10 @@ jobs:
           pnpm pack --json --pack-destination "$RELEASE_OUT_DIR" | tee "$RELEASE_OUT_DIR/pack.json"
 
       - name: Gerar manifest
-        run: bash ./scripts/security/generate-manifest.sh "$TRUST_OUT_DIR"
+        run: bash ./scripts/bash/security/generate-manifest.sh "$TRUST_OUT_DIR"
 
       - name: Verificar manifest
-        run: bash ./scripts/security/verify-manifest.sh "$TRUST_OUT_DIR/MANIFEST.sha256"
+        run: bash ./scripts/bash/security/verify-manifest.sh "$TRUST_OUT_DIR/MANIFEST.sha256"
 
       - name: Atestar pacote e evidencia
         id: attest

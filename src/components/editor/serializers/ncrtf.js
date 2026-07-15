@@ -45,10 +45,14 @@ function buildCssProperty(property, value) {
 // Lexical ElementFormat integers: 0=none/left, 1=left, 2=center, 3=right, 4=justify
 function elementFormatToAlign(format) {
   switch (format) {
-    case 2: return 'center';
-    case 3: return 'right';
-    case 4: return 'justify';
-    default: return undefined; // left is default — omit (R3)
+    case 2:
+      return 'center';
+    case 3:
+      return 'right';
+    case 4:
+      return 'justify';
+    default:
+      return undefined; // left is default — omit (R3)
   }
 }
 
@@ -58,13 +62,13 @@ function elementFormatToAlign(format) {
 function textFormatToMarks(format) {
   if (!format) return undefined;
   const marks = [];
-  if (format & 1)  marks.push('bold');
+  if (format & 1) marks.push('bold');
   if (format & 16) marks.push('code');
-  if (format & 2)  marks.push('italic');
-  if (format & 4)  marks.push('strikethrough');
+  if (format & 2) marks.push('italic');
+  if (format & 4) marks.push('strikethrough');
   if (format & 32) marks.push('subscript');
   if (format & 64) marks.push('superscript');
-  if (format & 8)  marks.push('underline');
+  if (format & 8) marks.push('underline');
   return marks.length > 0 ? marks : undefined;
 }
 
@@ -251,11 +255,16 @@ function convertSimpleTable(node) {
 // NCRTF alignment → Lexical ElementFormat integer
 function alignToElementFormat(alignment) {
   switch (alignment) {
-    case 'left':    return 1;
-    case 'center':  return 2;
-    case 'right':   return 3;
-    case 'justify': return 4;
-    default:        return 0;
+    case 'left':
+      return 1;
+    case 'center':
+      return 2;
+    case 'right':
+      return 3;
+    case 'justify':
+      return 4;
+    default:
+      return 0;
   }
 }
 
@@ -265,13 +274,27 @@ function marksToTextFormat(marks) {
   let format = 0;
   for (const mark of marks) {
     switch (mark) {
-      case 'bold':          format |= 1;  break;
-      case 'italic':        format |= 2;  break;
-      case 'strikethrough': format |= 4;  break;
-      case 'underline':     format |= 8;  break;
-      case 'code':          format |= 16; break;
-      case 'subscript':     format |= 32; break;
-      case 'superscript':   format |= 64; break;
+      case 'bold':
+        format |= 1;
+        break;
+      case 'italic':
+        format |= 2;
+        break;
+      case 'strikethrough':
+        format |= 4;
+        break;
+      case 'underline':
+        format |= 8;
+        break;
+      case 'code':
+        format |= 16;
+        break;
+      case 'subscript':
+        format |= 32;
+        break;
+      case 'superscript':
+        format |= 64;
+        break;
     }
   }
   return format;
@@ -358,7 +381,9 @@ function importBlock(block) {
           format: alignToElementFormat(block.alignment),
           indent: block.indent ?? 0,
           ...(block.font_family
-            ? { textStyle: buildCssProperty('font-family', ncrtfFontToCss(block.font_family) ?? '') }
+            ? {
+                textStyle: buildCssProperty('font-family', ncrtfFontToCss(block.font_family) ?? ''),
+              }
             : {}),
         },
         importInlines(block.content ?? [], block.font_family),
@@ -373,7 +398,9 @@ function importBlock(block) {
           tag: `h${level}`,
           format: alignToElementFormat(block.alignment),
           ...(block.font_family
-            ? { textStyle: buildCssProperty('font-family', ncrtfFontToCss(block.font_family) ?? '') }
+            ? {
+                textStyle: buildCssProperty('font-family', ncrtfFontToCss(block.font_family) ?? ''),
+              }
             : {}),
         },
         importInlines(block.content ?? [], block.font_family),
@@ -397,7 +424,11 @@ function importBlock(block) {
         );
       });
 
-      return makeElement('list', { listType, tag, start: 1, format: alignToElementFormat(block.alignment) }, items);
+      return makeElement(
+        'list',
+        { listType, tag, start: 1, format: alignToElementFormat(block.alignment) },
+        items,
+      );
     }
 
     case 'blockquote':
@@ -406,7 +437,9 @@ function importBlock(block) {
         {
           format: alignToElementFormat(block.alignment),
           ...(block.font_family
-            ? { textStyle: buildCssProperty('font-family', ncrtfFontToCss(block.font_family) ?? '') }
+            ? {
+                textStyle: buildCssProperty('font-family', ncrtfFontToCss(block.font_family) ?? ''),
+              }
             : {}),
         },
         importInlines(block.content ?? [], block.font_family),

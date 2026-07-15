@@ -4,6 +4,10 @@ Esta pasta contem tooling auxiliar do repositório. A entrada operacional para
 humanos continua em `scripts/`; os ficheiros em `tools/` devem ser pequenos,
 reutilizáveis e chamáveis por scripts, CI ou validações locais.
 
+Os helpers `.sh` são usados pelas entradas principais em `scripts/bash/`; os
+helpers `.ps1` continuam disponíveis para os fluxos Windows em
+`scripts/powershell/`.
+
 ## Areas
 
 - `repo/`: higiene estrutural do repositório e invariantes de SDK.

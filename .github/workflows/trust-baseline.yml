@@ -22,10 +22,10 @@ jobs:
     timeout-minutes: 20
 
     env:
-      NODE_VERSION: "24"
-      PNPM_VERSION: "11.5.1"
-      SYFT_VERSION: "1.20.0"
-      TRUST_OUT_DIR: "artifacts/trust"
+      NODE_VERSION: '24'
+      PNPM_VERSION: '11.5.1'
+      SYFT_VERSION: '1.20.0'
+      TRUST_OUT_DIR: 'artifacts/trust'
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
@@ -114,12 +114,12 @@ jobs:
       - name: Gerar manifest
         id: manifest
         shell: pwsh
-        run: ./scripts/security/generate-manifest.ps1 -OutputDir $env:TRUST_OUT_DIR
+        run: ./scripts/powershell/security/generate-manifest.ps1 -OutputDir $env:TRUST_OUT_DIR
 
       - name: Verificar manifest
         id: verify
         shell: pwsh
-        run: ./scripts/security/verify-manifest.ps1 -ManifestPath (Join-Path $env:TRUST_OUT_DIR "MANIFEST.sha256")
+        run: ./scripts/powershell/security/verify-manifest.ps1 -ManifestPath (Join-Path $env:TRUST_OUT_DIR "MANIFEST.sha256")
 
       - name: Atestar evidencia
         id: attest
