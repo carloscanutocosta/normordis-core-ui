@@ -1,14 +1,12 @@
 # FUTURE - Posicionamento e abertura
 
-Este documento regista uma intenção estratégica: preparar
-`@normordis/core-ui` para poder evoluir, no futuro, para uma biblioteca open
-source de UI/UX ampla, mantendo a identidade NORMORDIS e o contrato técnico do
-SDK.
+Este documento regista a direção estratégica do
+`@carloscanutocosta/core-ui` como biblioteca open source de UI/UX, mantendo a
+identidade NORMORDIS e o contrato técnico do SDK.
 
 Não substitui `README.md`, `docs/MAN.md`, `DESIGN.md` nem `CHANGELOG.md`.
-Serve como documento de rumo: posicionamento desejado, maturidade esperada,
-lacunas a resolver e critérios para avaliar quando uma eventual abertura pública
-seria responsável.
+Serve como documento de rumo: posicionamento, maturidade esperada, lacunas a
+resolver e critérios para manter uma abertura pública responsável.
 
 ## Tese
 
@@ -115,8 +113,6 @@ critérios:
 
 Prioridade alta:
 
-- clarificar no `README.md` se o pacote ainda é privado ou se está em preparação
-  para abertura;
 - separar showcase herdado para `demo/` ou `examples/`;
 - rever exports públicos para remover qualquer superfície demasiado específica;
 - documentar uma matriz de componentes com estado de maturidade e garantias de
@@ -146,7 +142,7 @@ Prioridade baixa:
 
 Uma descrição curta possível:
 
-> `@normordis/core-ui` é uma biblioteca React de componentes e padrões UX para
+> `@carloscanutocosta/core-ui` é uma biblioteca React de componentes e padrões UX para
 > aplicações institucionais e operacionais. Foi desenhada para interfaces
 > densas, acessíveis e previsíveis: formulários, dados, documentos, workflows e
 > trabalho prolongado.
@@ -172,8 +168,8 @@ Uma descrição mais técnica:
 
 ## Caminho recomendado
 
-Como a decisão de abertura ainda não está tomada, o caminho recomendado é
-preparar o projeto em fases que preservem opções:
+Com a abertura pública decidida, o caminho recomendado é evoluir o projeto em
+fases que preservem a qualidade do contrato:
 
 1. **Higiene interna**
    Rever exports, separar demo, fechar acoplamentos e alinhar documentação.
@@ -189,10 +185,9 @@ preparar o projeto em fases que preservem opções:
    Adicionar testes, declarações TypeScript, release notes e processo de
    versionamento.
 
-5. **Abertura controlada**
-   Se a decisão for avançar, publicar como projeto open source em estado
-   inicial, recolher feedback e estabilizar a API antes de prometer
-   compatibilidade longa.
+5. **Abertura sustentável**
+   Recolher feedback, estabilizar a API e explicitar a compatibilidade antes
+   de prometer suporte de longo prazo.
 
 O objetivo não deve ser parecer maior do que é. Deve ser claro, fiável e
 coerente: uma base UI/UX sóbria, acessível e pronta para software operacional.

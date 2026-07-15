@@ -99,7 +99,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tag="${GITHUB_REF_NAME}"
-          notes="Release draft de @normordis/core-ui ${tag}. Inclui pacote npm local, manifest SHA-256 e evidencia de provenance quando suportada."
+          notes="Release draft de @carloscanutocosta/core-ui ${tag}. Inclui pacote npm local, manifest SHA-256 e evidencia de provenance quando suportada."
           gh release create "$tag" artifacts/release/*.tgz artifacts/release/pack.json artifacts/trust/MANIFEST.sha256 artifacts/trust/MANIFEST.json \
             --draft \
             --title "normordis-core-ui ${tag}" \
