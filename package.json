@@ -1,7 +1,7 @@
 {
   "name": "@carloscanutocosta/core-ui",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "SDK React de componentes, tokens e padrões UX reutilizáveis do ecossistema NORMORDIS.",
   "license": "EUPL-1.2",
   "type": "module",
@@ -82,7 +82,6 @@
     "vaul": "^1.1.2"
   },
   "peerDependencies": {
-    "cmdk": ">=1.0.0",
     "@hello-pangea/dnd": ">=17.0.0",
     "@hookform/resolvers": ">=4.0.0",
     "@lexical/react": ">=0.21.0",
@@ -116,6 +115,7 @@
     "@radix-ui/react-tooltip": ">=1.1.0",
     "@tanstack/react-query": ">=5.0.0",
     "canvas-confetti": ">=1.9.0",
+    "cmdk": ">=1.0.0",
     "date-fns": ">=3.0.0",
     "framer-motion": ">=11.0.0",
     "html2canvas": ">=1.4.0",

@@ -7,7 +7,7 @@
 param(
     [switch]$SkipInstall,
     [switch]$NoPack,
-    [string]$PackDestination = "$env:TEMP\normordis-releases"
+    [string]$PackDestination = "D:\tmp\normordis-releases"
 )
 
 $ErrorActionPreference = "Stop"

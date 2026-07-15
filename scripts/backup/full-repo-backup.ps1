@@ -23,6 +23,36 @@ $ZipName = "normordis-core-ui-$Timestamp.zip"
 $ZipPath = Join-Path $DestDir $ZipName
 $TempStage = Join-Path $env:TEMP "ncu_bkp_$Timestamp"
 
+function Remove-TempStage {
+    param([string]$Path)
+
+    if (-not (Test-Path -LiteralPath $Path)) { return }
+
+    $FullPath = [System.IO.Path]::GetFullPath($Path)
+    $TempRoot = [System.IO.Path]::GetFullPath($env:TEMP).TrimEnd("\", "/") + [System.IO.Path]::DirectorySeparatorChar
+
+    if (-not $FullPath.StartsWith($TempRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Recusa limpar staging fora de TEMP: $FullPath"
+    }
+
+    try {
+        Remove-Item -LiteralPath $FullPath -Recurse -Force -ErrorAction Stop
+    }
+    catch {
+        $EmptyDir = Join-Path $env:TEMP ("ncu_empty_" + [guid]::NewGuid().ToString("N"))
+        New-Item -ItemType Directory -Path $EmptyDir -Force | Out-Null
+        try {
+            & robocopy.exe $EmptyDir $FullPath /MIR /R:0 /W:0 /NFL /NDL /NP | Out-Null
+            Remove-Item -LiteralPath $FullPath -Recurse -Force -ErrorAction Stop
+        }
+        finally {
+            if (Test-Path -LiteralPath $EmptyDir) {
+                Remove-Item -LiteralPath $EmptyDir -Recurse -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+}
+
 Write-Host ""
 Write-Host "========================================================" -ForegroundColor Cyan
 Write-Host "         FULL REPO BACKUP - normordis-core-ui           " -ForegroundColor Cyan
@@ -47,7 +77,9 @@ $ExcludeDirs = @(
     "artifacts",
     "coverage",
     "tmp",
-    "temp"
+    "temp",
+    (Join-Path $RepoRoot ".git\refs\codex"),
+    (Join-Path $RepoRoot ".git\logs\refs\codex")
 )
 
 $ExcludeFiles = @(
@@ -85,7 +117,7 @@ $RoboArgs = @(
 
 if ($LASTEXITCODE -ge 8) {
     Write-Host "  [ERRO] Robocopy falhou com codigo $LASTEXITCODE" -ForegroundColor Red
-    if (Test-Path $TempStage) { Remove-Item $TempStage -Recurse -Force }
+    Remove-TempStage -Path $TempStage
     exit 1
 }
 
@@ -117,7 +149,7 @@ try {
 }
 catch {
     Write-Host "  [ERRO] Falha ao comprimir: $_" -ForegroundColor Red
-    if (Test-Path $TempStage) { Remove-Item $TempStage -Recurse -Force }
+    Remove-TempStage -Path $TempStage
     exit 1
 }
 
@@ -125,7 +157,7 @@ $ZipSize = [math]::Round((Get-Item $ZipPath).Length / 1MB, 1)
 Write-Host "  [+] ZIP criado: ${ZipSize} MB" -ForegroundColor DarkGray
 
 Write-Host "  [3/3] A limpar staging temporario..." -ForegroundColor DarkCyan
-Remove-Item $TempStage -Recurse -Force
+Remove-TempStage -Path $TempStage
 
 if ($KeepLast -gt 0) {
     $AllBackups = Get-ChildItem $DestDir -Filter "normordis-core-ui-*.zip" | Sort-Object LastWriteTime -Descending
