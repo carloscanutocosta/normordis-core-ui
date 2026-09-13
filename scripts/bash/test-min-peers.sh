@@ -43,7 +43,15 @@ restore() {
   cp "$backup_dir/package.json" package.json
   cp "$backup_dir/pnpm-lock.yaml" pnpm-lock.yaml
   rm -rf "$backup_dir"
-  pnpm install --frozen-lockfile >/dev/null 2>&1 || true
+  # Nunca engolir uma falha aqui: se esta reinstalação falhar, os manifestos
+  # já foram repostos mas o node_modules fica nos mínimos de peer, não nas
+  # versões normais de desenvolvimento — reportar sempre com exit != 0,
+  # mesmo que os testes tenham passado, para não mascarar um ambiente
+  # inconsistente atrás de um "OK" que já foi impresso antes.
+  if ! pnpm install --frozen-lockfile >/dev/null 2>&1; then
+    printf '>>> [MIN-PEERS] [ERRO] Falha ao reinstalar depois de repor package.json/pnpm-lock.yaml — node_modules pode ter ficado nos mínimos de peer. Corre `pnpm install` manualmente.\n' >&2
+    exit 1
+  fi
   exit "$exit_code"
 }
 trap restore EXIT
