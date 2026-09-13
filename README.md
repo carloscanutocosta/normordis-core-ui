@@ -83,7 +83,7 @@ Componentes com label, hint, erro e acessibilidade integrados.
 | `CheckboxField` | Checkbox com label e hint |
 | `RadioField` | Grupo de rádio |
 | `SliderField` | Slider com range configurável |
-| `RichTextField` | Editor rich text (requer `react-quill`) |
+| `RichTextField` | Editor rich text (requer `react-quill-new`) |
 | `ColorField` | Picker de cor |
 | `DisplayField` | Campo só de leitura estilizado |
 | `FileUploadField` | Upload de ficheiros com drag & drop |
@@ -167,7 +167,9 @@ Instala apenas o que usares:
 
 > A partir da v2.0.0, `recharts` requer `>=3.0.0` e `react-day-picker` requer
 > `>=9.0.0` (mínimos anteriores: `>=2.0.0` e `>=8.10.0`) — versões mais antigas
-> deixaram de ser suportadas. Ver `CHANGELOG.md`.
+> deixaram de ser suportadas. A partir da v2.0.1, `RichTextField` usa
+> `react-quill-new` em vez de `react-quill` (o original não monta sob React
+> 19). Ver `CHANGELOG.md`.
 
 ---
 
