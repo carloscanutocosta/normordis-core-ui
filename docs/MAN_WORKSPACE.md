@@ -1,7 +1,7 @@
 # Normordis Core UI — Workspace SDK
 ## Manual de Consumo
 
-> **Versão:** 2.0.0 · **Pacote:** `@carloscanutocosta/core-ui`
+> **Versão:** 2.0.1 · **Pacote:** `@carloscanutocosta/core-ui`
 
 ---
 
