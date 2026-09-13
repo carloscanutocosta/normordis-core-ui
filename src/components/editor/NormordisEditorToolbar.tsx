@@ -24,7 +24,7 @@ import {
   SELECTION_CHANGE_COMMAND,
   UNDO_COMMAND,
 } from 'lexical';
-import { $isListNode, insertList } from '@lexical/list';
+import { $insertList, $isListNode } from '@lexical/list';
 import { $isHeadingNode, $isQuoteNode } from '@lexical/rich-text';
 import {
   Bold,
@@ -126,7 +126,12 @@ function toggleList(editor, listType, isActive) {
   if (isActive) {
     exitCurrentListItem(editor);
   } else {
-    insertList(editor, listType);
+    // $insertList (Lexical >=0.22) substituiu insertList(editor, listType);
+    // deixou de fazer o proprio editor.update, tem de ser chamada de dentro
+    // de um editor.update() (ver convencao ja usada em editorCommands.js).
+    editor.update(() => {
+      $insertList(listType);
+    });
     editor.focus();
   }
 }
