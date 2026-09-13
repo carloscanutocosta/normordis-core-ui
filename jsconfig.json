@@ -9,6 +9,8 @@
     "lib": ["esnext", "dom"],
     "target": "esnext",
     "checkJs": false,
+    "strict": false,
+    "noImplicitAny": false,
     "noEmit": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,

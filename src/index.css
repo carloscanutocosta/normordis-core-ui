@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind v4 lê a configuração legada em JS (darkMode, content, theme.extend,
+   plugins) via @config, para manter `tailwind.config.js` como API pública
+   estável e compatível com as apps consumidoras do SDK. */
+@config '../tailwind.config.js';
 
 /* ─── Light theme (default) ─────────────────────────────────────── */
 @layer base {
