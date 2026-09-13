@@ -1,11 +1,49 @@
 import * as React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { DayPicker } from 'react-day-picker';
+import { DayButton, DayPicker } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+
+// Num intervalo (mode="range"), o react-day-picker marca cada dia do meio
+// como `selected` E `range_middle` ao mesmo tempo. Se a cor vier de duas
+// classes CSS com a mesma especificidade aplicadas ao mesmo elemento (como
+// acontecia antes), quem "ganha" depende da ordem em que o Tailwind emite as
+// regras no ficheiro final — não da intenção do código. Por isso a cor é
+// decidida aqui, em JS, com prioridade explícita e mutuamente exclusiva.
+function CalendarDayButton({
+  className,
+  day,
+  modifiers,
+  ...props
+}: React.ComponentProps<typeof DayButton>) {
+  const ref = React.useRef<HTMLButtonElement>(null);
+  React.useEffect(() => {
+    if (modifiers.focused) ref.current?.focus();
+  }, [modifiers.focused]);
+
+  const isSingleSelected = modifiers.selected && !modifiers.range_middle;
+
+  return (
+    <button
+      ref={ref}
+      className={cn(
+        buttonVariants({ variant: 'ghost' }),
+        'h-8 w-8 p-0 font-normal',
+        modifiers.today && !modifiers.selected && 'bg-accent text-accent-foreground',
+        modifiers.range_middle && 'rounded-none bg-accent text-accent-foreground',
+        isSingleSelected &&
+          'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
+        modifiers.range_start && 'rounded-l-md rounded-r-none',
+        modifiers.range_end && 'rounded-r-md rounded-l-none',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
 
 // Nomenclatura de classNames/components alinhada com react-day-picker v9+/v10
 // (enum UI): "caption"→"month_caption", "nav_button_*"→"button_previous"/
@@ -37,24 +75,16 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         // NOTA: na v9+/v10 do react-day-picker, aria-selected/data-selected e
         // as classes de modificador (selected/outside/range_*) são todas
         // aplicadas ao PRÓPRIO <td> ("day"), não a um descendente — só o
-        // <button> ("day_button") é filho direto. Por isso os estilos de
-        // fundo/arredondamento usam `[&>button]` (filho direto) em vez de
-        // `:has(...)`, que procuraria um descendente e nunca corresponderia.
+        // <button> ("day_button") é filho direto. A cor de fundo do dia
+        // (selected/today/range_*) é decidida em CalendarDayButton, em JS,
+        // não aqui: um dia pode ser simultaneamente "selected" e
+        // "range_middle" num intervalo, e duas classes CSS com a mesma
+        // especificidade no mesmo elemento dependeriam da ordem de emissão
+        // do Tailwind, não da intenção do código.
         day: 'relative p-0 text-center text-sm focus-within:relative focus-within:z-20',
-        day_button: cn(
-          buttonVariants({ variant: 'ghost' }),
-          'h-8 w-8 p-0 font-normal aria-selected:opacity-100',
-        ),
-        range_start: '[&>button]:rounded-l-md rounded-l-md',
-        range_end: '[&>button]:rounded-r-md rounded-r-md',
-        selected:
-          '[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground [&>button]:focus:bg-primary [&>button]:focus:text-primary-foreground',
-        today: '[&>button]:bg-accent [&>button]:text-accent-foreground',
         outside:
           'text-muted-foreground aria-selected:[&>button]:bg-accent/50 aria-selected:[&>button]:text-muted-foreground',
         disabled: 'text-muted-foreground opacity-50',
-        range_middle:
-          '[&>button]:bg-accent [&>button]:text-accent-foreground [&>button]:rounded-none',
         hidden: 'invisible',
         ...classNames,
       }}
@@ -65,6 +95,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
           ) : (
             <ChevronLeft className={cn('h-4 w-4', cls)} {...iconProps} />
           ),
+        DayButton: CalendarDayButton,
       }}
       {...props}
     />
