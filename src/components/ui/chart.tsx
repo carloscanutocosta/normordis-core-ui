@@ -103,14 +103,30 @@ const ChartTooltip = RechartsPrimitive.Tooltip;
 
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<'div'> &
-    React.ComponentProps<typeof RechartsPrimitive.Tooltip> & {
-      hideLabel?: boolean;
-      hideIndicator?: boolean;
-      indicator?: 'line' | 'dot' | 'dashed';
-      nameKey?: string;
-      labelKey?: string;
-    }
+  // Nota: no Recharts v3 o Tooltip passa `active`/`payload`/`label` ao
+  // `content` custom via render prop, mas deixaram de fazer parte do tipo
+  // público de props do componente (agora lidas de contexto interno).
+  // Tipamos aqui explicitamente em vez de herdar de RechartsPrimitive.Tooltip.
+  Omit<React.ComponentProps<'div'>, 'color'> & {
+    active?: boolean;
+    payload?: any[];
+    label?: any;
+    labelFormatter?: (label: any, payload: any[]) => React.ReactNode;
+    labelClassName?: string;
+    formatter?: (
+      value: any,
+      name: any,
+      item: any,
+      index: number,
+      payload: any,
+    ) => React.ReactNode;
+    color?: string;
+    hideLabel?: boolean;
+    hideIndicator?: boolean;
+    indicator?: 'line' | 'dot' | 'dashed';
+    nameKey?: string;
+    labelKey?: string;
+  }
 >(
   (
     {
@@ -247,11 +263,14 @@ const ChartLegend = RechartsPrimitive.Legend;
 
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<'div'> &
-    Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
-      hideIcon?: boolean;
-      nameKey?: string;
-    }
+  // Ver nota em ChartTooltipContent: `payload` deixou de ser público no tipo
+  // de props do Legend do Recharts v3.
+  React.ComponentProps<'div'> & {
+    payload?: any[];
+    verticalAlign?: 'top' | 'bottom';
+    hideIcon?: boolean;
+    nameKey?: string;
+  }
 >(({ className, hideIcon = false, payload, verticalAlign = 'bottom', nameKey }, ref) => {
   const { config } = useChart();
 

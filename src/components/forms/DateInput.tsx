@@ -72,7 +72,7 @@ export default function DateInput({
               onChange?.(date?.toISOString() || '');
               setOpen(false);
             }}
-            initialFocus
+            autoFocus
           />
         </PopoverContent>
       </Popover>
