@@ -1,13 +1,17 @@
 name: Chromatic
 
-# Nota (2026-09): removido `exitOnceUploaded` — antes, o job publicava o
-# Storybook e saía sem esperar pelo resultado real dos 235 testes visuais
-# (corriam depois, assincronamente, no servidor do Chromatic). Isso deu
-# check verde num PR cujo build no Chromatic reportou "component errors" em
-# todos os charts, sem que ninguém fosse notificado. Agora o job espera e
-# falha se houver diffs/erros pendentes de revisão. Tier gratuito do
-# Chromatic: só testa Chrome (Safari/Firefox exigiriam plano pago) — não
-# cobre regressões específicas de outros motores de renderização.
+# Nota (2026-09): `exitOnceUploaded` restaurado. Tinha sido removido para o
+# job esperar pelo resultado real dos testes visuais em vez de sair logo
+# após publicar (ver histórico deste ficheiro) — mas isso expôs que o
+# Chromatic devolve "Your story couldn't be captured" (falha de
+# captura/protocolo, não erro de componente) em 100% das stories, builds
+# #36/#38/#71. Testada e refutada a hipótese de incompatibilidade com o
+# Storybook 10.6.0 (downgrade para 10.4.1 não resolveu, PR #34). O
+# Storybook publicado renderiza bem numa visita manual, então isto não é
+# uma regressão de código — mas sem acesso aos logs completos (exigem
+# login) não foi possível isolar a causa raiz sem continuar a gastar a
+# quota gratuita do Chromatic à toa. Investigação registada em
+# CHANGELOG.md; retomar com acesso ao dashboard ou ao suporte do Chromatic.
 
 on:
   push:
@@ -54,4 +58,5 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: storybook:build
+          exitOnceUploaded: true
           onlyChanged: true
