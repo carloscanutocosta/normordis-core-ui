@@ -42,6 +42,19 @@ pós-publicação do PR #32.
   testes usam apenas `aria-selected` (não `data-selected`/`data-today`):
   confirmado, correndo contra `react-day-picker@9.0.0` (o mínimo
   anunciado), que estes `data-*` por-dia só existem numa versão posterior.
+- **`Calendar` — cor errada em intervalos multi-dia** (apanhado pelo revisor
+  automático Codex no PR #33): o react-day-picker marca cada dia do meio de
+  um intervalo como `selected` **e** `range_middle` simultaneamente. A
+  primeira versão desta correção dava a cada um a sua cor via CSS
+  (`bg-primary` para `selected`, `bg-accent` para `range_middle`) no mesmo
+  elemento — com a mesma especificidade, quem "vencia" dependia da ordem de
+  emissão do Tailwind, não da intenção do código, e os dias do meio ficavam
+  com a cor de seleção única (`primary`) em vez da cor de intervalo
+  (`accent`). Só visível com uma seleção de intervalo real de vários dias;
+  o teste anterior só cobria seleção única. Corrigido com um `DayButton`
+  customizado (`CalendarDayButton`) que decide a cor em JavaScript, com
+  prioridade explícita e mutuamente exclusiva, em vez de depender da
+  cascata CSS. Teste de intervalo multi-dia adicionado.
 
 ### CI
 
