@@ -117,3 +117,17 @@ documentado e publicado com rigor profissional.
 - Lista de países hardcoded com apenas 7 entradas (PT, BR, ES, FR, DE, GB, US).
   Para v2: aceitar prop `countries` com lista configurável, ou integrar lista ISO 3166-1 completa.
 - Usa `<select>` nativo em vez do componente `Select` do design system — inconsistência visual.
+
+## Chromatic — "Your story couldn't be captured" (2026-09)
+Ao remover `exitOnceUploaded` do `chromatic.yml` para o CI passar a refletir
+o resultado real dos testes visuais, o Chromatic passou a devolver esse erro
+em 100% das 235 stories (builds #38, #71) — erro de captura/protocolo, não
+de componente (o Storybook publicado renderiza bem numa visita manual).
+Hipótese de incompatibilidade Storybook 10.6.0 × `chromaui/action@v18.8.1`
+testada e refutada (downgrade para 10.4.1 no PR #34 não resolveu).
+`exitOnceUploaded` restaurado por agora — ver `CHANGELOG.md` (2.0.1).
+
+Para retomar: aceder ao dashboard do Chromatic com login e copiar o texto
+completo do erro de uma story (não só o resumo "couldn't be captured"), ou
+abrir um pedido de suporte via o link "chat with us" na própria mensagem de
+erro do Chromatic.
