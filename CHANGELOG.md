@@ -64,13 +64,27 @@ pós-publicação do PR #32.
   `recharts@3.0.0`, `react-day-picker@9.0.0`, `react-quill-new@3.8.3`), não
   só contra as versões de desenvolvimento. Foi correndo isto manualmente
   que se descobriram os dois bugs acima.
-- **Chromatic: removido `exitOnceUploaded`**. O job publicava o Storybook e
-  saía sem esperar pelo resultado real dos 235 testes visuais (corriam
-  depois, assincronamente, no servidor do Chromatic) — isto deu check verde
-  num PR cujo build no Chromatic reportou "component errors" em todos os
-  charts, sem que ninguém fosse notificado. Agora o job espera e falha se
-  houver diffs/erros pendentes de revisão. Tier gratuito do Chromatic: só
+- **Chromatic: `exitOnceUploaded` removido e depois restaurado — investigação
+  registada, sem causa raiz confirmada.** O job publicava o Storybook e saía
+  sem esperar pelo resultado real dos 235 testes visuais (corriam depois,
+  assincronamente, no servidor do Chromatic) — isto deu check verde num PR
+  cujo build no Chromatic reportou "component errors" em todos os charts
+  (build #36), sem que ninguém fosse notificado. Ao remover
+  `exitOnceUploaded` para o job passar a esperar e falhar nesses casos, o
+  Chromatic passou a devolver **"Your story couldn't be captured"** em
+  **100% das 235 stories**, de forma uniforme (builds #38 e #71) — um erro
+  de captura/protocolo do Chromatic, não um erro de componente (o Storybook
+  publicado renderiza corretamente numa visita manual). Testada e refutada
+  a hipótese de incompatibilidade entre o Storybook 10.6.0 (lançado 11 dias
+  antes) e o automatismo do `chromaui/action` (já na v18.8.1, a mais
+  recente): downgrade para `storybook@10.4.1` num PR de diagnóstico (#34,
+  fechado sem merge) não resolveu. Sem acesso aos logs completos do
+  Chromatic (exigem login), decidido parar de gastar a quota gratuita à
+  toa e restaurar `exitOnceUploaded: true`. Tier gratuito do Chromatic: só
   testa Chrome — não cobre regressões específicas de Safari/Firefox.
+  **Retomar** com acesso ao dashboard (texto completo do erro de uma
+  story) ou ao suporte do Chromatic (link "chat with us" na própria
+  mensagem de erro).
 
 ## [2.0.0] - 2026-09-13
 
