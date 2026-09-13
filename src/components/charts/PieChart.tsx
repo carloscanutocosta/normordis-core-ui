@@ -18,7 +18,14 @@ const PALETTE = [
   'hsl(var(--chart-5))',
 ];
 
-const CustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+const CustomLabel = ({
+  cx = 0,
+  cy = 0,
+  midAngle = 0,
+  innerRadius = 0,
+  outerRadius = 0,
+  percent = 0,
+}) => {
   const rad = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + rad * Math.cos((-midAngle * Math.PI) / 180);
   const y = cy + rad * Math.sin((-midAngle * Math.PI) / 180);

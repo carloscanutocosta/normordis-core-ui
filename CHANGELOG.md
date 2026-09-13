@@ -6,7 +6,67 @@ O formato segue a ideia de Keep a Changelog e o versionamento deve seguir SemVer
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-09-13
+
+Atualização completa da stack de build/test/runtime, avaliada a partir dos
+PRs do Dependabot em aberto e do `pnpm outdated`. Ver PR de upgrade
+`chore/full-stack-upgrade-2026-09`.
+
+### Changed (breaking)
+
+- **`recharts` `>=2.0.0` → `>=3.0.0`** (peer dependency). `ChartTooltipContent`/
+  `ChartLegendContent` (`src/components/ui/chart.tsx`) e o label customizado
+  do `PieChart` foram ajustados à nova forma das props de `content` do
+  Recharts v3. Consumidores em recharts v2 deixam de ser suportados.
+- **`react-day-picker` `>=8.10.0` → `>=9.0.0`** (peer dependency). O
+  componente `Calendar` foi reescrito para a nomenclatura de `classNames` e
+  `components.Chevron` da v9+/v10 (`month_caption`, `button_previous`,
+  `day_button`, `range_start/end/middle`, etc. — ver
+  https://daypicker.dev/upgrading); `DateField`/`DateInput` usam agora
+  `autoFocus` em vez de `initialFocus` (removido).
+- `tailwind.config.js` passa a ser carregado como configuração legada do
+  Tailwind v4 via `@config` no CSS de entrada (`src/index.css`), em vez de
+  ser lido diretamente pelo PostCSS. **A API pública mantém-se** — o export
+  `./tailwind.config` continua válido e sem alterações para quem já o
+  consome — mas o motor interno passou de `tailwindcss` (plugin PostCSS
+  direto) para `@tailwindcss/postcss`.
+
 ### Changed
+
+- Toolchain de build/test elevada para as versões major mais recentes
+  disponíveis: TypeScript 7 (com `@typescript/typescript6` como ponte de
+  compatibilidade para o `vite-plugin-dts`), Vite 8, Vitest 5 (+
+  `@vitest/coverage-v8` 5), Tailwind CSS 4, React 19 (+ `@types/react`,
+  `@types/react-dom`), `react-router-dom` 7, `framer-motion` 13,
+  `lucide-react` 1.x, `react-leaflet` 5, `@hookform/resolvers` 5, `date-fns`
+  4, `@hello-pangea/dnd` 18, `jsdom` 30, `jest-axe` 11,
+  `@testing-library/jest-dom` 7, `size-limit`/`@size-limit/preset-small-lib`
+  13, Storybook 10.6, e patches/minors de `@radix-ui/*`, `zod`, `dompurify`,
+  `sonner`, `input-otp`, `react-hook-form`, `@tanstack/react-query`, entre
+  outros.
+- `vite.config.js`/`vitest.config.js`: `__dirname` substituído por
+  `import.meta.dirname` (o Vite 8 vai deixar de suportar `__dirname` na
+  resolução nativa de config).
+- GitHub Actions atualizadas: `actions/checkout` v7, `actions/setup-node` v7,
+  `pnpm/action-setup` v6, `chromaui/action` v18, `gitleaks/gitleaks-action`
+  v3.
+- `OTPInput`: callback ref ajustado para devolver `void` em vez do elemento
+  (exigido pelos novos tipos de `Ref` do React 19, que passaram a aceitar
+  também uma função de cleanup).
+- `jsconfig.json`: `noImplicitAny`/`strict` fixados explicitamente a `false`
+  para preservar o comportamento de tipagem anterior (o TypeScript 7 passou
+  a assumir `noImplicitAny: true` por omissão); adicionado `src/global.d.ts`
+  com `declare module '*.css'` (o TypeScript 7 passou a validar também
+  imports de efeito lateral sem tipos, erro TS2882).
+
+### Deliberadamente não atualizado
+
+- **ESLint mantido em 9.x** (não subiu para 10.x): `eslint-plugin-react`
+  ainda não suporta ESLint 10 (`peerDependencies` trava em `^9.7`) e falha
+  em runtime (`contextOrFilename.getFilename is not a function`). Reavaliar
+  quando o plugin publicar suporte.
+
+### Changed (from Unreleased, carried over)
 
 - Scripts operacionais reorganizados por runtime em `scripts/bash/` e
   `scripts/powershell/`, com Bash como entrada principal dos comandos `pnpm`.
@@ -29,6 +89,13 @@ O formato segue a ideia de Keep a Changelog e o versionamento deve seguir SemVer
 
 - Corrigida a raiz do repositório no gerador PowerShell do manifesto de
   confiança, para produzir a evidência em `artifacts/trust/`.
+- `NormordisEditorToolbar`: `insertList` → `$insertList` (o Lexical ≥0.25
+  renomeou este export; o ambiente de dev do próprio `core-ui` ainda
+  resolvia um 0.21.0 desatualizado com o nome antigo, o que partia
+  silenciosamente os consumidores). `resizable.tsx` migrado para a API do
+  `react-resizable-panels` v4 (`Group`/`Separator`). `peerDependencies` de
+  `@lexical/*` e `react-resizable-panels` apertadas para o intervalo real
+  suportado.
 
 ## [1.0.0] - 2026-05-29
 

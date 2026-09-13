@@ -63,7 +63,7 @@ export default defineConfig(({ command }) => ({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
   ...(command === 'build'
@@ -71,9 +71,9 @@ export default defineConfig(({ command }) => ({
         build: {
           lib: {
             entry: {
-              index: path.resolve(__dirname, 'src/index.ts'),
-              workspace: path.resolve(__dirname, 'src/workspace.ts'),
-              charts: path.resolve(__dirname, 'src/charts.ts'),
+              index: path.resolve(import.meta.dirname, 'src/index.ts'),
+              workspace: path.resolve(import.meta.dirname, 'src/workspace.ts'),
+              charts: path.resolve(import.meta.dirname, 'src/charts.ts'),
             },
             formats: ['es'],
             cssFileName: 'normordis-core-ui',
