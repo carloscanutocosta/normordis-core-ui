@@ -1,5 +1,14 @@
 name: Chromatic
 
+# Nota (2026-09): removido `exitOnceUploaded` — antes, o job publicava o
+# Storybook e saía sem esperar pelo resultado real dos 235 testes visuais
+# (corriam depois, assincronamente, no servidor do Chromatic). Isso deu
+# check verde num PR cujo build no Chromatic reportou "component errors" em
+# todos os charts, sem que ninguém fosse notificado. Agora o job espera e
+# falha se houver diffs/erros pendentes de revisão. Tier gratuito do
+# Chromatic: só testa Chrome (Safari/Firefox exigiriam plano pago) — não
+# cobre regressões específicas de outros motores de renderização.
+
 on:
   push:
     branches: [devel, main]
@@ -45,5 +54,4 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: storybook:build
-          exitOnceUploaded: true
           onlyChanged: true

@@ -1,0 +1,53 @@
+name: Peer matrix (mínimos anunciados)
+
+# Corre a suite contra os mínimos reais de peerDependencies, não só contra as
+# versões (mais recentes) usadas em desenvolvimento. Existe porque uma
+# revisão pós-lançamento da 2.0.0 (2026-09) descobriu, correndo isto
+# manualmente, que react-day-picker@9.0.0 (mínimo anunciado) não expõe os
+# mesmos data-* que a v10.x usada em dev, e que o mínimo inicialmente
+# escolhido para react-quill-new (3.8.0) nem publica o CSS que o componente
+# importa. Ver CHANGELOG.md (2.0.1) e scripts/bash/test-min-peers.sh.
+
+on:
+  push:
+    branches: [main, master, devel]
+  pull_request:
+    branches: [main, master, devel]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: peer-matrix-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  min-peers:
+    name: Testes contra os mínimos de peerDependencies
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.0.9
+        # Sem 'version' explícito: a action lê packageManager do package.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - name: Instalar dependencias
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint, typecheck, testes e build contra os mínimos
+        run: bash ./scripts/bash/test-min-peers.sh
