@@ -33,16 +33,16 @@ export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
 
 ## Publicar uma nova versão
 
-**Versão actual: 1.0.2**
+**Versão actual: 2.0.0**
 
 ```bash
 # 1. Garantir que o build está actualizado e os testes passam
 pnpm test && pnpm build
 
 # 2. Bump de versão (escolher semver adequado)
-pnpm version patch   # 1.0.2 → 1.0.3  (bug fix)
-pnpm version minor   # 1.0.2 → 1.1.0  (nova feature, API compatível)
-pnpm version major   # 1.0.2 → 2.0.0  (breaking change)
+pnpm version patch   # 2.0.0 → 2.0.1  (bug fix)
+pnpm version minor   # 2.0.0 → 2.1.0  (nova feature, API compatível)
+pnpm version major   # 2.0.0 → 3.0.0  (breaking change)
 
 # 3. Publicar
 pnpm publish --no-git-checks
@@ -61,6 +61,7 @@ Antes de cada publicação, verificar se há breaking changes e documentá-los e
 | Versão | Mudança |
 |---|---|
 | 1.0.0 | `cmdk` movido de `dependencies` para `peerDependencies`. Consumidores de `WorkspaceCommandPalette` precisam de instalar `cmdk` explicitamente. |
+| 2.0.0 | `peerDependencies` mínimas de `recharts` (`>=2.0.0` → `>=3.0.0`) e `react-day-picker` (`>=8.10.0` → `>=9.0.0`) subiram — o código interno (`chart.tsx`, `PieChart`, `Calendar`, `DateField`/`DateInput`) deixou de ser compatível com as versões antigas. Toolchain interna também subiu para React 19, Tailwind CSS 4, Vite 8, TypeScript 7 e restantes majors — sem impacto na API pública dos componentes. Ver `CHANGELOG.md`. |
 
 ---
 
@@ -100,7 +101,9 @@ import '@carloscanutocosta/core-ui/styles.css'
 
 ### 4. Configurar Tailwind para processar as classes do SDK
 
-O SDK não inclui um stylesheet Tailwind pré-processado — as classes são geradas pelo Tailwind do projecto consumidor. É necessário adicionar o caminho dos ficheiros do SDK ao `content` do `tailwind.config.js`:
+O SDK não inclui um stylesheet Tailwind pré-processado — as classes são geradas pelo Tailwind do projecto consumidor, que precisa de saber onde procurar as classes usadas pelo SDK. O procedimento depende da versão do Tailwind **do projecto consumidor** (independente da versão usada internamente pelo SDK — desde a v2.0.0 o próprio SDK usa Tailwind CSS 4).
+
+**Tailwind v3 (config em JS, `content` array):**
 
 ```js
 // tailwind.config.js
@@ -114,7 +117,17 @@ export default {
 }
 ```
 
-> Sem esta linha, os componentes do SDK renderizam sem estilos.
+**Tailwind v4 (CSS-first):** o v4 já não faz varrimento automático de `node_modules`, pelo que é necessário declarar a fonte explicitamente no CSS de entrada com `@source`:
+
+```css
+/* src/index.css */
+@import 'tailwindcss';
+@source '../node_modules/@carloscanutocosta/core-ui/dist';
+```
+
+Em ambos os casos, para herdar os tokens/tema do design system (cores, `border-radius`, keyframes) em vez de os reescrever, reaproveita o `tailwind.config.js` publicado pelo pacote (ver `./tailwind.config` no `package.json`) — via `presets: [require('@carloscanutocosta/core-ui/tailwind.config')]` num consumidor v3, ou via `@config '../node_modules/@carloscanutocosta/core-ui/tailwind.config.js';` no CSS de um consumidor v4 (o v4 continua a ler config legada em JS através desta diretiva).
+
+> Sem isto, os componentes do SDK renderizam sem estilos.
 
 ### 5. Usar componentes
 
