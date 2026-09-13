@@ -34,25 +34,27 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         weekdays: 'flex',
         weekday: 'text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]',
         week: 'flex w-full mt-2',
-        day: cn(
-          'relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].outside)]:bg-accent/50 [&:has([aria-selected].range-end)]:rounded-r-md',
-          props.mode === 'range'
-            ? '[&:has(>.range-end)]:rounded-r-md [&:has(>.range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md'
-            : '[&:has([aria-selected])]:rounded-md',
-        ),
+        // NOTA: na v9+/v10 do react-day-picker, aria-selected/data-selected e
+        // as classes de modificador (selected/outside/range_*) são todas
+        // aplicadas ao PRÓPRIO <td> ("day"), não a um descendente — só o
+        // <button> ("day_button") é filho direto. Por isso os estilos de
+        // fundo/arredondamento usam `[&>button]` (filho direto) em vez de
+        // `:has(...)`, que procuraria um descendente e nunca corresponderia.
+        day: 'relative p-0 text-center text-sm focus-within:relative focus-within:z-20',
         day_button: cn(
           buttonVariants({ variant: 'ghost' }),
           'h-8 w-8 p-0 font-normal aria-selected:opacity-100',
         ),
-        range_start: 'range-start',
-        range_end: 'range-end',
+        range_start: '[&>button]:rounded-l-md rounded-l-md',
+        range_end: '[&>button]:rounded-r-md rounded-r-md',
         selected:
-          'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
-        today: 'bg-accent text-accent-foreground',
+          '[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground [&>button]:focus:bg-primary [&>button]:focus:text-primary-foreground',
+        today: '[&>button]:bg-accent [&>button]:text-accent-foreground',
         outside:
-          'outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground',
+          'text-muted-foreground aria-selected:[&>button]:bg-accent/50 aria-selected:[&>button]:text-muted-foreground',
         disabled: 'text-muted-foreground opacity-50',
-        range_middle: 'aria-selected:bg-accent aria-selected:text-accent-foreground',
+        range_middle:
+          '[&>button]:bg-accent [&>button]:text-accent-foreground [&>button]:rounded-none',
         hidden: 'invisible',
         ...classNames,
       }}

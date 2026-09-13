@@ -6,6 +6,37 @@ O formato segue a ideia de Keep a Changelog e o versionamento deve seguir SemVer
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-09-13
+
+Correção de duas regressões introduzidas pela 2.0.0, identificadas em revisão
+pós-publicação do PR #32.
+
+### Fixed (crítico)
+
+- **`RichTextField` quebrava ao montar sob React 19**: `react-quill` usa
+  `ReactDOM.findDOMNode` internamente, removido no React 19
+  (`TypeError: react_dom_1.default.findDOMNode is not a function`). Nenhum
+  teste renderizava o componente, pelo que a suite completa passava com o
+  editor inutilizável em runtime. Substituído por `react-quill-new` (fork
+  mantido, mesma API pública, `peerDependencies` declara suporte a React
+  16–19) — `peerDependencies`/`peerDependenciesMeta` atualizadas
+  (`react-quill` → `react-quill-new >=3.8.0`, ambas opcionais). Adicionado
+  `src/test/forms/RichTextField.test.jsx` para prevenir regressão.
+
+### Fixed
+
+- **`Calendar` — seletores CSS que nunca correspondiam**: a migração para
+  `react-day-picker` v9+/v10 manteve seletores `:has([aria-selected])` /
+  `:has(>.range-start)` na classe `day`, herdados da estrutura da v8. Na
+  v9+/v10, `aria-selected`, `data-selected` e as classes de modificador
+  (`selected`, `outside`, `range_start`, `range_end`) são aplicadas ao
+  próprio `<td>` ("day"), não a um descendente — `:has()` procura sempre um
+  descendente, pelo que nunca correspondia a nada (sem erro, sem crash —
+  apenas fundo/arredondamento em falta em dias selecionados, hoje e
+  intervalos). Reescrito para seletores de filho direto (`[&>button]`), que
+  refletem a estrutura real do DOM. Adicionado
+  `src/test/forms/Calendar.test.jsx`, fixando a estrutura DOM da lib.
+
 ## [2.0.0] - 2026-09-13
 
 Atualização completa da stack de build/test/runtime, avaliada a partir dos

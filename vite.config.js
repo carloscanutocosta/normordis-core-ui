@@ -33,7 +33,7 @@ const PEER_EXTERNALS = [
   'react-hot-toast',
   'react-leaflet',
   'react-markdown',
-  'react-quill',
+  'react-quill-new',
   'react-resizable-panels',
   'react-router-dom',
   /^react-router-dom\//,

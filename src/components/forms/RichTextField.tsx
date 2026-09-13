@@ -1,8 +1,10 @@
 import { useId } from 'react';
 import { cn } from '@/lib/utils';
 import FieldWrapper, { useFieldContext } from './FieldWrapper';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+// react-quill-new: fork mantido do react-quill original, sem a dependência
+// de ReactDOM.findDOMNode (removido no React 19). API pública idêntica.
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 const modules = {
   toolbar: [
