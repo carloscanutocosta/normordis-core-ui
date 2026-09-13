@@ -20,7 +20,10 @@ pós-publicação do PR #32.
   editor inutilizável em runtime. Substituído por `react-quill-new` (fork
   mantido, mesma API pública, `peerDependencies` declara suporte a React
   16–19) — `peerDependencies`/`peerDependenciesMeta` atualizadas
-  (`react-quill` → `react-quill-new >=3.8.0`, ambas opcionais). Adicionado
+  (`react-quill` → `react-quill-new >=3.8.3`, ambas opcionais; a 3.8.3 é o
+  mínimo real necessário — versões anteriores do fork não publicam o CSS
+  que o componente importa, `dist/quill.snow.css`, algo só detectado
+  correndo a suite contra o mínimo exato). Adicionado
   `src/test/forms/RichTextField.test.jsx` para prevenir regressão.
 
 ### Fixed
@@ -35,7 +38,26 @@ pós-publicação do PR #32.
   apenas fundo/arredondamento em falta em dias selecionados, hoje e
   intervalos). Reescrito para seletores de filho direto (`[&>button]`), que
   refletem a estrutura real do DOM. Adicionado
-  `src/test/forms/Calendar.test.jsx`, fixando a estrutura DOM da lib.
+  `src/test/forms/Calendar.test.jsx`, fixando a estrutura DOM da lib. Os
+  testes usam apenas `aria-selected` (não `data-selected`/`data-today`):
+  confirmado, correndo contra `react-day-picker@9.0.0` (o mínimo
+  anunciado), que estes `data-*` por-dia só existem numa versão posterior.
+
+### CI
+
+- **Novo workflow `peer-matrix.yml`** (`scripts/bash/test-min-peers.sh`):
+  corre lint, typecheck, testes e build contra os mínimos reais de
+  `peerDependencies` (`react@18.2.0`, `react-dom@18.2.0`,
+  `recharts@3.0.0`, `react-day-picker@9.0.0`, `react-quill-new@3.8.3`), não
+  só contra as versões de desenvolvimento. Foi correndo isto manualmente
+  que se descobriram os dois bugs acima.
+- **Chromatic: removido `exitOnceUploaded`**. O job publicava o Storybook e
+  saía sem esperar pelo resultado real dos 235 testes visuais (corriam
+  depois, assincronamente, no servidor do Chromatic) — isto deu check verde
+  num PR cujo build no Chromatic reportou "component errors" em todos os
+  charts, sem que ninguém fosse notificado. Agora o job espera e falha se
+  houver diffs/erros pendentes de revisão. Tier gratuito do Chromatic: só
+  testa Chrome — não cobre regressões específicas de Safari/Firefox.
 
 ## [2.0.0] - 2026-09-13
 
