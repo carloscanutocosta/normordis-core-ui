@@ -121,10 +121,13 @@ documentado e publicado com rigor profissional.
 ## Chromatic — "Your story couldn't be captured" (2026-09)
 Ao remover `exitOnceUploaded` do `chromatic.yml` para o CI passar a refletir
 o resultado real dos testes visuais, o Chromatic passou a devolver esse erro
-em 100% das 235 stories (builds #38, #71) — erro de captura/protocolo, não
-de componente (o Storybook publicado renderiza bem numa visita manual).
-Hipótese de incompatibilidade Storybook 10.6.0 × `chromaui/action@v18.8.1`
-testada e refutada (downgrade para 10.4.1 no PR #34 não resolveu).
+em 100% das 235 stories (builds #38, #71) — uma mensagem genérica de falha
+de captura, distinta de um erro JS específico de um componente. O Storybook
+publicado renderiza bem numa visita manual, o que é consistente com não ser
+um bug de renderização visível, mas não confirma a causa raiz nem exclui
+outras explicações ligadas ao código. Hipótese de incompatibilidade
+Storybook 10.6.0 × `chromaui/action@v18.8.1` testada e refutada (downgrade
+para 10.4.1 no PR #34 não resolveu). **Causa ainda não determinada.**
 `exitOnceUploaded` restaurado por agora — ver `CHANGELOG.md` (2.0.1).
 
 Para retomar: aceder ao dashboard do Chromatic com login e copiar o texto

@@ -72,15 +72,19 @@ pós-publicação do PR #32.
   (build #36), sem que ninguém fosse notificado. Ao remover
   `exitOnceUploaded` para o job passar a esperar e falhar nesses casos, o
   Chromatic passou a devolver **"Your story couldn't be captured"** em
-  **100% das 235 stories**, de forma uniforme (builds #38 e #71) — um erro
-  de captura/protocolo do Chromatic, não um erro de componente (o Storybook
-  publicado renderiza corretamente numa visita manual). Testada e refutada
-  a hipótese de incompatibilidade entre o Storybook 10.6.0 (lançado 11 dias
-  antes) e o automatismo do `chromaui/action` (já na v18.8.1, a mais
-  recente): downgrade para `storybook@10.4.1` num PR de diagnóstico (#34,
-  fechado sem merge) não resolveu. Sem acesso aos logs completos do
-  Chromatic (exigem login), decidido parar de gastar a quota gratuita à
-  toa e restaurar `exitOnceUploaded: true`. Tier gratuito do Chromatic: só
+  **100% das 235 stories**, de forma uniforme (builds #38 e #71) — uma
+  mensagem genérica de falha de captura, distinta de um erro JS específico
+  de um componente. O Storybook publicado renderiza corretamente numa
+  visita manual, o que é consistente com não ser um bug de renderização
+  visível, mas **não confirma a causa raiz** nem exclui outras
+  explicações ligadas ao código. Testada e refutada a hipótese de
+  incompatibilidade entre o Storybook 10.6.0 (lançado 11 dias antes) e o
+  automatismo do `chromaui/action` (já na v18.8.1, a mais recente):
+  downgrade para `storybook@10.4.1` num PR de diagnóstico (#34, fechado sem
+  merge) não resolveu. Sem acesso aos logs completos do Chromatic (exigem
+  login), decidido parar de gastar a quota gratuita à toa e restaurar
+  `exitOnceUploaded: true`. **Causa ainda não determinada.** Tier gratuito
+  do Chromatic: só
   testa Chrome — não cobre regressões específicas de Safari/Firefox.
   **Retomar** com acesso ao dashboard (texto completo do erro de uma
   story) ou ao suporte do Chromatic (link "chat with us" na própria
