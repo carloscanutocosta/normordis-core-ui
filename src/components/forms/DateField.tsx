@@ -95,7 +95,7 @@ export default function DateField({
             selected={isValidDate ? parsed : undefined}
             onSelect={handleSelect}
             locale={ptBR}
-            initialFocus
+            autoFocus
           />
           {showTime && (
             <div className="border-t p-3 flex items-center gap-2">
