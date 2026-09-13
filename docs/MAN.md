@@ -60,10 +60,12 @@ import { AppShell } from '@carloscanutocosta/core-ui/workspace';
 import { BarChart } from '@carloscanutocosta/core-ui/charts';
 ```
 
-Apps que usem Tailwind devem adicionar o caminho do SDK ao `content`:
+Apps que usem Tailwind devem indicar ao motor onde procurar as classes usadas
+pelo SDK. O SDK usa internamente Tailwind CSS 4, mas isto é independente da
+versão usada pela app consumidora:
 
 ```js
-// tailwind.config.js
+// Tailwind v3 (tailwind.config.js, content array)
 export default {
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
@@ -71,6 +73,15 @@ export default {
   ],
 };
 ```
+
+```css
+/* Tailwind v4 (CSS-first) — node_modules já não é varrido automaticamente */
+@import 'tailwindcss';
+@source '../node_modules/@carloscanutocosta/core-ui/dist';
+```
+
+Detalhe completo, incluindo como reaproveitar o `tailwind.config.js` publicado
+pelo pacote como preset/config legada, em `docs/PUBLISHING.md`.
 
 O editor `NormordisEditorLexical` expõe uma base rich text baseada em Lexical. O
 valor emitido por `onChange` usa Lexical JSON envolvido por metadata NORMORDIS.

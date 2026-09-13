@@ -165,6 +165,10 @@ Instala apenas o que usares:
 | Export PDF | `html2canvas jspdf` |
 | Markdown | `react-markdown` |
 
+> A partir da v2.0.0, `recharts` requer `>=3.0.0` e `react-day-picker` requer
+> `>=9.0.0` (mínimos anteriores: `>=2.0.0` e `>=8.10.0`) — versões mais antigas
+> deixaram de ser suportadas. Ver `CHANGELOG.md`.
+
 ---
 
 ## Tema e estilos
@@ -182,6 +186,31 @@ import { ThemeSwitcher } from '@carloscanutocosta/core-ui'
 // Coloca no teu header ou navbar
 <ThemeSwitcher />
 ```
+
+### Configurar o Tailwind do teu projecto para processar as classes do SDK
+
+O SDK usa internamente Tailwind CSS 4, mas isso é independente da versão do
+Tailwind da tua app — segue o procedimento correspondente à tua versão:
+
+```js
+// Tailwind v3 — tailwind.config.js
+export default {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@carloscanutocosta/core-ui/dist/**/*.js',
+  ],
+}
+```
+
+```css
+/* Tailwind v4 — CSS de entrada (node_modules já não é varrido automaticamente) */
+@import 'tailwindcss';
+@source '../node_modules/@carloscanutocosta/core-ui/dist';
+```
+
+Sem isto, os componentes do SDK renderizam sem estilos. Detalhe completo,
+incluindo como reaproveitar o `tailwind.config.js` publicado pelo pacote como
+preset/config legada, em `docs/PUBLISHING.md`.
 
 ---
 
