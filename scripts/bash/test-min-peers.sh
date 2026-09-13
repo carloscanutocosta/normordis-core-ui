@@ -20,15 +20,33 @@ cd "$repo_root"
 # version-specific.
 #
 # Uso: scripts/bash/test-min-peers.sh
-# Efeitos colaterais: instala as versões mínimas por cima do node_modules
-# atual. Não pensado para correr numa working copy que se queira preservar
-# — em CI o runner é efémero; localmente, correr `pnpm install` depois para
-# repor as versões normais de desenvolvimento.
+#
+# `pnpm add -D` reescreve package.json e pnpm-lock.yaml no disco — não é só
+# node_modules que muda. Por isso este script faz backup dos dois antes de
+# instalar os mínimos, e restaura-os sempre no fim (sucesso, falha, ou
+# Ctrl+C), reinstalando a partir do lockfile restaurado. Um simples
+# `pnpm install` a seguir ao `pnpm add -D` NÃO repõe nada — instalaria de
+# novo exatamente os mínimos que acabaram de ser escritos no lockfile.
 
 [[ -f package.json && -f pnpm-lock.yaml ]] || {
   printf 'Este script deve ser executado no repositório normordis-core-ui.\n' >&2
   exit 1
 }
+
+backup_dir="$(mktemp -d)"
+cp package.json "$backup_dir/package.json"
+cp pnpm-lock.yaml "$backup_dir/pnpm-lock.yaml"
+
+restore() {
+  local exit_code=$?
+  printf '>>> [MIN-PEERS] A repor package.json/pnpm-lock.yaml e a reinstalar...\n'
+  cp "$backup_dir/package.json" package.json
+  cp "$backup_dir/pnpm-lock.yaml" pnpm-lock.yaml
+  rm -rf "$backup_dir"
+  pnpm install --frozen-lockfile >/dev/null 2>&1 || true
+  exit "$exit_code"
+}
+trap restore EXIT
 
 # peer -> versão mínima real e instalável (o mínimo anunciado em
 # peerDependencies nem sempre existe como release exata no registry — usar
