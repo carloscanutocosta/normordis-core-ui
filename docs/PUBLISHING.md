@@ -33,16 +33,16 @@ export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
 
 ## Publicar uma nova versão
 
-**Versão actual: 2.0.0**
+**Versão actual: 2.0.1**
 
 ```bash
 # 1. Garantir que o build está actualizado e os testes passam
 pnpm test && pnpm build
 
 # 2. Bump de versão (escolher semver adequado)
-pnpm version patch   # 2.0.0 → 2.0.1  (bug fix)
-pnpm version minor   # 2.0.0 → 2.1.0  (nova feature, API compatível)
-pnpm version major   # 2.0.0 → 3.0.0  (breaking change)
+pnpm version patch   # 2.0.1 → 2.0.2  (bug fix)
+pnpm version minor   # 2.0.1 → 2.1.0  (nova feature, API compatível)
+pnpm version major   # 2.0.1 → 3.0.0  (breaking change)
 
 # 3. Publicar
 pnpm publish --no-git-checks
@@ -62,6 +62,7 @@ Antes de cada publicação, verificar se há breaking changes e documentá-los e
 |---|---|
 | 1.0.0 | `cmdk` movido de `dependencies` para `peerDependencies`. Consumidores de `WorkspaceCommandPalette` precisam de instalar `cmdk` explicitamente. |
 | 2.0.0 | `peerDependencies` mínimas de `recharts` (`>=2.0.0` → `>=3.0.0`) e `react-day-picker` (`>=8.10.0` → `>=9.0.0`) subiram — o código interno (`chart.tsx`, `PieChart`, `Calendar`, `DateField`/`DateInput`) deixou de ser compatível com as versões antigas. Toolchain interna também subiu para React 19, Tailwind CSS 4, Vite 8, TypeScript 7 e restantes majors — sem impacto na API pública dos componentes. Ver `CHANGELOG.md`. |
+| 2.0.1 | `RichTextField`: `react-quill` → `react-quill-new` (peer dependency); quem já tinha `react-quill` instalado como peer precisa de trocar para `react-quill-new` (`>=3.8.3` — versões anteriores do fork não publicam o CSS que o componente importa). Sem esta troca, `RichTextField` não monta sob React 19. Ver `CHANGELOG.md`. |
 
 ---
 
