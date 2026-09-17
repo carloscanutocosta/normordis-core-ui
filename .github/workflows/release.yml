@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v7.0.1
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6.0.9
+        uses: pnpm/action-setup@v6.1.0
         # Sem 'version' explícito: a action lê packageManager do package.json
 
       - name: Setup Node.js
