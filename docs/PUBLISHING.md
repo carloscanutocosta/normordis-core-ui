@@ -33,16 +33,16 @@ export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
 
 ## Publicar uma nova versão
 
-**Versão actual: 2.0.1**
+**Versão actual: 2.0.2**
 
 ```bash
 # 1. Garantir que o build está actualizado e os testes passam
 pnpm test && pnpm build
 
 # 2. Bump de versão (escolher semver adequado)
-pnpm version patch   # 2.0.1 → 2.0.2  (bug fix)
-pnpm version minor   # 2.0.1 → 2.1.0  (nova feature, API compatível)
-pnpm version major   # 2.0.1 → 3.0.0  (breaking change)
+pnpm version patch   # 2.0.2 → 2.0.3  (bug fix)
+pnpm version minor   # 2.0.2 → 2.1.0  (nova feature, API compatível)
+pnpm version major   # 2.0.2 → 3.0.0  (breaking change)
 
 # 3. Publicar
 pnpm publish --no-git-checks
