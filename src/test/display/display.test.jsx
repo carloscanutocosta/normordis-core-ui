@@ -194,6 +194,16 @@ describe('RichTextDisplay — render', () => {
     expect(container.innerHTML).not.toContain('<script>');
     expect(container.textContent).toContain('Safe');
   });
+
+  it('remove eventos e URLs executáveis sem perder o conteúdo permitido', () => {
+    const { container } = render(
+      <RichTextDisplay value='<p>Texto <strong>permitido</strong></p><img src="imagem.png" onerror="alert(1)"><a href="javascript:alert(1)" onclick="alert(1)">Ligação</a>' />,
+    );
+    expect(container.querySelector('strong')).toHaveTextContent('permitido');
+    expect(container.querySelector('img')).not.toHaveAttribute('onerror');
+    expect(screen.getByText('Ligação')).not.toHaveAttribute('href');
+    expect(screen.getByText('Ligação')).not.toHaveAttribute('onclick');
+  });
 });
 
 describe('RichTextDisplay — accessibility', () => {
