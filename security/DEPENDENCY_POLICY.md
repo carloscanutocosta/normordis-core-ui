@@ -24,6 +24,12 @@ Aplica-se a dependências Node/pnpm usadas neste repositório.
 - Dependências críticas devem ter substituto ou mitigação documentada.
 - `pnpm audit --audit-level high` corre em CI como evidência observacional.
 - SBOM CycloneDX deve ser gerado em CI via Syft.
+- Novas versões de dependências (diretas e transitivas) só são resolvidas
+  7 dias (`minimumReleaseAge: 10080` em `pnpm-workspace.yaml`) após
+  publicação no registry. Motivo: worms de auto-propagação (ex.:
+  ChainDrop/Shai-Hulud, ago. 2026) exploram a janela entre publicação de
+  uma versão maliciosa e a sua deteção/remoção, tipicamente horas. Exceções
+  a este atraso exigem justificação documentada (PR ou ADR).
 
 ## Evidência esperada
 
