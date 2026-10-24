@@ -89,6 +89,13 @@ Não grava ficheiros, não chama backend e não depende de web app host ou Tauri
 consumidores decidem como persistir ou exportar o payload. A toolbar default é
 exportada como `NormordisEditorToolbar` e pode ser substituída por `ToolbarComponent`.
 
+Os editores requerem `lexical`, `@lexical/react`, `@lexical/table`,
+`@lexical/html`, `@lexical/link`, `@lexical/list`, `@lexical/rich-text`,
+`@lexical/selection` e `@lexical/utils` em versões alinhadas. São peers opcionais
+para consumidores que não usam os editores. A configuração de desenvolvimento
+usa 0.52.0. O nome acessível de `NormordisEditorLexical` associa o rótulo visível
+por `aria-labelledby`, salvo quando o consumidor fornece `aria-label` explícito.
+
 `DocumentEditor` compõe o editor com botão de exportação e chama
 `onExport("ncrtf", payload)`. Os serializers `exportToNcrtf` / `importFromNcrtf`
 são exportados pelo pacote. Contrato em `docs/formats/NCRTF.md`.

@@ -78,6 +78,7 @@ export default function NormordisEditorLexical({
 }) {
   const generatedId = useId();
   const editorId = id ?? `normordis-editor-${generatedId}`;
+  const labelId = label ? `${editorId}-label` : undefined;
   const descriptionId = description ? `${editorId}-description` : undefined;
   const errorId = error ? `${editorId}-error` : undefined;
   const isInvalid = Boolean(invalid || error);
@@ -110,7 +111,7 @@ export default function NormordisEditorLexical({
   return (
     <div className={cn('space-y-2', className)}>
       {label && (
-        <label className="text-sm font-medium text-foreground" htmlFor={editorId}>
+        <label id={labelId} className="text-sm font-medium text-foreground" htmlFor={editorId}>
           {label}
           {required && <span className="ml-1 text-destructive">*</span>}
         </label>
@@ -152,6 +153,7 @@ export default function NormordisEditorLexical({
                   aria-describedby={[descriptionId, errorId].filter(Boolean).join(' ') || undefined}
                   aria-invalid={isInvalid || undefined}
                   aria-label={ariaLabel ?? (label ? undefined : 'Editor')}
+                  aria-labelledby={ariaLabel ? undefined : labelId}
                   aria-required={required || undefined}
                   className={cn(
                     'prose prose-sm max-w-none px-4 py-3 text-sm text-foreground outline-none',
