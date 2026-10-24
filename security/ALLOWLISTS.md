@@ -22,9 +22,14 @@ repositório.
 
 ### Build scripts Node aprovados
 
-| Pacote | Motivo |
-| --- | --- |
-| `esbuild` | Dependência técnica do pipeline Vite |
+| Pacote | Motivo | Data | Responsável |
+| --- | --- | --- | --- |
+| `esbuild` | Dependência técnica do pipeline Vite | — | — |
+| `core-js` | Polyfills; script de build necessário para `postinstall` do próprio pacote | 2026-09-17 | carloscanutocosta |
+
+Nota: esta tabela deve refletir exatamente o campo `allowBuilds` de
+`pnpm-workspace.yaml`. Qualquer entrada em `allowBuilds` sem linha
+correspondente aqui é uma divergência a corrigir.
 
 ### Actions GitHub aprovadas
 

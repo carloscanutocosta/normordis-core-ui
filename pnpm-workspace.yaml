@@ -1,3 +1,13 @@
 allowBuilds:
   core-js: true
   esbuild: true
+
+# Quarentena de dependências: versões novas só são resolvidas 7 dias
+# (10080 min) após publicação no registry. Mitiga worms de auto-propagação
+# tipo ChainDrop/Shai-Hulud, que exploram a janela entre publicação
+# maliciosa e deteção/remoção. Ver security/DEPENDENCY_POLICY.md.
+minimumReleaseAge: 10080
+
+# Correção transitiva de DoS até os consumidores atualizarem a resolução.
+overrides:
+  brace-expansion@1.1.18: 1.1.21
