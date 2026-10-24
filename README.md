@@ -127,7 +127,9 @@ Requerem `recharts` instalado.
 
 ### Editor Rich Text
 
-Requerem `lexical` e `@lexical/react` instalados.
+Requerem todos os pacotes Lexical indicados na tabela de peers opcionais,
+instalados na mesma versão. A configuração de desenvolvimento usa 0.52.0;
+os mínimos anteriores dos peers mantêm-se e não foram revalidados nesta atualização.
 
 | Componente | Descrição |
 |---|---|
@@ -155,7 +157,7 @@ Instala apenas o que usares:
 | Feature | Pacotes a instalar |
 |---|---|
 | Charts | `recharts` |
-| Editor Lexical | `lexical @lexical/react` |
+| Editor Lexical | `lexical @lexical/react @lexical/table @lexical/html @lexical/link @lexical/list @lexical/rich-text @lexical/selection @lexical/utils` |
 | MapView | `react-leaflet leaflet` |
 | WorkspaceCommandPalette | `cmdk` |
 | Formulários com validação | `react-hook-form @hookform/resolvers zod` |

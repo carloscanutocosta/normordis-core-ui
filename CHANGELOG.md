@@ -6,6 +6,17 @@ O formato segue a ideia de Keep a Changelog e o versionamento deve seguir SemVer
 
 ## [Unreleased]
 
+### Editor Lexical
+
+- Atualizados `lexical`, `@lexical/react` e `@lexical/table` de 0.50.0 para
+  0.52.0, mantendo a quarentena de sete dias e os mínimos públicos anteriores.
+- Declarados como peers opcionais e dependências de desenvolvimento os seis
+  subpacotes Lexical já importados pelos editores, corrigindo a resolução pnpm.
+- Adicionados testes de compatibilidade para JSON persistido, seleção na toolbar,
+  imagem, tabela, importação HTML e exportação NCRTF.
+- Corrigida a associação do rótulo ao nome acessível do editor via
+  `aria-labelledby`; `aria-label` explícito continua a ter precedência.
+
 ### Segurança
 
 - Atualizados DOMPurify para 3.4.17, Storybook para 10.6.2, Vite para 8.3.4,
