@@ -6,6 +6,8 @@ O formato segue a ideia de Keep a Changelog e o versionamento deve seguir SemVer
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-10-25
+
 ### Editor Lexical
 
 - Atualizados `lexical`, `@lexical/react` e `@lexical/table` de 0.50.0 para
