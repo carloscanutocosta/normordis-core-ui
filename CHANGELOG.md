@@ -6,6 +6,22 @@ O formato segue a ideia de Keep a Changelog e o versionamento deve seguir SemVer
 
 ## [Unreleased]
 
+### Segurança
+
+- Atualizados DOMPurify para 3.4.17, Storybook para 10.6.2, Vite para 8.3.4,
+  Vitest/coverage para 5.0.5, Zod para 4.6.7 e Moment para 2.31.0.
+- Atualizadas resoluções transitivas de segurança; override limitado de
+  `brace-expansion@1.1.18` para 1.1.21, sem desativar a quarentena de sete dias.
+- Adicionada regressão de sanitização de eventos e URLs executáveis em
+  `RichTextDisplay`. Quill 2.0.3 mantém um aviso baixo sem correção indicada;
+  HTML emitido pelo editor exige sanitização antes da apresentação.
+
+### Dependências
+
+- Atualizados patches/minors de React, Radix, formulários, ícones e tooling.
+  Mantidos os contratos públicos dos peers; versões de desenvolvimento não
+  garantem a segurança das resoluções das aplicações consumidoras.
+
 ## [2.0.1] - 2026-09-13
 
 Correção de duas regressões introduzidas pela 2.0.0, identificadas em revisão

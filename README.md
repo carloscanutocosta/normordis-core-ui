@@ -220,6 +220,9 @@ preset/config legada, em `docs/PUBLISHING.md`.
 
 Requer Node.js 24.x e pnpm 11.x.
 
+As atualizações de segurança e os riscos residuais estão descritos em
+[`docs/DEPENDENCY_STATUS.md`](./docs/DEPENDENCY_STATUS.md).
+
 ```bash
 pnpm install
 pnpm dev          # app de showcase

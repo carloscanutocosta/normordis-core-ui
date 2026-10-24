@@ -253,6 +253,13 @@ semanal, 8 rotações, compressão e `delaycompress`.
 
 ## Release e segurança
 
+As dependências de desenvolvimento e o lockfile não impõem as versões dos peers
+nas aplicações consumidoras. Estas devem auditar as suas próprias resoluções,
+incluindo DOMPurify transitivo de jsPDF, Quill e bibliotecas opcionais.
+HTML emitido por editores é conteúdo não fiável: deve ser sanitizado antes da
+apresentação; `RichTextDisplay` aplica DOMPurify. O estado das atualizações e
+as limitações conhecidas constam de `docs/DEPENDENCY_STATUS.md`.
+
 A política de segurança vive em `SECURITY.md` e `security/`. A baseline usa:
 
 - CI com lint, typecheck, 358 testes (Vitest + jest-axe) e cobertura ≥ 80% (workspace).
