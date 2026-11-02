@@ -254,7 +254,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.5",
     "@hello-pangea/dnd": "18.0.1",
-    "@hookform/resolvers": "5.9.2",
+    "@hookform/resolvers": "6.0.0",
     "@lexical/html": "^0.52.0",
     "@lexical/link": "^0.52.0",
     "@lexical/list": "^0.52.0",
