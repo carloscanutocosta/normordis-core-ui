@@ -1,5 +1,38 @@
 # TODO - normordis-core-ui
 
+## Acessibilidade — alinhamento com o Manual de UI 50+ (AP)
+
+Origem: análise do commit `22ce1b7` (13/11/2026) contra o "Manual de Diretrizes
+de UI para a Administração Pública — Utilizadores 50+", Anexo C (passos
+detalhados, valores e verificação). Prioridade pela ordem abaixo.
+
+- [ ] **P1 — Borda de campos falha WCAG 1.4.11 (AA).** `--border`/`--input`
+  em `src/index.css`: tema claro `220 13% 82%` (#CBCFD7) dá 1,56:1 sobre
+  branco; tema escuro `222 47% 22%` dá 1,43:1 sobre o fundo. Mínimo 3:1, porque
+  o `Input` tem `bg-transparent` e a borda é o único limite visível.
+  Claro → `220 9% 46%` (#6B7280, 4,83:1). Escuro → recalcular (≥ 3:1).
+  Atenção: `* { @apply border-border }` aplica a cor a TODAS as bordas;
+  avaliar separar `--border` (decorativa) de `--input` (controlos).
+- [ ] **P2 — Foco de 1 px.** `focus-visible:ring-1` em 9 componentes
+  (`button`, `input`, `textarea`, `checkbox`, `radio-group`, `toggle`,
+  `slider`, `resizable`, `SimpleTableNode`) → `ring-2` +
+  `ring-offset-2` em todos os temas (o alto contraste já usa 3 px).
+- [ ] **P3 — Texto de controlos abaixo de 16 px.** `button.tsx`: `text-sm`
+  (14 px) por omissão e `text-xs` (12 px) em `size="sm"`; `input.tsx`:
+  `md:text-sm`. Passar a `text-base` por omissão; remover `md:text-sm`.
+- [ ] **P4 — Alvos abaixo de 44 px.** Botões/campos com `h-9` (36 px), `sm`
+  `h-8`, `lg` `h-10`, `icon` `h-9 w-9`. Padrão `h-11` (44 px); manter `sm`
+  só como variante densa de backoffice, documentada como tal.
+- [ ] **P5 — Tema `at` (Autoridade Tributária).** Acrescentar bloco `.at` em
+  `src/index.css` com os valores do Anexo C, registar em `THEMES` e em
+  `applyTheme` (`src/lib/theme.js`), e mapear o token novo `--link` em
+  `tailwind.config.js`. Depois: `.at-dark`.
+- [ ] **P6 — Comentário errado no `--primary`.** Diz `#4338ca — 7.2:1`; o
+  valor `243 75% 50%` é #2920DF, 8,87:1. Corrigir só o comentário.
+- [ ] **P7 — Teste de contraste no CI.** Teste Vitest que lê os tokens de
+  cada tema e falha se algum par texto/fundo < 4,5:1 ou borda de controlo
+  < 3:1. Impede regressões e torna os comentários `✓` verificáveis.
+
 ## Componentes editoriais
 
 - Implementar um editor rich text baseado em Lexical, com toolbar acessível,
